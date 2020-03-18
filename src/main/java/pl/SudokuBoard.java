@@ -1,5 +1,6 @@
-import java.util.Arrays;
-import java.util.Random;
+package pl;
+
+import java.util.*;
 
 /**
  * Represents a sudoku board.
@@ -12,21 +13,13 @@ public final class SudokuBoard {
      * Represents side size of 9x9 sudoku board.
      * The value for this field is {@value}.
      */
-    private static final int BOARD_SIZE = 9;
+    private final int BOARD_SIZE = 9;
 
     /**
      * Represents side size of 3x3 box.
      * The value for this field is {@value}.
      */
-    private static final int BOX_SIZE = 3;
-
-    /**
-     * Numbers that can be inserted into sudoku board (ints from 1 to 9).
-     * Shuffled by {@link #shuffleCandidates()}
-     * every time before trying to fill each cell in board.
-     * Filled by {@link #SudokuBoard() constructor}.
-     */
-    private static int[] candidates = new int[BOARD_SIZE];
+    private final int BOX_SIZE = 3;
 
     /**
      * Static instance of class Random generating random numbers.
@@ -114,26 +107,20 @@ public final class SudokuBoard {
                 || isUsedInRow(row, candidate));
     }
 
-    /**
-     * Shuffles {@link #candidates} to get greater randomness.
-     */
-    private void shuffleCandidates() {
-        for (int i = BOARD_SIZE - 1; i > 0; i--) {
-            int index = random.nextInt(i + 1);
-            int temp = candidates[index];
-            candidates[index] = candidates[i];
-            candidates[i] = temp;
-        }
-    }
 
     /**
-     * Constructor.
-     * Fills array of {@link #candidates} to insert.
+     * Generates shuffled list of integers that could be inserted into board cell depends on its size
+     * eg. for 9x9 board returns shuffled list of {1, 2, ..., 8, 9}
+     *
+     * @return list of candidates
      */
-    public SudokuBoard() {
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            candidates[i] = i + 1;
+    private List<Integer> generateShuffledCandidates() {
+        List<Integer> candidates = new ArrayList<>();
+        for (int i = 1; i <= BOARD_SIZE; i++) {
+            candidates.add(i);
         }
+        Collections.shuffle(candidates);
+        return candidates;
     }
 
     /**
@@ -153,6 +140,7 @@ public final class SudokuBoard {
     public boolean fillBoard() {
         int row = -1;
         int column = -1;
+        List<Integer> candidates = generateShuffledCandidates();
 
         // Check for unassigned cells on sudoku board
         boolean isSolved = true;
@@ -174,10 +162,10 @@ public final class SudokuBoard {
         // Try to find a correct number for unassigned cell
         // If successful then assign and call solveSudoku() recursively
         // If not then go back to previous call on the stack
-        shuffleCandidates();
+        //shuffleCandidates();
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (isCandidateRight(row, column, candidates[i])) {
-                board[row][column] = candidates[i];
+            if (isCandidateRight(row, column, candidates.get(i))) {
+                board[row][column] = candidates.get(i);
                 if (fillBoard()) {
                     return true;
                 } else {
@@ -198,11 +186,33 @@ public final class SudokuBoard {
     }
 
     /**
+     * Accessor for sudoku board.
+     *
+     * @return size of the board
+     */
+    public int getBOARD_SIZE() {
+        return BOARD_SIZE;
+    }
+
+    /**
+     * Returns value in board cell at certain position.
+     * 0 means that this cell is unassigned.
+     *
+     * @param row    number of row starting from 0
+     * @param column number of column starting from 0
+     * @return value in call at given row and column
+     */
+    public int getValueAt(int row, int column) {
+        return board[row][column];
+    }
+
+    /**
      * Provides an easy way to print out the board.
      *
      * @return formatted String representing sudoku board
      */
-    public String getBoardAsString() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < BOARD_SIZE; i++) {
@@ -212,5 +222,40 @@ public final class SudokuBoard {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    /**
+     * Checks if values in the board are the same (then returns true) but returns false also when
+     * given object is a different class, null or has different board size (for future development)
+     *
+     * @param obj object to compare
+     * @return true if content of array is the same, otherwise return false
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        SudokuBoard other = (SudokuBoard) obj;
+
+        if (BOARD_SIZE != other.getBOARD_SIZE()) {
+            return false;
+        } else {
+            for (int row = 0; row < BOARD_SIZE; row++) {
+                for (int column = 0; column < BOARD_SIZE; column++) {
+                    if (board[row][column] != other.getValueAt(row, column)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }

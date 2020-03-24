@@ -65,14 +65,13 @@ class BacktrackingSudokuSolverTest {
 
     @Test
     void twoBoardsAreDifferent() {
-        int[][] first;
-        int[][] second;
-        SudokuBoard sudokuBoard = new SudokuBoard();
-        sudokuBoard.solveGame();
-        first = sudokuBoard.getCopyOfBoard();
-        sudokuBoard.solveGame();
-        second = sudokuBoard.getCopyOfBoard();
-        assertFalse(Arrays.equals(first, second));
+
+        SudokuBoard sudokuBoard1 = new SudokuBoard();
+        sudokuBoard1.solveGame();
+        SudokuBoard sudokuBoard2 = new SudokuBoard();
+        sudokuBoard2.solveGame();
+
+        assertNotEquals(sudokuBoard1,sudokuBoard2,"Two sudoku boards are the same");
     }
 
 }

@@ -10,6 +10,14 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
     public static final int NUMBER_OF_CELLS = SIZE * SIZE;
 
+
+    /**
+     * Fills the board with random numbers with every usage.
+     * Stores initial tile values in 81 size int array.
+     * Implements backtracking algorithm.
+     *
+     * @param boardToSolve object of SudokuBoard class
+     */
     @Override
     public void solve(SudokuBoard boardToSolve) {
         SecureRandom random = new SecureRandom();

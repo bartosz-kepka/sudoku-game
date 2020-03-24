@@ -9,18 +9,38 @@ public class SudokuBoard {
     public static final int SIZE = 9;
     private int[][] board = new int[SIZE][SIZE];
 
+    /**
+     * Gets value stored in sudoku board.
+     * @param x row of tile in board
+     * @param y column of tile in board
+     * @return value at coordinates
+     */
     public int get(int x, int y) {
         return board[x][y];
     }
 
+    /**
+     * Sets value of certain sudoku tile.
+     * @param x row of tile in board
+     * @param y column of tile in board
+     * @param value that is written to coordinates
+     */
     public void set(int x, int y, int value) {
         board[x][y] = value;
     }
 
+    /**
+     * Method calls sudoku solver, that uses certain solving algorithm.
+     */
     public void solveGame() {
         sudokuSolver.solve(this);
     }
 
+    /**
+     * Checks validity of filled sudoku board against  rules.
+     * @param index of 1D board representation that is  evaluated
+     * @return boolean value if given sudoku tile fulfills all game requirements
+     */
     public boolean checkBoard(int index) {
         int indexRow = index / SIZE;
         int indexColumn = index % SIZE;
@@ -52,6 +72,10 @@ public class SudokuBoard {
         return true;
     }
 
+    /**
+     * To ensure encapsulation method returns copy of board.
+     * @return copy of sudoku board
+     */
     public int[][] getCopyOfBoard() {
         int[][] copyArray = new int[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {

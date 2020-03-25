@@ -224,7 +224,7 @@ public final class SudokuBoard {
 
     /**
      * Check if two boards are the same.
-     *
+     * <p>
      * Checks if values in the board are the same
      * (then returns true) but returns false also when
      * given object is a different class, null or has
@@ -248,11 +248,7 @@ public final class SudokuBoard {
 
         SudokuBoard other = (SudokuBoard) obj;
 
-        if (boardSize != other.getBoardSize() || boxSize != other.getBoxSize()) {
-            return false;
-        } else {
-            return ArrayUtils.isEquals(board, other.getCopyOfBoard());
-        }
+        return ArrayUtils.isEquals(board, other.getCopyOfBoard());
     }
 
     /**

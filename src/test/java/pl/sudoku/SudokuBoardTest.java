@@ -116,6 +116,13 @@ class SudokuBoardTest {
     }
 
     @Test
+    void equals_CompareToItself_ShouldReturnTrue() {
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+
+        Assertions.assertTrue(sudokuBoard.equals(sudokuBoard));
+    }
+
+    @Test
     void getHashCode_TwoEmptyBoards_ShouldReturnTheSameHash() {
         SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
         SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());

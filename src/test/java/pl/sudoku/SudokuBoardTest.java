@@ -7,7 +7,7 @@ class SudokuBoardTest {
 
     @Test
     void solveGame_FillOneBoard_ShouldBeFilledCorrectly() {
-        int[][] board;
+        SudokuField[][] board;
         SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
 
         sudokuBoard.solveGame();
@@ -18,10 +18,10 @@ class SudokuBoardTest {
             for (int column = 0; column < 9; column++) {
                 int firstRowInBox = row - (row % 3);
                 int firstColumnInBox = column - (column % 3);
-                int number = board[row][column];
+                int number = board[row][column].getFieldValue();
 
                 // Check if chosen number is duplicated in box
-                Assertions.assertFalse(isDuplicatedInRow(board, row, column, firstRowInBox, firstColumnInBox, number),
+                Assertions.assertFalse(isDuplicatedInBox(board, row, column, firstRowInBox, firstColumnInBox, number),
                         "Found duplicate in box starting at row " + firstRowInBox + ", column " + firstColumnInBox);
 
                 // Check if chosen number is duplicated in row
@@ -141,10 +141,10 @@ class SudokuBoardTest {
         Assertions.assertNotEquals(sudokuBoard1.hashCode(), sudokuBoard2.hashCode(), "Hash for two filled boards should be different.");
     }
 
-    private boolean isDuplicatedInColumn(int[][] board, int row, int column, int number) {
+    private boolean isDuplicatedInColumn(SudokuField[][] board, int row, int column, int number) {
         for (int r = 0; r < 9; r++) {
             if (r != row) {
-                if (board[r][column] == number) {
+                if (board[r][column].getFieldValue() == number) {
                     return true;
                 }
             }
@@ -152,10 +152,10 @@ class SudokuBoardTest {
         return false;
     }
 
-    private boolean isDuplicatedInRow(int[][] board, int row, int column, int number) {
+    private boolean isDuplicatedInRow(SudokuField[][] board, int row, int column, int number) {
         for (int c = 0; c < 9; c++) {
             if (c != column) {
-                if (board[row][c] == number) {
+                if (board[row][c].getFieldValue() == number) {
                     return true;
                 }
             }
@@ -163,11 +163,11 @@ class SudokuBoardTest {
         return false;
     }
 
-    private boolean isDuplicatedInRow(int[][] board, int row, int column, int firstRowInBox, int firstColumnInBox, int number) {
+    private boolean isDuplicatedInBox(SudokuField[][] board, int row, int column, int firstRowInBox, int firstColumnInBox, int number) {
         for (int r = firstRowInBox; r < firstRowInBox + 3; r++) {
             for (int c = firstColumnInBox; c < firstColumnInBox + 3; c++) {
                 if (r != row && c != column) {
-                    if (board[r][c] == number) {
+                    if (board[r][c].getFieldValue() == number) {
                         return true;
                     }
                 }

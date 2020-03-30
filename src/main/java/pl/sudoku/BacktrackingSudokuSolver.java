@@ -12,7 +12,8 @@ import java.util.List;
 public class BacktrackingSudokuSolver implements SudokuSolver {
 
     /**
-     * Generates shuffled list of integers that could be inserted into board cell depends on its size.
+     * Generates shuffled list of integers that could be inserted
+     * into board cell depends on its size.
      * eg. for 9x9 board returns shuffled list of {1, 2, ..., 8, 9}
      *
      * @param boardSize size of the board to generate candidates for
@@ -33,11 +34,15 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
      * Steps:
      * 1. Checks for first unassigned cell.
      * Going from left to right, top to bottom.
-     * 2. If found, tries to insert each integer from 1 to 9 in random order.
+     * 2. If found, tries to insert each integer
+     * from 1 to 9 in random order.
      * Otherwise sudoku is solved and returns true.
-     * 3. Inserts first candidate, if sudoku is solvable,
-     * calls itself recursively. Otherwise tries next number.
-     * If none of them can be inserted, returns false and goes back to previous call.
+     * 3. Inserts first candidate,
+     * if sudoku is solvable,
+     * calls itself recursively.
+     * Otherwise tries next number.
+     * If none of them can be inserted, returns false
+     * and goes back to previous call.
      *
      * @return true if succeeded, otherwise false
      */

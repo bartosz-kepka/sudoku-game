@@ -5,10 +5,13 @@ import org.apache.commons.lang.ArrayUtils;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static pl.sudoku.SudokuFieldGroup.SIZE;
+
 /**
  * Represents a sudoku board.
  *
  * @author Bartosz Kepka 224326
+ * @author Piotr Antczak 224248
  */
 public final class SudokuBoard {
 
@@ -31,7 +34,7 @@ public final class SudokuBoard {
      * Size: {@link #boardSize}x{@link #boardSize}.
      * 0 means that cell in unassigned
      */
-    private int[][] board = new int[boardSize][boardSize];
+    private SudokuField[][] board = new SudokuField[boardSize][boardSize];
 
     /**
      * Implementation of sudokuSolver to use for solving sudoku game.
@@ -51,25 +54,7 @@ public final class SudokuBoard {
         int firstRowInBox = row - (row % boxSize);
         int firstColumnInBox = column - (column % boxSize);
 
-        // Choose each number other than 0 in the box
-        for (int r = 0; r < boxSize; r++) {
-            for (int c = 0; c < boxSize; c++) {
-                if (board[firstRowInBox + r][firstColumnInBox + c] != 0) {
-
-                    // Compare to other in the box
-                    for (int toCompareR = r; toCompareR < boxSize; toCompareR++) {
-                        for (int toCompareC = 0; toCompareC < boxSize; toCompareC++) {
-                            if (r != toCompareR || c != toCompareC) {
-                                if (board[firstRowInBox + r][firstColumnInBox + c] == board[firstRowInBox + toCompareR][firstColumnInBox + toCompareC]) {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
+        return this.getBox(firstRowInBox, firstColumnInBox).verify();
     }
 
     /**
@@ -79,16 +64,8 @@ public final class SudokuBoard {
      * @return true if is correct, otherwise false
      */
     private boolean verifyRow(final int row) {
-        for (int column = 0; column < boardSize; column++) {
-            if (board[row][column] != 0) {
-                for (int toCompare = column + 1; toCompare < boardSize; toCompare++) {
-                    if (board[row][column] == board[row][toCompare]) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+        return this.getRow(row).verify();
+
     }
 
     /**
@@ -98,16 +75,7 @@ public final class SudokuBoard {
      * @return true if is correct, otherwise false
      */
     private boolean verifyColumn(final int column) {
-        for (int row = 0; row < boardSize; row++) {
-            if (board[row][column] != 0) {
-                for (int toCompare = row + 1; toCompare < boardSize; toCompare++) {
-                    if (board[row][column] == board[toCompare][column]) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+        return this.getColumn(column).verify();
     }
 
     /**
@@ -116,7 +84,8 @@ public final class SudokuBoard {
      * there is no duplicates neither in any row, column
      * nor box)
      *
-     * @return false if found any duplicates in either row, column or box,
+     * @return false if found any duplicates in
+     * either row, column or box,
      * otherwise true
      */
     public boolean isFilledCorrectlyOrSolvable() {
@@ -149,6 +118,11 @@ public final class SudokuBoard {
      * @param solver to use for solving
      */
     public SudokuBoard(final SudokuSolver solver) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                this.board[i][j] = new SudokuField();
+            }
+        }
         this.sudokuSolver = solver;
     }
 
@@ -157,7 +131,7 @@ public final class SudokuBoard {
      *
      * @return copy of board
      */
-    public int[][] getCopyOfBoard() {
+    public SudokuField[][] getCopyOfBoard() {
         return Arrays.copyOf(board, board.length);
     }
 
@@ -188,7 +162,7 @@ public final class SudokuBoard {
      * @return value in call at given row and column
      */
     public int get(final int x, final int y) {
-        return board[x][y];
+        return board[x][y].getFieldValue();
     }
 
     /**
@@ -200,7 +174,55 @@ public final class SudokuBoard {
      * @param value value to assign to cell at position [x][y]
      */
     public void set(final int x, final int y, final int value) {
-        board[x][y] = value;
+        this.board[x][y].setFieldValue(value);
+    }
+
+    /**
+     * Get certain sudoku row by it's index.
+     *
+     * @param row to be recovered form board
+     * @return copy of row
+     */
+    public SudokuRow getRow(final int row) {
+        SudokuField[] fields = new SudokuField[SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            fields[i] = board[row][i];
+        }
+        return new SudokuRow(fields);
+    }
+
+    /**
+     * Get certain sudoku column by it's index.
+     *
+     * @param column to be recovered form board
+     * @return copy of column
+     */
+    public SudokuColumn getColumn(final int column) {
+        SudokuField[] fields = new SudokuField[SudokuFieldGroup.SIZE];
+        for (int i = 0; i < SIZE; i++) {
+            fields[i] = board[i][column];
+        }
+
+        return new SudokuColumn(fields);
+    }
+
+    /**
+     * Gets sudouBox indicated by coordinates.
+     *
+     * @param rowIndex  index of row in sudoku board
+     * @param columnIndex   index of column in sudoku board
+     * @return copy of indicated sudokuBox
+     */
+    public SudokuBox getBox(final int rowIndex, final int columnIndex) {
+        SudokuField[] fields = new SudokuField[SudokuFieldGroup.SIZE];
+        int index = 0;
+        for (int i = 0; i < SudokuBox.BOX_SIZE; i++) {
+            for (int j = 0; j < SudokuBox.BOX_SIZE; j++) {
+                fields[index++] = board[rowIndex + i][columnIndex + j];
+            }
+        }
+
+        return new SudokuBox(fields);
     }
 
     /**
@@ -215,7 +237,7 @@ public final class SudokuBoard {
 
         for (int i = 0; i < boardSize; i++) {
             for (int j = 0; j < boardSize; j++) {
-                sb.append(board[i][j]).append(" ");
+                sb.append(board[i][j].getFieldValue()).append(" ");
             }
             sb.append("\n");
         }

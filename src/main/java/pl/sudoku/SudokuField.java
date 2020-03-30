@@ -12,12 +12,18 @@ public class SudokuField {
     public SudokuField() {
     }
 
-//    public SudokuField(int value) {
-//        this.value = value;
-//    }
+    /**
+     * Ctor for sudoku field with stating value.
+     *
+     * @param i to store inside field
+     */
+    public SudokuField(final int i) {
+        this.value = i;
+    }
 
     /**
      * Gets value stored in sudoku field.
+     *
      * @return integer value
      */
     public int getFieldValue() {
@@ -29,7 +35,7 @@ public class SudokuField {
      *
      * @param newValue to be stored
      */
-    public void setFieldValue( final int newValue) {
+    public void setFieldValue(final int newValue) {
         //TODO add BadValueException
         this.value = newValue;
     }

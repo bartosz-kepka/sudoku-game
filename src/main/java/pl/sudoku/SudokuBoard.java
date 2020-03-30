@@ -209,8 +209,8 @@ public final class SudokuBoard {
     /**
      * Gets sudouBox indicated by coordinates.
      *
-     * @param rowIndex  index of row in sudoku board
-     * @param columnIndex   index of column in sudoku board
+     * @param rowIndex    index of row in sudoku board
+     * @param columnIndex index of column in sudoku board
      * @return copy of indicated sudokuBox
      */
     public SudokuBox getBox(final int rowIndex, final int columnIndex) {
@@ -283,7 +283,12 @@ public final class SudokuBoard {
     @Override
     public int hashCode() {
         int result = Objects.hash(boardSize, boxSize);
-        result = 31 * result + ArrayUtils.hashCode(board);
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                result += ArrayUtils.hashCode((board[i][j]));
+            }
+        }
+        result = result + ArrayUtils.hashCode(board);
         return result;
     }
 }

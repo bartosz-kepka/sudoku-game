@@ -7,7 +7,6 @@ import java.util.Arrays;
 
 /**
  * Represents a sudoku board.
- *
  */
 public final class SudokuBoard {
 
@@ -38,43 +37,6 @@ public final class SudokuBoard {
     private SudokuSolver sudokuSolver;
 
     /**
-     * Checks if bow indicated by row and column in it is filled correctly.
-     * (has no duplicates)
-     *
-     * @param row    which box to check contains
-     * @param column which box to check contains
-     * @return true if is correct, otherwise false
-     */
-    private boolean verifyBox(final int row,
-                              final int column) {
-        int firstRowInBox = row - (row % boxSize);
-        int firstColumnInBox = column - (column % boxSize);
-
-        return this.getBox(firstRowInBox, firstColumnInBox).verify();
-    }
-
-    /**
-     * Checks if row is filled correctly (has no duplicates).
-     *
-     * @param row number to check
-     * @return true if is correct, otherwise false
-     */
-    private boolean verifyRow(final int row) {
-        return this.getRow(row).verify();
-
-    }
-
-    /**
-     * Checks if column is filled correctly (has no duplicates).
-     *
-     * @param column number to check
-     * @return true if is correct, otherwise false
-     */
-    private boolean verifyColumn(final int column) {
-        return this.getColumn(column).verify();
-    }
-
-    /**
      * Checks if sudoku board is filled correctly or solvable.
      * Sudoku is solvable when some cells are unassigned but
      * there is no duplicates neither in any row, column
@@ -84,17 +46,18 @@ public final class SudokuBoard {
      * either row, column or box,
      * otherwise true
      */
-    public boolean isFilledCorrectlyOrSolvable() {
+    private boolean checkBoard() {
         boolean isCorrect = true;
 
         for (int i = 0; i < boardSize && isCorrect; i++) {
             // Verify row and column
-            isCorrect = verifyRow(i) && verifyColumn(i);
+            isCorrect = getRow(i).verify() && getColumn(i).verify();
 
             // Verify boxes which contain row number i
             if (i % boxSize == 0 && isCorrect) {
                 for (int j = 0; j < boardSize / boxSize && isCorrect; j++) {
-                    isCorrect = verifyBox(i, j * boxSize);
+                    //isCorrect = verifyBox(i, j * boxSize);
+                    isCorrect = getBox(i, j * boxSize).verify();
                 }
             }
         }
@@ -210,11 +173,15 @@ public final class SudokuBoard {
      * @return copy of indicated sudokuBox
      */
     public SudokuBox getBox(final int rowIndex, final int columnIndex) {
+        int firstRowInBox = rowIndex - (rowIndex % boxSize);
+        int firstColumnInBox = columnIndex - (columnIndex % boxSize);
+
         SudokuField[] fields = new SudokuField[boardSize];
         int index = 0;
         for (int i = 0; i < boxSize; i++) {
             for (int j = 0; j < boxSize; j++) {
-                fields[index++] = board[rowIndex + i][columnIndex + j];
+                fields[index++] =
+                        board[firstRowInBox + i][firstColumnInBox + j];
             }
         }
 

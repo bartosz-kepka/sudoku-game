@@ -112,7 +112,7 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void HashCode_TwoEmptyBoards_ShouldReturnTheSameHash() {
+    public void hashCode_TwoEmptyBoards_ShouldReturnTheSameHash() {
         SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
         SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());
 
@@ -120,7 +120,7 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void HashCode_TwoTheSameBoards_ShouldReturnTheSameHash() {
+    public void hashCode_TwoTheSameBoards_ShouldReturnTheSameHash() {
         SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
         SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());
 
@@ -131,7 +131,7 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void HashCode_TwoDifferentBoards_ShouldReturnTheDifferentHashes() {
+    public void hashCode_TwoDifferentBoards_ShouldReturnTheDifferentHashes() {
         SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
         SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());
 

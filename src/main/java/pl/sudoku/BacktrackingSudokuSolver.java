@@ -75,7 +75,9 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         // If not then go back to previous call on the stack
         for (int i = 0; i < boardSize; i++) {
             board.set(row, column, candidates.get(i));
-            if (board.isFilledCorrectlyOrSolvable()) {
+            if (board.getRow(row).verify()
+                    && board.getColumn(column).verify()
+                    && board.getBox(row, column).verify()) {
                 if (solve(board)) {
                     return true;
                 } else {

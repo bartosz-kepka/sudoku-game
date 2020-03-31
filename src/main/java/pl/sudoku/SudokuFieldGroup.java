@@ -2,13 +2,18 @@ package pl.sudoku;
 
 public abstract class SudokuFieldGroup {
     /**
-     * Represents Current size of fields merged into group.
-     */
-    public static final int SIZE = 9;
-    /**
      * Group is stored as array of separate fields.
      */
     private SudokuField[] fields;
+
+    /**
+     * Accessor for sudoku field group.
+     *
+     * @return number of elements in group
+     */
+    public int getSize() {
+        return  fields.length;
+    }
 
     /**
      * Ctor for SudokuFieldGroup.
@@ -22,15 +27,14 @@ public abstract class SudokuFieldGroup {
     /**
      * Checks correctness if given field group.
      *
-     *
      * @return boolean value if given field group is correct
      */
     public boolean verify() {
-        for (int i = 0; i < SIZE; i++) {
+        for (int i = 0; i < getSize(); i++) {
             if (fields[i].getFieldValue() == 0) {
                 continue;
             }
-            for (int j = i + 1; j < SIZE; j++) {
+            for (int j = i + 1; j < getSize(); j++) {
                 if (fields[i].getFieldValue() == fields[j].getFieldValue()) {
                     return false;
                 }

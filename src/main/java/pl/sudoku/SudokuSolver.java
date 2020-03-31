@@ -4,7 +4,6 @@ package pl.sudoku;
 /**
  * Interface for implementing different solving algorithms.
  *
- * @author Bartosz Kepka 224326
  */
 public interface SudokuSolver {
 

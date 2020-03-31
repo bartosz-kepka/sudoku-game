@@ -1,17 +1,13 @@
 package pl.sudoku;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Arrays;
-import java.util.Objects;
-
-import static pl.sudoku.SudokuFieldGroup.SIZE;
 
 /**
  * Represents a sudoku board.
  *
- * @author Bartosz Kepka 224326
- * @author Piotr Antczak 224248
  */
 public final class SudokuBoard {
 
@@ -118,8 +114,8 @@ public final class SudokuBoard {
      * @param solver to use for solving
      */
     public SudokuBoard(final SudokuSolver solver) {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
                 this.board[i][j] = new SudokuField();
             }
         }
@@ -184,8 +180,8 @@ public final class SudokuBoard {
      * @return copy of row
      */
     public SudokuRow getRow(final int row) {
-        SudokuField[] fields = new SudokuField[SIZE];
-        for (int i = 0; i < SIZE; i++) {
+        SudokuField[] fields = new SudokuField[boardSize];
+        for (int i = 0; i < boardSize; i++) {
             fields[i] = board[row][i];
         }
         return new SudokuRow(fields);
@@ -198,8 +194,8 @@ public final class SudokuBoard {
      * @return copy of column
      */
     public SudokuColumn getColumn(final int column) {
-        SudokuField[] fields = new SudokuField[SudokuFieldGroup.SIZE];
-        for (int i = 0; i < SIZE; i++) {
+        SudokuField[] fields = new SudokuField[boardSize];
+        for (int i = 0; i < boardSize; i++) {
             fields[i] = board[i][column];
         }
 
@@ -214,10 +210,10 @@ public final class SudokuBoard {
      * @return copy of indicated sudokuBox
      */
     public SudokuBox getBox(final int rowIndex, final int columnIndex) {
-        SudokuField[] fields = new SudokuField[SudokuFieldGroup.SIZE];
+        SudokuField[] fields = new SudokuField[boardSize];
         int index = 0;
-        for (int i = 0; i < SudokuBox.BOX_SIZE; i++) {
-            for (int j = 0; j < SudokuBox.BOX_SIZE; j++) {
+        for (int i = 0; i < boxSize; i++) {
+            for (int j = 0; j < boxSize; j++) {
                 fields[index++] = board[rowIndex + i][columnIndex + j];
             }
         }
@@ -253,24 +249,27 @@ public final class SudokuBoard {
      * different board size (for future development).
      * DOESN'T depend on sudoku solver.
      *
-     * @param obj object to compare
+     * @param o object to compare
      * @return true if content of array is the same, otherwise return false
      */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(final Object o) {
+
+        if (this == o) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+
+        if (!(o instanceof SudokuBoard)) {
             return false;
         }
 
-        SudokuBoard other = (SudokuBoard) obj;
+        SudokuBoard that = (SudokuBoard) o;
 
-        return ArrayUtils.isEquals(board, other.getCopyOfBoard());
+        return new EqualsBuilder()
+                .append(boardSize, that.boardSize)
+                .append(boxSize, that.boxSize)
+                .append(board, that.board)
+                .isEquals();
     }
 
     /**
@@ -282,13 +281,11 @@ public final class SudokuBoard {
      */
     @Override
     public int hashCode() {
-        int result = Objects.hash(boardSize, boxSize);
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                result += ArrayUtils.hashCode((board[i][j]));
-            }
-        }
-        result = result + ArrayUtils.hashCode(board);
-        return result;
+
+        return new HashCodeBuilder(17, 37)
+                .append(boardSize)
+                .append(boxSize)
+                .append(board)
+                .toHashCode();
     }
 }

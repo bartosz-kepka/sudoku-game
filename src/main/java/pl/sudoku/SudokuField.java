@@ -1,6 +1,9 @@
 package pl.sudoku;
 
-public class SudokuField {
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+public final class SudokuField {
     /**
      * Represents value stored inside sudoku field.
      */
@@ -15,10 +18,10 @@ public class SudokuField {
     /**
      * Ctor for sudoku field with stating value.
      *
-     * @param i to store inside field
+     * @param newValue to store inside field
      */
-    public SudokuField(final int i) {
-        this.value = i;
+    public SudokuField(final int newValue) {
+        this.value = newValue;
     }
 
     /**
@@ -38,6 +41,32 @@ public class SudokuField {
     public void setFieldValue(final int newValue) {
         //TODO add BadValueException
         this.value = newValue;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof SudokuField)) {
+            return false;
+        }
+
+        SudokuField that = (SudokuField) o;
+
+        return new EqualsBuilder()
+                .append(value, that.value)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+
+        return new HashCodeBuilder(17, 37)
+                .append(value)
+                .toHashCode();
     }
 }
 

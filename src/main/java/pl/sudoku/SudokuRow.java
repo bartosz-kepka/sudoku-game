@@ -1,8 +1,6 @@
 package pl.sudoku;
 
 public class SudokuRow extends SudokuFieldGroup {
-
-
     /**
      * Ctor for sudoku row.
      *

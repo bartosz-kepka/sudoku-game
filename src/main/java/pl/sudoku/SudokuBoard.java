@@ -37,34 +37,6 @@ public final class SudokuBoard {
     private SudokuSolver sudokuSolver;
 
     /**
-     * Checks if sudoku board is filled correctly or solvable.
-     * Sudoku is solvable when some cells are unassigned but
-     * there is no duplicates neither in any row, column
-     * nor box)
-     *
-     * @return false if found any duplicates in
-     * either row, column or box,
-     * otherwise true
-     */
-    private boolean checkBoard() {
-        boolean isCorrect = true;
-
-        for (int i = 0; i < boardSize && isCorrect; i++) {
-            // Verify row and column
-            isCorrect = getRow(i).verify() && getColumn(i).verify();
-
-            // Verify boxes which contain row number i
-            if (i % boxSize == 0 && isCorrect) {
-                for (int j = 0; j < boardSize / boxSize && isCorrect; j++) {
-                    //isCorrect = verifyBox(i, j * boxSize);
-                    isCorrect = getBox(i, j * boxSize).verify();
-                }
-            }
-        }
-        return isCorrect;
-    }
-
-    /**
      * Fills sudoku board using solver given in constructor.
      */
     public void solveGame() {
@@ -233,15 +205,13 @@ public final class SudokuBoard {
         SudokuBoard that = (SudokuBoard) o;
 
         return new EqualsBuilder()
-                .append(boardSize, that.boardSize)
-                .append(boxSize, that.boxSize)
                 .append(board, that.board)
                 .isEquals();
     }
 
     /**
      * Generate hash code of sudoku board.
-     * Depends on board size, box size and content of the board.
+     * Depends on content of the board,
      * NOT on the sudoku solver.
      *
      * @return hash code
@@ -250,8 +220,6 @@ public final class SudokuBoard {
     public int hashCode() {
 
         return new HashCodeBuilder(17, 37)
-                .append(boardSize)
-                .append(boxSize)
                 .append(board)
                 .toHashCode();
     }

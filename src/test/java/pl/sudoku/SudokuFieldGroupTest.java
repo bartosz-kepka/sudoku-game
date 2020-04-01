@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SudokuFieldGroupTest {
 
     @Test
-    public void verifyValidTest() {
+    public void verify_ValidGroup_ShouldReturnTrue() {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
                 new SudokuField(1),
                 new SudokuField(2),
@@ -22,7 +22,7 @@ public class SudokuFieldGroupTest {
     }
 
     @Test
-    public void verifyInvalidTest() {
+    public void verify_InvalidGroup_ShouldReturnFalse() {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
                 new SudokuField(2),
                 new SudokuField(2),

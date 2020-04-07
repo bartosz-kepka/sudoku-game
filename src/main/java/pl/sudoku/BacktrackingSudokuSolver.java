@@ -1,6 +1,6 @@
 package pl.sudoku;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,9 +20,9 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
      * @return list of candidates
      */
     private List<Integer> generateShuffledCandidates(final int boardSize) {
-        List<Integer> candidates = new ArrayList<>();
-        for (int i = 1; i <= boardSize; i++) {
-            candidates.add(i);
+        List<Integer> candidates = Arrays.asList(new Integer[boardSize]);
+        for (int candidate = 1; candidate <= boardSize; candidate++) {
+            candidates.set(candidate - 1, candidate);
         }
         Collections.shuffle(candidates);
         return candidates;

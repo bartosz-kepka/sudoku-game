@@ -1,10 +1,13 @@
 package pl.sudoku;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class SudokuFieldGroup {
     /**
-     * Group is stored as array of separate fields.
+     * Group is stored as fixed-size list of sudoku fields
      */
-    private SudokuField[] fields;
+    private List<SudokuField> fields;
 
     /**
      * Accessor for sudoku field group.
@@ -12,7 +15,7 @@ public abstract class SudokuFieldGroup {
      * @return number of elements in group
      */
     public int getSize() {
-        return  fields.length;
+        return  fields.size();
     }
 
     /**
@@ -21,7 +24,7 @@ public abstract class SudokuFieldGroup {
      * @param sudokuFields array of separate fields to be merged into group
      */
     public SudokuFieldGroup(final SudokuField[] sudokuFields) {
-        this.fields = sudokuFields;
+        this.fields = Arrays.asList(sudokuFields);
     }
 
     /**
@@ -31,11 +34,11 @@ public abstract class SudokuFieldGroup {
      */
     public boolean verify() {
         for (int i = 0; i < getSize(); i++) {
-            if (fields[i].getFieldValue() == 0) {
+            if (fields.get(i).getFieldValue() == 0) {
                 continue;
             }
             for (int j = i + 1; j < getSize(); j++) {
-                if (fields[i].getFieldValue() == fields[j].getFieldValue()) {
+                if (fields.get(i).getFieldValue() == fields.get(j).getFieldValue()) {
                     return false;
                 }
             }

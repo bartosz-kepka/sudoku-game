@@ -49,9 +49,9 @@ public final class SudokuBoard {
      * @param solver to use for solving
      */
     public SudokuBoard(final SudokuSolver solver) {
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                this.board[i][j] = new SudokuField();
+        for (int row = 0; row < boardSize; row++) {
+            for (int column = 0; column < boardSize; column++) {
+                this.board[row][column] = new SudokuField();
             }
         }
         this.sudokuSolver = solver;
@@ -111,13 +111,13 @@ public final class SudokuBoard {
     /**
      * Get certain sudoku row by it's index.
      *
-     * @param row to be recovered form board
+     * @param rowIndex index of row in sudoku board
      * @return copy of row
      */
-    public SudokuRow getRow(final int row) {
+    public SudokuRow getRow(final int rowIndex) {
         SudokuField[] fields = new SudokuField[boardSize];
         for (int i = 0; i < boardSize; i++) {
-            fields[i] = board[row][i];
+            fields[i] = board[rowIndex][i];
         }
         return new SudokuRow(fields);
     }
@@ -125,20 +125,20 @@ public final class SudokuBoard {
     /**
      * Get certain sudoku column by it's index.
      *
-     * @param column to be recovered form board
+     * @param columnIndex index of column in sudoku board
      * @return copy of column
      */
-    public SudokuColumn getColumn(final int column) {
+    public SudokuColumn getColumn(final int columnIndex) {
         SudokuField[] fields = new SudokuField[boardSize];
         for (int i = 0; i < boardSize; i++) {
-            fields[i] = board[i][column];
+            fields[i] = board[i][columnIndex];
         }
 
         return new SudokuColumn(fields);
     }
 
     /**
-     * Gets sudouBox indicated by coordinates.
+     * Gets sudokuBox indicated by coordinates.
      *
      * @param rowIndex    index of row in sudoku board
      * @param columnIndex index of column in sudoku board

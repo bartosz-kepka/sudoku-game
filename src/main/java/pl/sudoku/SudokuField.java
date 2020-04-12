@@ -39,7 +39,6 @@ public final class SudokuField {
      * @param newValue to be stored
      */
     public void setFieldValue(final int newValue) {
-        //TODO add BadValueException
         this.value = newValue;
     }
 
@@ -63,10 +62,13 @@ public final class SudokuField {
 
     @Override
     public int hashCode() {
-
         return new HashCodeBuilder(17, 37)
                 .append(value)
                 .toHashCode();
     }
-}
 
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
+}

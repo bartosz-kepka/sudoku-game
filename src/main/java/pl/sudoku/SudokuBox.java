@@ -9,4 +9,21 @@ public class SudokuBox extends SudokuFieldGroup {
     public SudokuBox(final SudokuField[] fields) {
         super(fields);
     }
+
+    /**
+     * Provides an easy way to print out the box.
+     *
+     * @return formatted String representing sudoku box
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.getFields().size(); i++) {
+            sb.append(this.getFields().get(i)).append(" ");
+            if ((i + 1) % Math.sqrt(this.getFields().size()) == 0) {
+                sb.append('\n');
+            }
+        }
+        return sb.toString();
+    }
 }

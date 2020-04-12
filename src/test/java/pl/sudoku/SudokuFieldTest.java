@@ -36,4 +36,20 @@ public class SudokuFieldTest {
         assertNotEquals(sudokuField, string);
     }
 
+    @Test
+    public void hashCode_TwoTheSameFields_ShouldReturnTheSameHash() {
+        SudokuField sudokuField = new SudokuField(4);
+        SudokuField sudokuField1 = new SudokuField(4);
+
+        assertEquals(sudokuField.hashCode(), sudokuField1.hashCode(), "Hash for two fields with the same value should be the same.");
+    }
+
+    @Test
+    public void hashCode_TwoDifferentFields_ShouldReturnTheDifferentHashes() {
+        SudokuField sudokuField = new SudokuField(4);
+        SudokuField sudokuField1 = new SudokuField(9);
+
+        assertNotEquals(sudokuField.hashCode(), sudokuField1.hashCode(), "Hash for two fields with the different values should not be the same.");
+    }
+
 }

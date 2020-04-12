@@ -41,9 +41,6 @@ public class SudokuFieldGroupTest {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
                 new SudokuField(1),
                 new SudokuField(2),
-                new SudokuField(3),
-                new SudokuField(4),
-                new SudokuField(5),
                 new SudokuField(6),
                 new SudokuField(7),
                 new SudokuField(8)});
@@ -109,7 +106,7 @@ public class SudokuFieldGroupTest {
 
     @Test
     void hashCode_TwoGroupsWithTheSameContent_ShouldReturnTheSameHash() {
-        SudokuColumn sudokuColumn = new SudokuColumn(new SudokuField[]{
+        SudokuField[] content = new SudokuField[]{
                 new SudokuField(1),
                 new SudokuField(2),
                 new SudokuField(3),
@@ -118,36 +115,29 @@ public class SudokuFieldGroupTest {
                 new SudokuField(6),
                 new SudokuField(7),
                 new SudokuField(8),
-                new SudokuField(9)});
+                new SudokuField(9)};
 
-        SudokuBox sudokuBox = new SudokuBox(new SudokuField[]{
-                new SudokuField(1),
-                new SudokuField(2),
-                new SudokuField(3),
-                new SudokuField(4),
-                new SudokuField(5),
-                new SudokuField(6),
-                new SudokuField(7),
-                new SudokuField(8),
-                new SudokuField(9)});
+        SudokuColumn sudokuColumn = new SudokuColumn(content);
+        SudokuBox sudokuBox = new SudokuBox(content);
+
         assertEquals(sudokuColumn.hashCode(), sudokuBox.hashCode(), "Hashes for two groups with the same content should be equal.");
     }
 
     @Test
     void hashCode_TwoGroupsWithDifferentContent_ShouldReturnDifferentHash() {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
-                new SudokuField(1),
-                new SudokuField(2),
                 new SudokuField(3),
                 new SudokuField(4),
                 new SudokuField(5),
                 new SudokuField(6),
                 new SudokuField(7),
+                new SudokuField(1),
+                new SudokuField(2),
                 new SudokuField(8),
                 new SudokuField(9)});
 
         SudokuRow sudokuRow1 = new SudokuRow(new SudokuField[]{
-                new SudokuField(2),
+                new SudokuField(1),
                 new SudokuField(2),
                 new SudokuField(3),
                 new SudokuField(4),

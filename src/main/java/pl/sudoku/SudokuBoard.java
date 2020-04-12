@@ -109,7 +109,7 @@ public final class SudokuBoard {
     }
 
     /**
-     * Get certain sudoku row by it's index.
+     * Gets certain sudoku row by it's index.
      *
      * @param rowIndex index of row in sudoku board
      * @return copy of row
@@ -123,7 +123,7 @@ public final class SudokuBoard {
     }
 
     /**
-     * Get certain sudoku column by it's index.
+     * Gets certain sudoku column by it's index.
      *
      * @param columnIndex index of column in sudoku board
      * @return copy of column
@@ -180,7 +180,7 @@ public final class SudokuBoard {
     }
 
     /**
-     * Check if two boards are the same.
+     * Checks if two boards are the same.
      * <p>
      * Checks if values in the board are the same
      * (then returns true) but returns false also when
@@ -210,7 +210,7 @@ public final class SudokuBoard {
     }
 
     /**
-     * Generate hash code of sudoku board.
+     * Generates hash code of sudoku board.
      * Depends on content of the board,
      * NOT on the sudoku solver.
      *

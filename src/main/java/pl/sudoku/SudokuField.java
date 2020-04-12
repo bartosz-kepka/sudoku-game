@@ -42,6 +42,16 @@ public final class SudokuField {
         this.value = newValue;
     }
 
+    /**
+     * Checks if two fields are the same.
+     * Checks if values in the groups are the same
+     * (then returns true) but returns false also when
+     * given object is a different class or null.
+     *
+     *
+     * @param o object to compare
+     * @return true if value in fields are the same, otherwise false
+     */
     @Override
     public boolean equals(final Object o) {
 
@@ -60,6 +70,12 @@ public final class SudokuField {
                 .isEquals();
     }
 
+    /**
+     * Generates hash code of SudokuField object.
+     * Depends only on value in field.
+     *
+     * @return hash code
+     */
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)

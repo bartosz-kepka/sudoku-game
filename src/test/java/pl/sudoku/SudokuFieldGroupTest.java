@@ -37,38 +37,7 @@ public class SudokuFieldGroupTest {
     }
 
     @Test
-    public void equals_CompareToNull_ShouldReturnFalse() {
-        SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
-                new SudokuField(1),
-                new SudokuField(2),
-                new SudokuField(3),
-                new SudokuField(4),
-                new SudokuField(5),
-                new SudokuField(6),
-                new SudokuField(7),
-                new SudokuField(8),
-                new SudokuField(9)});
-        assertNotEquals(null, sudokuRow);
-    }
-
-    @Test
-    public void equals_CompareToInstanceOfDifferentClass_ShouldReturnFalse() {
-        SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
-                new SudokuField(1),
-                new SudokuField(2),
-                new SudokuField(3),
-                new SudokuField(4),
-                new SudokuField(5),
-                new SudokuField(6),
-                new SudokuField(7),
-                new SudokuField(8),
-                new SudokuField(9)});
-        String s = "Test";
-        assertNotEquals(sudokuRow, s);
-    }
-
-    @Test
-    public void equals_CompareToItselfDifferentSize_ShouldReturnFalse() {
+    public void equals_CompareToGroupWithDifferentSize_ShouldReturnFalse() {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
                 new SudokuField(1),
                 new SudokuField(2),
@@ -90,6 +59,22 @@ public class SudokuFieldGroupTest {
                 new SudokuField(9)});
         assertNotEquals(sudokuRow, sudokuRow1);
     }
+
+    @Test
+    public void equals_CompareToNull_ShouldReturnFalse() {
+        SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
+                new SudokuField(1),
+                new SudokuField(2),
+                new SudokuField(3),
+                new SudokuField(4),
+                new SudokuField(5),
+                new SudokuField(6),
+                new SudokuField(7),
+                new SudokuField(8),
+                new SudokuField(9)});
+        assertNotEquals(null, sudokuRow);
+    }
+
     @Test
     public void equals_CompareToItself_ShouldReturnTrue() {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
@@ -106,7 +91,7 @@ public class SudokuFieldGroupTest {
     }
 
     @Test
-    void hashCode_TwoTheSameGroups_ShouldReturnTheSameHash() {
+    public void equals_CompareToDifferentClass_ShouldReturnFalse() {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
                 new SudokuField(1),
                 new SudokuField(2),
@@ -118,22 +103,38 @@ public class SudokuFieldGroupTest {
                 new SudokuField(8),
                 new SudokuField(9)});
 
-
-        SudokuRow sudokuRow1 = new SudokuRow(new SudokuField[]{
-                new SudokuField(1),
-                new SudokuField(2),
-                new SudokuField(3),
-                new SudokuField(4),
-                new SudokuField(5),
-                new SudokuField(6),
-                new SudokuField(7),
-                new SudokuField(8),
-                new SudokuField(9)});
-        assertEquals(sudokuRow.hashCode(), sudokuRow1.hashCode(), "Hash for two identical groups should be the same.");
+        String string = "test";
+        assertNotEquals(sudokuRow, string);
     }
 
     @Test
-    void hashCode_TwoDifferentGroups_ShouldReturnDifferentHash() {
+    void hashCode_TwoGroupsWithTheSameContent_ShouldReturnTheSameHash() {
+        SudokuColumn sudokuColumn = new SudokuColumn(new SudokuField[]{
+                new SudokuField(1),
+                new SudokuField(2),
+                new SudokuField(3),
+                new SudokuField(4),
+                new SudokuField(5),
+                new SudokuField(6),
+                new SudokuField(7),
+                new SudokuField(8),
+                new SudokuField(9)});
+
+        SudokuBox sudokuBox = new SudokuBox(new SudokuField[]{
+                new SudokuField(1),
+                new SudokuField(2),
+                new SudokuField(3),
+                new SudokuField(4),
+                new SudokuField(5),
+                new SudokuField(6),
+                new SudokuField(7),
+                new SudokuField(8),
+                new SudokuField(9)});
+        assertEquals(sudokuColumn.hashCode(), sudokuBox.hashCode(), "Hashes for two groups with the same content should be equal.");
+    }
+
+    @Test
+    void hashCode_TwoGroupsWithDifferentContent_ShouldReturnDifferentHash() {
         SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
                 new SudokuField(1),
                 new SudokuField(2),
@@ -145,7 +146,6 @@ public class SudokuFieldGroupTest {
                 new SudokuField(8),
                 new SudokuField(9)});
 
-
         SudokuRow sudokuRow1 = new SudokuRow(new SudokuField[]{
                 new SudokuField(2),
                 new SudokuField(2),
@@ -156,6 +156,6 @@ public class SudokuFieldGroupTest {
                 new SudokuField(7),
                 new SudokuField(8),
                 new SudokuField(9)});
-        assertNotEquals(sudokuRow.hashCode(), sudokuRow1.hashCode(), "Hash for two different groups should be different.");
+        assertNotEquals(sudokuRow.hashCode(), sudokuRow1.hashCode(), "Hashes for two different groups should be different.");
     }
 }

@@ -1,7 +1,7 @@
 package pl.sudoku;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +63,7 @@ public abstract class SudokuFieldGroup {
     }
 
     /**
-     * Check if two field groups are the same.
+     * Checks if two field groups are the same.
      * <p>
      * Checks if values in the groups are the same
      * (then returns true) but returns false also when
@@ -94,14 +94,15 @@ public abstract class SudokuFieldGroup {
 
 
     /**
-     * Generate hash code of field group.
-     * Depends on content of the group.
+     * Generates hash code of SudokuFieldGroup object.
+     * Depends only on content of the group.
      *
      * @return hash code
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(fields).toHashCode();
+        return new HashCodeBuilder(17, 37)
+                .append(fields)
+                .toHashCode();
     }
-
 }

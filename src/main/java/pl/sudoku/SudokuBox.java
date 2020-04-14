@@ -39,10 +39,10 @@ public final class SudokuBox extends SudokuFieldGroup {
      *
      * @return hash code
      */
-//    @Override
-//    public int hashCode() {
-//        return super.hashCode();
-//    }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
     /**
      * Provides an easy way to print out the box.

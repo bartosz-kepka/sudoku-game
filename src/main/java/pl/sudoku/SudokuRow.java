@@ -29,7 +29,7 @@ public final class SudokuRow extends SudokuFieldGroup {
             return false;
         }
 
-        return o instanceof SudokuRow;
+        return o.getClass() == getClass();
     }
 
     /**

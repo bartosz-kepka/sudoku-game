@@ -4,12 +4,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * Represents a sudoku board.
  */
-public final class SudokuBoard {
+public final class SudokuBoard implements Serializable {
 
     /**
      * Represents side size of sudoku board.

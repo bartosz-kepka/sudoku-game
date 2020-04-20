@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-public class FileSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
+public class FileSudokuBoardDao implements Dao<SudokuBoard> {
 
     /**
      * String representing file with extension.
@@ -54,16 +54,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard>, AutoCloseable {
                      new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(obj);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-    }
-
-    /**
-     * Implementation of AutoCloseable interface close method.
-     * @throws Exception unable to close Stream
-     */
-    @Override
-    public void close() throws Exception {
     }
 }

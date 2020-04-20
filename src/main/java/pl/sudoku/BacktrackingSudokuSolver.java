@@ -1,5 +1,6 @@
 package pl.sudoku;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author Bartosz Kepka 224326
  */
-public class BacktrackingSudokuSolver implements SudokuSolver {
+public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
 
     /**
      * Generates shuffled list of integers that could be inserted

@@ -163,7 +163,6 @@ public class SudokuFieldGroupTest {
                 new SudokuField(7),
                 new SudokuField(8),
                 new SudokuField(9)});
-        System.out.println(sudokuRow);
         assertThat(sudokuRow.toString(), containsString("value=4"));
     }
 }

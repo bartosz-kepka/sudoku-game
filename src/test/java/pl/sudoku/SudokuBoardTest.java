@@ -2,6 +2,8 @@ package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuBoardTest {
@@ -136,5 +138,12 @@ public class SudokuBoardTest {
             }
         }
         return false;
+    }
+
+    @Test
+    void ToString_EmptyBoard_ReturnsProperValues() {
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+
+        assertThat(sudokuBoard.toString(), containsString("value=0"));
     }
 }

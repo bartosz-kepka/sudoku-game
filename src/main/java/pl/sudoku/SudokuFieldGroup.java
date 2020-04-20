@@ -2,6 +2,7 @@ package pl.sudoku;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,16 +14,6 @@ public abstract class SudokuFieldGroup {
      * Group is stored as fixed-size list of sudoku fields.
      */
     private List<SudokuField> fields;
-
-
-    /**
-     * Getter for fields returning copy of List that stores them.
-     *
-     * @return copy of fields list
-     */
-    protected List<SudokuField> getFields() {
-        return List.copyOf(fields);
-    }
 
     /**
      * Accessor for sudoku field group.
@@ -70,7 +61,6 @@ public abstract class SudokuFieldGroup {
      * given object is a different class, null or has
      * different group size (for future development).
      *
-     *
      * @param o object to compare
      * @return true if content of list is the same, otherwise return false
      */
@@ -104,5 +94,16 @@ public abstract class SudokuFieldGroup {
         return new HashCodeBuilder(17, 37)
                 .append(fields)
                 .toHashCode();
+    }
+
+    /**
+     * Uses Apache commons-lang3 to implement toString.
+     * @return String containing class information
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("fields", fields)
+                .toString();
     }
 }

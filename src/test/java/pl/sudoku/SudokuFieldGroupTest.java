@@ -2,6 +2,8 @@ package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuFieldGroupTest {
@@ -147,5 +149,21 @@ public class SudokuFieldGroupTest {
                 new SudokuField(8),
                 new SudokuField(9)});
         assertNotEquals(sudokuRow.hashCode(), sudokuRow1.hashCode(), "Hashes for two different groups should be different.");
+    }
+
+    @Test
+    void ToString_Contains_List_Values() {
+        SudokuRow sudokuRow = new SudokuRow(new SudokuField[]{
+                new SudokuField(1),
+                new SudokuField(2),
+                new SudokuField(3),
+                new SudokuField(4),
+                new SudokuField(5),
+                new SudokuField(6),
+                new SudokuField(7),
+                new SudokuField(8),
+                new SudokuField(9)});
+        System.out.println(sudokuRow);
+        assertThat(sudokuRow.toString(), containsString("value=4"));
     }
 }

@@ -2,6 +2,7 @@ package pl.sudoku;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public final class SudokuField {
     /**
@@ -48,7 +49,6 @@ public final class SudokuField {
      * (then returns true) but returns false also when
      * given object is a different class or null.
      *
-     *
      * @param o object to compare
      * @return true if value in fields are the same, otherwise false
      */
@@ -85,6 +85,8 @@ public final class SudokuField {
 
     @Override
     public String toString() {
-        return Integer.toString(value);
+        return new ToStringBuilder(this)
+                .append("value", value)
+                .toString();
     }
 }

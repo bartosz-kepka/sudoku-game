@@ -51,44 +51,6 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void toString_EmptyBoard_ShouldReturnFormattedString() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
-
-        String expected = "\n0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n";
-
-        assertEquals(expected, sudokuBoard.toString(), "String representation of the sudoku board is wrong.");
-    }
-
-    @Test
-    public void toString_PartlyFilled_ShouldReturnProperString() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
-
-        sudokuBoard.set(0, 0, 1);
-        sudokuBoard.set(8, 8, 2);
-        sudokuBoard.set(3, 0, 5);
-        sudokuBoard.set(0, 2, 6);
-
-        String expected = "\n1 0 6 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "5 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 0 \n" +
-                "0 0 0 0 0 0 0 0 2 \n";
-        assertEquals(expected, sudokuBoard.toString(), "String representation of the sudoku board is wrong.");
-    }
-
-    @Test
     public void equals_CompareToNull_ShouldReturnFalse() {
         SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
 

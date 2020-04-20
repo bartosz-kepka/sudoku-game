@@ -2,6 +2,7 @@ package pl.sudoku;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Arrays;
 
@@ -160,23 +161,11 @@ public final class SudokuBoard {
         return new SudokuBox(fields);
     }
 
-    /**
-     * Provides an easy way to print out the board.
-     *
-     * @return formatted String representing sudoku board
-     */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\n");
-
-        for (int i = 0; i < boardSize; i++) {
-            for (int j = 0; j < boardSize; j++) {
-                sb.append(board[i][j].getFieldValue()).append(" ");
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
+        return new ToStringBuilder(this)
+                .append("board", board)
+                .toString();
     }
 
     /**

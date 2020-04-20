@@ -45,17 +45,5 @@ public final class SudokuColumn extends SudokuFieldGroup {
         return super.hashCode();
     }
 
-    /**
-     * Provides an easy way to print out the box.
-     *
-     * @return formatted String representing sudoku box
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (var i : this.getFields()) {
-            sb.append(i.toString()).append('\n');
-        }
-        return sb.toString();
-    }
+
 }

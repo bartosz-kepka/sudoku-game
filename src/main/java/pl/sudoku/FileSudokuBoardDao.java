@@ -57,7 +57,13 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
             throw new RuntimeException(e);
         }
     }
-    @Deprecated(since="9")
+
+    /**
+     * Deprecated finalize method for emergency closing streams.
+     *
+     * @throws Throwable exception if unable to close resources
+     */
+    @Deprecated(since = "9")
     @Override
     public void finalize() throws Throwable {
         super.finalize();

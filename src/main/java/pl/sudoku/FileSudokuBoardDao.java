@@ -1,25 +1,38 @@
 package pl.sudoku;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
 
-public class FileSudokuBoardDao implements Dao<SudokuBoard> {
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public final class FileSudokuBoardDao implements Dao<SudokuBoard> {
 
     /**
-     * String representing file with extension.
+     * ObjectOutputStream for writing to file.
      */
-    private String fileName;
+    private ObjectOutputStream objectOutputStream;
+
+    /**
+     * ObjectInputStream for reading from file.
+     */
+    private ObjectInputStream objectInputStream;
 
     /**
      * Constructor for FileSudokuBoardDao class.
      *
-     * @param fileString file with extension for IO operations
+     * @param fileName file with extension for IO operations
      */
-    public FileSudokuBoardDao(final String fileString) {
-        this.fileName = fileString;
+    public FileSudokuBoardDao(final String fileName) {
+        try {
+            objectOutputStream =
+                    new ObjectOutputStream(new FileOutputStream(fileName));
+            objectInputStream =
+                    new ObjectInputStream(new FileInputStream(fileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -30,10 +43,8 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
      */
     @Override
     public SudokuBoard read() {
-        SudokuBoard sudokuBoard = null;
-        try (FileInputStream fileInputStream = new FileInputStream(fileName);
-             ObjectInputStream objectInputStream =
-                     new ObjectInputStream(fileInputStream)) {
+        SudokuBoard sudokuBoard;
+        try {
             sudokuBoard = (SudokuBoard) objectInputStream.readObject();
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
@@ -49,12 +60,35 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
      */
     @Override
     public void write(final SudokuBoard obj) {
-        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-             ObjectOutputStream objectOutputStream =
-                     new ObjectOutputStream(fileOutputStream)) {
+        try {
             objectOutputStream.writeObject(obj);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Close method for AutoClosable interface.
+     *
+     * @throws Exception if some resources cannot be closed
+     */
+    @Override
+    public void close() throws Exception {
+        objectInputStream.close();
+        objectOutputStream.close();
+    }
+
+    /**
+     * Deprecated in Java 9 finalize method.
+     *
+     * @throws Throwable if some resources cannot be closed
+     */
+    @Deprecated(since = "9")
+    @Override
+    protected void finalize() throws Throwable {
+        objectInputStream.close();
+        objectOutputStream.close();
+        super.finalize();
+
     }
 }

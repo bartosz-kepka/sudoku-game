@@ -8,7 +8,7 @@ public class SudokuBoardDaoFactory {
      * @param filename serialization file
      * @return instance of Dao class
      */
-    public Dao<SudokuBoard> getFileDao(final String filename) {
+    public static Dao<SudokuBoard> getFileDao(final String filename) {
         return new FileSudokuBoardDao(filename);
     }
 }

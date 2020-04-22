@@ -12,7 +12,6 @@ public final class SudokuBox extends SudokuFieldGroup {
 
     /**
      * Checks if two boxes are the same.
-     * <p>
      * Checks if values in the boxes are the same
      * (then returns true) but returns false also when
      * given object is a different class, null or has

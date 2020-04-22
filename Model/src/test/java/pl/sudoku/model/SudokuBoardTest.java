@@ -15,6 +15,8 @@ public class SudokuBoardTest {
         int boardSize = sudokuBoard.getBoardSize();
         int boxSize = sudokuBoard.getBoxSize();
 
+
+
         sudokuBoard.solveGame();
         board = sudokuBoard.getCopyOfBoard();
 

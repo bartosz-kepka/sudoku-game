@@ -1,11 +1,11 @@
 package pl.sudoku.model;
 
+import java.util.Arrays;
+import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.util.Arrays;
-import java.util.List;
 
 public abstract class SudokuFieldGroup {
 
@@ -55,7 +55,6 @@ public abstract class SudokuFieldGroup {
 
     /**
      * Checks if two field groups are the same.
-     * <p>
      * Checks if values in the groups are the same
      * (then returns true) but returns false also when
      * given object is a different class, null or has
@@ -98,6 +97,7 @@ public abstract class SudokuFieldGroup {
 
     /**
      * Uses Apache commons-lang3 to implement toString.
+     *
      * @return String containing class information
      */
     @Override

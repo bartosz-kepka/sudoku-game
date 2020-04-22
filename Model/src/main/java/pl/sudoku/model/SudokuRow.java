@@ -12,7 +12,6 @@ public final class SudokuRow extends SudokuFieldGroup {
 
     /**
      * Checks if two rows are the same.
-     * <p>
      * Checks if values in the rows are the same
      * (then returns true) but returns false also when
      * given object is a different class, null or has

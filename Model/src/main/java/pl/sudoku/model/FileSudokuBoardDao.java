@@ -1,10 +1,10 @@
 package pl.sudoku.model;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {
 
@@ -30,7 +30,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
      */
     @Override
     public SudokuBoard read() {
-        SudokuBoard sudokuBoard = null;
+        SudokuBoard sudokuBoard;
         try (FileInputStream fileInputStream = new FileInputStream(fileName);
              ObjectInputStream objectInputStream =
                      new ObjectInputStream(fileInputStream)) {
@@ -56,6 +56,11 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 
     /**

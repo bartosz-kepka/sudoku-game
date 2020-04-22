@@ -1,11 +1,10 @@
 package pl.sudoku.model;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * Represents a sudoku board.
@@ -171,7 +170,6 @@ public final class SudokuBoard implements Serializable {
 
     /**
      * Checks if two boards are the same.
-     * <p>
      * Checks if values in the board are the same
      * (then returns true) but returns false also when
      * given object is a different class, null or has

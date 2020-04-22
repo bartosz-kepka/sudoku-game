@@ -12,7 +12,6 @@ public final class SudokuColumn extends SudokuFieldGroup {
 
     /**
      * Checks if two columns are the same.
-     * <p>
      * Checks if values in the columns are the same
      * (then returns true) but returns false also when
      * given object is a different class, null or has

@@ -2,4 +2,5 @@
 resources
 target
 sudoku.iml
-/properFile
+/View/ViewProject.iml
+/Model/properFile

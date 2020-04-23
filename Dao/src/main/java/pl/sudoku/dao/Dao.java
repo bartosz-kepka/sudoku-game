@@ -1,4 +1,4 @@
-package pl.sudoku.model;
+package pl.sudoku.dao;
 
 public interface Dao<T> extends AutoCloseable {
    /**

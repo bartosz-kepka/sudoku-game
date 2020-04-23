@@ -1,10 +1,11 @@
-package pl.sudoku.model;
+package pl.sudoku.dao;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import pl.sudoku.model.SudokuBoard;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {
 
@@ -58,6 +59,11 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
         }
     }
 
+    /**
+     * Implementation of AutoCloseable.close() method.
+     *
+     * @throws Exception if error occurred when closing resources
+     */
     @Override
     public void close() throws Exception {
 

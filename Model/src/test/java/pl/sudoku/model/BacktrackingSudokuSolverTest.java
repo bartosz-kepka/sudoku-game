@@ -1,8 +1,7 @@
 package pl.sudoku.model;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class BacktrackingSudokuSolverTest {
 

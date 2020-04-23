@@ -19,6 +19,7 @@
     <modules>
         <module>View</module>
         <module>Model</module>
+        <module>Dao</module>
     </modules>
 
     <distributionManagement>

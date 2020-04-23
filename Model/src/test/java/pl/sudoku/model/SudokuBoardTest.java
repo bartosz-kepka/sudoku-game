@@ -1,10 +1,9 @@
 package pl.sudoku.model;
 
-import org.junit.jupiter.api.Test;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class SudokuBoardTest {
 

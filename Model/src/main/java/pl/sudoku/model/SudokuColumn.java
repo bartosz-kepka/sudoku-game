@@ -17,7 +17,6 @@ public final class SudokuColumn extends SudokuFieldGroup {
      * given object is a different class, null or has
      * different size (for future development).
      *
-     *
      * @param o object to compare
      * @return true if content of columns is the same, otherwise return false
      */

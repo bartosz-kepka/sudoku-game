@@ -1,10 +1,11 @@
-package pl.sudoku.dao;
+package pl.sudoku.sudokuboarddao;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import pl.sudoku.dao.Dao;
 import pl.sudoku.model.SudokuBoard;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {

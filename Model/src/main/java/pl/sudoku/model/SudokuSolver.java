@@ -1,9 +1,7 @@
-
 package pl.sudoku.model;
 
 /**
  * Interface for implementing different solving algorithms.
- *
  */
 public interface SudokuSolver {
 

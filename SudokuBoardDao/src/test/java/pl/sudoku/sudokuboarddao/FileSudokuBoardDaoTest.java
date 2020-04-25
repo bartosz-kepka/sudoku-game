@@ -1,12 +1,13 @@
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+package pl.sudoku.sudokuboarddao;
+
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.sudoku.dao.Dao;
-import pl.sudoku.dao.SudokuBoardDaoFactory;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.SudokuBoard;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 class FileSudokuBoardDaoTest {
 

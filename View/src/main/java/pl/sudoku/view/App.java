@@ -12,22 +12,23 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"));
-        stage.setScene(scene);
-        stage.show();
+        primaryStage = stage;
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("primary.fxml"));
+        PrimaryController primaryController = new PrimaryController();
+        loader.setController(primaryController);
+
+        primaryStage.setScene(new Scene(loader.load()));
+        primaryStage.setTitle("Sudoku game");
+        primaryStage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    static void setScene(Parent root) {
+        primaryStage.setScene(new Scene(root));
+        primaryStage.centerOnScreen();
     }
 
     public static void main(String[] args) {

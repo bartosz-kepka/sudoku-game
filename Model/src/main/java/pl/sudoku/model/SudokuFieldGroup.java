@@ -1,5 +1,6 @@
 package pl.sudoku.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -8,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 
-public abstract class SudokuFieldGroup {
+public abstract class SudokuFieldGroup implements Serializable {
 
 
     /**

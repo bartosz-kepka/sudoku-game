@@ -10,7 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
-public class menuController implements Initializable {
+public class MenuController implements Initializable {
 
     @FXML
     public Button easyButton;
@@ -44,9 +44,9 @@ public class menuController implements Initializable {
     }
 
     private void loadBoardController(Difficulty difficulty) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("board.fxml"));
-        BoardController boardController = new BoardController(difficulty);
-        loader.setController(boardController);
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("game.fxml"));
+        GameController gameController = new GameController(difficulty);
+        loader.setController(gameController);
 
         try {
             Parent newRoot = loader.load();

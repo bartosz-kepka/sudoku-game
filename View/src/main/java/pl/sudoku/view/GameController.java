@@ -19,7 +19,7 @@ import javafx.scene.text.Font;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.SudokuBoard;
 
-public class BoardController implements Initializable {
+public class GameController implements Initializable {
 
     @FXML
     public Button cancelButton;
@@ -27,7 +27,7 @@ public class BoardController implements Initializable {
     @FXML
     private void handleCancelButtonAction(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"));
-        menuController primaryController = new menuController();
+        MenuController primaryController = new MenuController();
         loader.setController(primaryController);
         try {
             Parent newRoot = loader.load();
@@ -46,7 +46,7 @@ public class BoardController implements Initializable {
     Difficulty difficultyLevel;
     SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
 
-    public BoardController(Difficulty difficultyLevel) {
+    public GameController(Difficulty difficultyLevel) {
         this.difficultyLevel = difficultyLevel;
     }
 

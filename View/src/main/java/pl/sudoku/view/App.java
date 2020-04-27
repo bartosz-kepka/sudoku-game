@@ -17,8 +17,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("primary.fxml"));
-        PrimaryController primaryController = new PrimaryController();
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"));
+        MenuController primaryController = new MenuController();
         loader.setController(primaryController);
 
         primaryStage.setScene(new Scene(loader.load()));

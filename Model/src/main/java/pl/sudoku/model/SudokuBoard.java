@@ -212,6 +212,12 @@ public final class SudokuBoard implements Serializable, Cloneable {
                 .toHashCode();
     }
 
+    /**
+     * Returns deep copy of this SudokuBoard.
+     * SudokuSolver not considered because has no mutable elements.
+     *
+     * @return deep copy
+     */
     @Override
     public SudokuBoard clone() {
         SudokuBoard clone = new SudokuBoard(sudokuSolver);

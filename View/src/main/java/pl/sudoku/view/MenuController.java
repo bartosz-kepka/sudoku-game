@@ -17,7 +17,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void handleEasyButtonAction(ActionEvent event) {
-        loadBoardController(Difficulty.EASY);
+        loadBoardController(GameDifficulty.EASY);
     }
 
     @FXML
@@ -25,7 +25,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void handleMediumButtonAction(ActionEvent event) {
-        loadBoardController(Difficulty.MEDIUM);
+        loadBoardController(GameDifficulty.MEDIUM);
     }
 
     @FXML
@@ -33,7 +33,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void handleHardButtonAction(ActionEvent event) {
-        loadBoardController(Difficulty.HARD);
+        loadBoardController(GameDifficulty.HARD);
     }
 
     @Override
@@ -43,9 +43,9 @@ public class MenuController implements Initializable {
         hardButton.setOnAction(this::handleHardButtonAction);
     }
 
-    private void loadBoardController(Difficulty difficulty) {
+    private void loadBoardController(GameDifficulty gameDifficulty) {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("game.fxml"));
-        GameController gameController = new GameController(difficulty);
+        GameController gameController = new GameController(gameDifficulty);
         loader.setController(gameController);
 
         try {

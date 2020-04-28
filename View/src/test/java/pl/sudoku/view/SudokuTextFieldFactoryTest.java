@@ -23,7 +23,9 @@ class SudokuTextFieldFactoryTest {
         int fieldValue = 1;
         sudokuTextField = SudokuTextFieldFactory.getSudokuTextField(fieldValue);
         stage.setScene(new Scene(new StackPane(sudokuTextField), 100, 100));
+        stage.setAlwaysOnTop(true);
         stage.show();
+
     }
 
     @Test

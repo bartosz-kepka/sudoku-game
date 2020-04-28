@@ -83,7 +83,6 @@ public abstract class SudokuFieldGroup implements Serializable {
                 .isEquals();
     }
 
-
     /**
      * Generates hash code of SudokuFieldGroup object.
      * Depends only on content of the group.

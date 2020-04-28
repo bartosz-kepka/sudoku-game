@@ -141,9 +141,30 @@ public class SudokuBoardTest {
     }
 
     @Test
-    void ToString_EmptyBoard_ReturnsProperValues() {
+    public void toString_EmptyBoard_ReturnsProperValues() {
         SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
 
         assertThat(sudokuBoard.toString(), containsString("value=0"));
     }
+
+    @Test
+    public void clone_CompareOriginalWithClone_ShouldBeEqual() {
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        sudokuBoard.solveGame();
+        SudokuBoard sudokuBoardClone = sudokuBoard.clone();
+
+        assertEquals(sudokuBoard, sudokuBoardClone);
+    }
+
+    @Test
+    public void clone_ModifyClone_ShouldNotChangeOriginal() {
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        sudokuBoard.solveGame();
+        SudokuBoard sudokuBoardClone = sudokuBoard.clone();
+
+        sudokuBoardClone.set(0, 0, 0);
+
+        assertNotEquals(0, sudokuBoard.get(0, 0));
+    }
+
 }

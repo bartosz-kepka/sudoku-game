@@ -1,6 +1,6 @@
 package pl.sudoku.model;
 
-public final class SudokuColumn extends SudokuFieldGroup {
+public final class SudokuColumn extends SudokuFieldGroup implements Cloneable {
     /**
      * Ctor for sudoku column.
      *
@@ -43,5 +43,14 @@ public final class SudokuColumn extends SudokuFieldGroup {
         return super.hashCode();
     }
 
+    /**
+     * Returns a shallow copy of this SudokuColumn.
+     *
+     * @return shallow copy
+     */
+    @Override
+    public SudokuColumn clone() throws CloneNotSupportedException {
+        return (SudokuColumn) super.clone();
+    }
 
 }

@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 /**
  * Represents a sudoku board.
  */
-public final class SudokuBoard implements Serializable {
+public final class SudokuBoard implements Serializable, Cloneable {
 
     /**
      * Represents side size of sudoku board.
@@ -210,5 +210,18 @@ public final class SudokuBoard implements Serializable {
         return new HashCodeBuilder(17, 37)
                 .append(board)
                 .toHashCode();
+    }
+
+    @Override
+    public SudokuBoard clone() {
+        SudokuBoard clone = new SudokuBoard(sudokuSolver);
+
+        for (int row = 0; row < boardSize; row++) {
+            for (int column = 0; column < boardSize; column++) {
+                int fieldValue = this.get(row, column);
+                clone.set(row, column, fieldValue);
+            }
+        }
+        return clone;
     }
 }

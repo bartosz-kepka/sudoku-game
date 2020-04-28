@@ -1,7 +1,6 @@
 package pl.sudoku.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 public class SudokuFieldTest {
@@ -51,5 +50,47 @@ public class SudokuFieldTest {
 
         assertNotEquals(sudokuField.hashCode(), sudokuField1.hashCode(), "Hash for two fields with the different values should not be the same.");
     }
+
+    @Test
+    public void compareTo_CompareToLower_ShouldReturnPositiveValue() {
+        SudokuField sudokuField = new SudokuField(4);
+        SudokuField sudokuField1 = new SudokuField(2);
+
+        assertTrue(sudokuField.compareTo(sudokuField1) > 0);
+    }
+
+    @Test
+    public void compareTo_CompareToEqual_ShouldReturnZero() {
+        SudokuField sudokuField = new SudokuField(4);
+        SudokuField sudokuField1 = new SudokuField(4);
+
+        assertTrue(sudokuField.compareTo(sudokuField1) == 0);
+    }
+
+    @Test
+    public void compareTo_CompareToHigher_ShouldReturnPositiveValue() {
+        SudokuField sudokuField = new SudokuField(4);
+        SudokuField sudokuField1 = new SudokuField(6);
+
+        assertTrue(sudokuField.compareTo(sudokuField1) < 0);
+    }
+
+    @Test
+    public void clone_CompareFields_ShouldBeEqual() throws CloneNotSupportedException {
+        SudokuField sudokuField = new SudokuField(1);
+        SudokuField sudokuFieldClone = sudokuField.clone();
+
+        assertEquals(sudokuField, sudokuFieldClone);
+    }
+
+    @Test
+    public void clone_ModifyClone_ShouldNotModifyOriginal() throws CloneNotSupportedException {
+        SudokuField sudokuField = new SudokuField(1);
+        SudokuField sudokuFieldClone = sudokuField.clone();
+        sudokuFieldClone.setFieldValue(2);
+
+        assertEquals(1, sudokuField.getFieldValue());
+    }
+
 
 }

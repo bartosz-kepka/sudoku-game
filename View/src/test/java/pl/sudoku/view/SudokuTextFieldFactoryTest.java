@@ -25,7 +25,6 @@ class SudokuTextFieldFactoryTest {
         stage.setScene(new Scene(new StackPane(sudokuTextField), 100, 100));
         stage.setAlwaysOnTop(true);
         stage.show();
-
     }
 
     @Test

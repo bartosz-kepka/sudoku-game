@@ -76,6 +76,15 @@ public class SudokuFieldTest {
     }
 
     @Test
+    public void compareTo_CompareToNull_ShouldThrowNullPointerException () {
+        SudokuField sudokuField = new SudokuField(4);
+
+        assertThrows(NullPointerException.class, () -> {
+            sudokuField.compareTo(null);
+        });
+    }
+
+    @Test
     public void clone_CompareFields_ShouldBeEqual() throws CloneNotSupportedException {
         SudokuField sudokuField = new SudokuField(1);
         SudokuField sudokuFieldClone = sudokuField.clone();

@@ -3,6 +3,10 @@ package pl.sudoku.view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.SudokuBoard;
@@ -64,9 +69,28 @@ public class GameController implements Initializable {
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 int fieldValue = sudokuBoard.get(row, column);
-                sudokuGrid.add(SudokuTextFieldFactory.getSudokuTextField(fieldValue), row,
-                        column);
+                TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue);
+                changeFiledValue(textField,row,column);
+                sudokuGrid.add(textField, row, column);
             }
         }
+    }
+
+    private void changeFiledValue(TextField textField, int row, int column) {
+        textField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String oldVal, String newVal) {
+                if (!validateValue(newVal)) {
+                    Platform.runLater(textField::clear);
+                } else {
+                    sudokuBoard.set(row, column, Integer.parseInt(newVal));
+
+                }
+            }
+        });
+    }
+
+    private boolean validateValue(String newVal) {
+        return newVal.length() == 1 & "123456789".contains(newVal);
     }
 }

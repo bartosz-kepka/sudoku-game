@@ -1,21 +1,27 @@
 package pl.sudoku.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URL;;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import pl.sudoku.FXModel.FXSudokuBoard;
+import pl.sudoku.FXModel.SudokuFieldPlaceholder;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.SudokuBoard;
 
@@ -44,7 +50,8 @@ public class GameController implements Initializable {
     public GridPane sudokuGrid;
 
     GameDifficulty gameDifficulty;
-    SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+    FXSudokuBoard sudokuBoard = new FXSudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
+
 
     public GameController(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
@@ -54,29 +61,60 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         cancelButton.setOnAction(this::handleCancelButtonAction);
         levelLabel.setText("Level: " + gameDifficulty.toString());
+        sudokuBoard.addPropertyChangeListener("value", new ValueListener());
         initializeBoard();
     }
 
+    class ValueListener implements PropertyChangeListener {
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            String propertyName = evt.getPropertyName();
+            if ("value".equals(propertyName)) {
+//               String value = Integer.toString(((SudokuFieldPlaceholder) evt.getNewValue()).getValue());
+//                (getNodeByRowColumnIndex(((SudokuFieldPlaceholder) evt.getNewValue()).getX(),((SudokuFieldPlaceholder) evt.getNewValue()).getY(),sudokuGrid)).setText(value);
+                sudokuGrid.add(SudokuTextFieldFactory.getSudokuTextField(((SudokuFieldPlaceholder) evt.getNewValue()).getValue()),
+                        ((SudokuFieldPlaceholder) evt.getNewValue()).getX(), ((SudokuFieldPlaceholder) evt.getNewValue()).getY());
+                System.out.println("EventFired");
+            }
+        }
+    }
+
     private void initializeBoard() {
-        sudokuBoard.solveGame();
-        gameDifficulty.clearSudokuFields(sudokuBoard);
+        sudokuBoard.getSudokuBoardPlaceholder().solveGame();
+        gameDifficulty.clearSudokuFields(sudokuBoard.getSudokuBoardPlaceholder());
         fillSudokuGrid();
     }
 
     private void fillSudokuGrid() {
-        int boardSize = sudokuBoard.getBoardSize();
+        int boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
 
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 int fieldValue = sudokuBoard.get(row, column);
                 TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue);
-                changeFiledValue(textField,row,column);
+                addFieldValueListener(textField, row, column);
                 sudokuGrid.add(textField, row, column);
             }
         }
     }
 
-    private void changeFiledValue(TextField textField, int row, int column) {
+    public TextField getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> children = gridPane.getChildren();
+
+        for (Node node : children) {
+            System.out.println(GridPane.getRowIndex(node)+ " " +GridPane.getRowIndex(node));
+            if(GridPane.getRowIndex(node) == row & GridPane.getRowIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+
+        return (TextField) result;
+    }
+
+    private void addFieldValueListener(TextField textField, int row, int column) {
         textField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldVal, String newVal) {

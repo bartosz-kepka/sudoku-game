@@ -21,6 +21,7 @@
         <module>Model</module>
         <module>Dao</module>
         <module>SudokuBoardDao</module>
+        <module>FXModel</module>
     </modules>
 
     <distributionManagement>
@@ -166,7 +167,7 @@
                                             <limit>
                                                 <counter>COMPLEXITY</counter>
                                                 <value>COVEREDRATIO</value>
-                                                <minimum>0.60</minimum>
+                                                <minimum>0.00</minimum>
                                             </limit>
                                         </limits>
                                     </rule>

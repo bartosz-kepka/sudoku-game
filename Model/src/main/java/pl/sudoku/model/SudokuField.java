@@ -1,7 +1,6 @@
 package pl.sudoku.model;
 
 import java.io.Serializable;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

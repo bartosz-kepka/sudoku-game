@@ -24,8 +24,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
-import pl.sudoku.FXModel.FXSudokuBoard;
-import pl.sudoku.FXModel.SudokuFieldPlaceholder;
+import pl.sudoku.fxmodel.FXsudokuBoard;
+import pl.sudoku.fxmodel.SudokuFieldPlaceholder;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.SudokuBoard;
 
@@ -54,7 +54,9 @@ public class GameController implements Initializable {
     public GridPane sudokuGrid;
 
     GameDifficulty gameDifficulty;
-    FXSudokuBoard sudokuBoard;
+    FXsudokuBoard sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
+
+
 
     public GameController(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
@@ -64,8 +66,8 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         cancelButton.setOnAction(this::handleCancelButtonAction);
         levelLabel.setText("Level: " + gameDifficulty.toString());
-        sudokuBoard = new FXSudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
-        sudokuBoard.addPropertyChangeListener("fieldValue", new ValueListener());
+        sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
+        sudokuBoard.addPropertyChangeListener("value", new ValueListener());
         initializeBoard();
     }
 
@@ -74,13 +76,14 @@ public class GameController implements Initializable {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
-            if ("fieldValue".equals(propertyName)) {
+            if ("value".equals(propertyName)) {
                 SudokuFieldPlaceholder evtNewValue = (SudokuFieldPlaceholder) evt.getNewValue();
-                int row = evtNewValue.getX();
-                int column = evtNewValue.getY();
+                int row = evtNewValue.getRow();
+                int column = evtNewValue.getColumn();
                 int newFieldValue = evtNewValue.getValue();
                 TextField textField = getNodeByRowColumnIndex(row, column, sudokuGrid);
                 textField.setText(Integer.toString(newFieldValue));
+
                 System.out.println("EventFired");
             }
         }

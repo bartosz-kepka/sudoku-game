@@ -5,6 +5,7 @@ module pl.sudoku.view {
     requires transitive pl.sudoku.sudokuboarddao;
     requires transitive pl.sudoku.dao;
     requires transitive pl.sudoku.FXModel;
+    requires kotlin.stdlib;
 
     opens pl.sudoku.view to javafx.fxml;
     exports pl.sudoku.view;

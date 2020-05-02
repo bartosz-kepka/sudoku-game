@@ -1,9 +1,4 @@
 .idea
 target
 properFile
-/FXModel/FXModelProject.iml
-/View/ViewProject.iml
-/sudoku.iml
-/Dao/DaoProject.iml
-/Model/ModelProject.iml
-/SudokuBoardDao/SudokuBoardDaoProject.iml
+*.iml

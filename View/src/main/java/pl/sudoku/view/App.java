@@ -23,6 +23,7 @@ public class App extends Application {
 
         primaryStage.setScene(new Scene(loader.load()));
         primaryStage.setTitle("Sudoku game");
+        primaryStage.setAlwaysOnTop(true);
         primaryStage.show();
     }
 

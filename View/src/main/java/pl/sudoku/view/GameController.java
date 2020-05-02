@@ -3,9 +3,8 @@ package pl.sudoku.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.URL;;
+import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,12 +13,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import pl.sudoku.FXModel.FXSudokuBoard;
 import pl.sudoku.FXModel.SudokuFieldPlaceholder;
 import pl.sudoku.model.BacktrackingSudokuSolver;
@@ -50,8 +54,7 @@ public class GameController implements Initializable {
     public GridPane sudokuGrid;
 
     GameDifficulty gameDifficulty;
-    FXSudokuBoard sudokuBoard = new FXSudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
-
+    FXSudokuBoard sudokuBoard;
 
     public GameController(GameDifficulty gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
@@ -61,7 +64,8 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         cancelButton.setOnAction(this::handleCancelButtonAction);
         levelLabel.setText("Level: " + gameDifficulty.toString());
-        sudokuBoard.addPropertyChangeListener("value", new ValueListener());
+        sudokuBoard = new FXSudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
+        sudokuBoard.addPropertyChangeListener("fieldValue", new ValueListener());
         initializeBoard();
     }
 
@@ -70,11 +74,13 @@ public class GameController implements Initializable {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
-            if ("value".equals(propertyName)) {
-//               String value = Integer.toString(((SudokuFieldPlaceholder) evt.getNewValue()).getValue());
-//                (getNodeByRowColumnIndex(((SudokuFieldPlaceholder) evt.getNewValue()).getX(),((SudokuFieldPlaceholder) evt.getNewValue()).getY(),sudokuGrid)).setText(value);
-                sudokuGrid.add(SudokuTextFieldFactory.getSudokuTextField(((SudokuFieldPlaceholder) evt.getNewValue()).getValue()),
-                        ((SudokuFieldPlaceholder) evt.getNewValue()).getX(), ((SudokuFieldPlaceholder) evt.getNewValue()).getY());
+            if ("fieldValue".equals(propertyName)) {
+                SudokuFieldPlaceholder evtNewValue = (SudokuFieldPlaceholder) evt.getNewValue();
+                int row = evtNewValue.getX();
+                int column = evtNewValue.getY();
+                int newFieldValue = evtNewValue.getValue();
+                TextField textField = getNodeByRowColumnIndex(row, column, sudokuGrid);
+                textField.setText(Integer.toString(newFieldValue));
                 System.out.println("EventFired");
             }
         }
@@ -89,6 +95,16 @@ public class GameController implements Initializable {
     private void fillSudokuGrid() {
         int boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
 
+        for (int i = 0; i < 9; i++) {
+            RowConstraints row = new RowConstraints(40.0, 40.0, 40.0, Priority.SOMETIMES,
+                    VPos.CENTER, true);
+            ColumnConstraints column = new ColumnConstraints(40.0, 40.0, 40.0, Priority.SOMETIMES
+                    , HPos.CENTER, true);
+            sudokuGrid.getRowConstraints().add(row);
+            sudokuGrid.getColumnConstraints().add(column);
+        }
+
+
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 int fieldValue = sudokuBoard.get(row, column);
@@ -99,18 +115,20 @@ public class GameController implements Initializable {
         }
     }
 
-    public TextField getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+    public TextField getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> children = gridPane.getChildren();
 
         for (Node node : children) {
-            System.out.println(GridPane.getRowIndex(node)+ " " +GridPane.getRowIndex(node));
-            if(GridPane.getRowIndex(node) == row & GridPane.getRowIndex(node) == column) {
-                result = node;
-                break;
+            if (GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null) {
+                System.out.println(GridPane.getRowIndex(node) + " " + GridPane.getColumnIndex(node));
+                if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                    result = node;
+                    break;
+                }
             }
-        }
 
+        }
         return (TextField) result;
     }
 
@@ -122,7 +140,6 @@ public class GameController implements Initializable {
                     Platform.runLater(textField::clear);
                 } else {
                     sudokuBoard.set(row, column, Integer.parseInt(newVal));
-
                 }
             }
         });

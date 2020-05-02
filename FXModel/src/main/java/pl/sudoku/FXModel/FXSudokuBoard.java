@@ -1,7 +1,6 @@
 package pl.sudoku.FXModel;
 
 import pl.sudoku.model.SudokuBoard;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -43,13 +42,12 @@ public class FXSudokuBoard {
     }
 
     public void set(int x, int y, int newVal) {
-        SudokuFieldPlaceholder oldField = new SudokuFieldPlaceholder(x, y, sudokuBoardPlaceholder.get(x, y));
-        sudokuBoardPlaceholder.set(x, y, newVal);
-        SudokuFieldPlaceholder newField = new SudokuFieldPlaceholder(x, y, newVal);
-        propertyChangeSupport.firePropertyChange("value", oldField, newField);
+        if (sudokuBoardPlaceholder.get(x, y) != newVal) {
+            SudokuFieldPlaceholder oldField = new SudokuFieldPlaceholder(x, y, sudokuBoardPlaceholder.get(x, y));
+            sudokuBoardPlaceholder.set(x, y, newVal);
+            SudokuFieldPlaceholder newField = new SudokuFieldPlaceholder(x, y, sudokuBoardPlaceholder.get(x, y));
+            propertyChangeSupport.firePropertyChange("fieldValue", oldField, newField);
+            System.out.println("Model event fired");
+        }
     }
-
-
-
-
 }

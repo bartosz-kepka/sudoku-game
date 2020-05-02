@@ -34,8 +34,9 @@ class SudokuTextFieldFactoryTest {
 
     @Test
     void getSudokuTextField_ZeroValue_ShouldReturnTextFieldWithNoText() {
+        SudokuTextFieldFactory factory = new SudokuTextFieldFactory();
         int fieldValue = 0;
-        TextField sudokuTextFieldTest = SudokuTextFieldFactory.getSudokuTextField(fieldValue);
+        TextField sudokuTextFieldTest = factory.getSudokuTextField(fieldValue);
 
         assertEquals("", sudokuTextFieldTest.getText());
     }

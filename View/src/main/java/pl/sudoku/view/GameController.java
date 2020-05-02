@@ -3,7 +3,7 @@ package pl.sudoku.view;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.URL;;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -20,8 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import pl.sudoku.FXModel.FXSudokuBoard;
-import pl.sudoku.FXModel.SudokuFieldPlaceholder;
+import pl.sudoku.fxmodel.FXsudokuBoard;
+import pl.sudoku.fxmodel.SudokuFieldPlaceholder;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.SudokuBoard;
 
@@ -50,7 +50,7 @@ public class GameController implements Initializable {
     public GridPane sudokuGrid;
 
     GameDifficulty gameDifficulty;
-    FXSudokuBoard sudokuBoard = new FXSudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
+    FXsudokuBoard sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
 
 
     public GameController(GameDifficulty gameDifficulty) {
@@ -74,7 +74,7 @@ public class GameController implements Initializable {
 //               String value = Integer.toString(((SudokuFieldPlaceholder) evt.getNewValue()).getValue());
 //                (getNodeByRowColumnIndex(((SudokuFieldPlaceholder) evt.getNewValue()).getX(),((SudokuFieldPlaceholder) evt.getNewValue()).getY(),sudokuGrid)).setText(value);
                 sudokuGrid.add(SudokuTextFieldFactory.getSudokuTextField(((SudokuFieldPlaceholder) evt.getNewValue()).getValue()),
-                        ((SudokuFieldPlaceholder) evt.getNewValue()).getX(), ((SudokuFieldPlaceholder) evt.getNewValue()).getY());
+                        ((SudokuFieldPlaceholder) evt.getNewValue()).getRow(), ((SudokuFieldPlaceholder) evt.getNewValue()).getColumn());
                 System.out.println("EventFired");
             }
         }

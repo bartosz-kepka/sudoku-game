@@ -1,5 +1,6 @@
 package pl.sudoku.view;
 
+import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -25,7 +26,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import pl.sudoku.fxmodel.FXsudokuBoard;
-import pl.sudoku.fxmodel.SudokuFieldPlaceholder;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.SudokuBoard;
 
@@ -77,13 +77,12 @@ public class GameController implements Initializable {
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
             if ("value".equals(propertyName)) {
-                SudokuFieldPlaceholder evtNewValue = (SudokuFieldPlaceholder) evt.getNewValue();
-                int row = evtNewValue.getRow();
-                int column = evtNewValue.getColumn();
-                int newFieldValue = evtNewValue.getValue();
+                IndexedPropertyChangeEvent event = (IndexedPropertyChangeEvent) evt;
+                int row = event.getIndex() / 9;
+                int column = event.getIndex() % 9;
+                int newFieldValue = (int) event.getNewValue();
                 TextField textField = getNodeByRowColumnIndex(row, column, sudokuGrid);
                 textField.setText(Integer.toString(newFieldValue));
-
                 System.out.println("EventFired");
             }
         }
@@ -113,12 +112,12 @@ public class GameController implements Initializable {
                 int fieldValue = sudokuBoard.get(row, column);
                 TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue);
                 addFieldValueListener(textField, row, column);
-                sudokuGrid.add(textField, row, column);
+                sudokuGrid.add(textField, column, row);
             }
         }
     }
 
-    public TextField getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+    private TextField getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> children = gridPane.getChildren();
 

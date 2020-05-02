@@ -98,12 +98,13 @@ public class FXsudokuBoard {
      * @param newVal value to be stored
      */
     public void set(int x, int y, int newVal) {
+        System.out.println("Model set method fired");
         if (sudokuBoardPlaceholder.get(x, y) != newVal) {
-            SudokuFieldPlaceholder oldField = new SudokuFieldPlaceholder(x, y, sudokuBoardPlaceholder.get(x, y));
+            int oldValue = sudokuBoardPlaceholder.get(x, y);
             sudokuBoardPlaceholder.set(x, y, newVal);
-            SudokuFieldPlaceholder newField = new SudokuFieldPlaceholder(x, y, sudokuBoardPlaceholder.get(x, y));
-            propertyChangeSupport.firePropertyChange("value", oldField, newField);
-            System.out.println("Model event fired");
+            int index = x * 9 + y;
+            propertyChangeSupport.fireIndexedPropertyChange("value", index, oldValue, newVal);
+            System.out.println("Model indexed event fired");
         }
     }
 

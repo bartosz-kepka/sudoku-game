@@ -3,6 +3,7 @@ package pl.sudoku.view;
 import java.beans.IndexedPropertyChangeEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,16 +20,19 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import pl.sudoku.dao.Dao;
 import pl.sudoku.fxmodel.FXsudokuBoard;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.BoardSizeEnum;
 import pl.sudoku.model.SudokuBoard;
+import pl.sudoku.sudokuboarddao.SudokuBoardDaoFactory;
 
 public class GameController implements Initializable {
 
@@ -49,36 +53,68 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public Label levelLabel;
+    public Button saveButton;
+
+    @FXML
+    private void handleSaveButtonAction(ActionEvent event) {
+        Stage stage = new Stage();
+        stage.setAlwaysOnTop(true);
+        stage.setTitle("Choose file to save");
+        FileChooser fileChooser = new FileChooser();
+        File saveFile = fileChooser.showSaveDialog(stage);
+
+        if (saveFile != null) {
+            try (Dao<SudokuBoard> fileSudokuBoardDao =
+                         SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
+                fileSudokuBoardDao.write(sudokuBoard.getSudokuBoardPlaceholder());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @FXML
     public GridPane sudokuGrid;
 
-    GameDifficultyEnum gameDifficulty;
     FXsudokuBoard sudokuBoard;
     int boardSize;
     String[] possibleValues;
 
-    public GameController(GameDifficultyEnum gameDifficulty) {
-        this.gameDifficulty = gameDifficulty;
+    /**
+     * Game controller constructor used for creating new game.
+     *
+     * @param gameDifficultyEnum chosen difficulty
+     */
+    public GameController(GameDifficultyEnum gameDifficultyEnum, BoardSizeEnum boardSizeEnum) {
+        sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
+                boardSizeEnum));
+        sudokuBoard.getSudokuBoardPlaceholder().solveGame();
+        gameDifficultyEnum.clearSudokuFields(sudokuBoard.getSudokuBoardPlaceholder());
+    }
+
+    /**
+     * Game controller constructor used for resuming saved game.
+     *
+     * @param saveFile save file to load game from
+     */
+    public GameController(File saveFile) {
+        try (Dao<SudokuBoard> fileSudokuBoardDao =
+                     SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
+            sudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cancelButton.setOnAction(this::handleCancelButtonAction);
-        levelLabel.setText("Level: " + gameDifficulty.toString());
-        sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
-                BoardSizeEnum.CLASSIC));
+        saveButton.setOnAction(this::handleSaveButtonAction);
         boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
-
-        possibleValues = new String[boardSize];
-        for (int i = 0; i < possibleValues.length; i++) {
-            possibleValues[i] = Integer.toString(i + 1);
-        }
-
+        generatePossibleValues();
         sudokuBoard.addPropertyChangeListener(
                 FXsudokuBoard.FIELD_VALUE_PROPERTY, new ValueListener());
-        initializeBoard();
+        fillSudokuGrid();
     }
 
     class ValueListener implements PropertyChangeListener {
@@ -97,12 +133,6 @@ public class GameController implements Initializable {
         }
     }
 
-    private void initializeBoard() {
-        sudokuBoard.getSudokuBoardPlaceholder().solveGame();
-        gameDifficulty.clearSudokuFields(sudokuBoard.getSudokuBoardPlaceholder());
-        fillSudokuGrid();
-    }
-
     private void fillSudokuGrid() {
         double textFieldPixelSize = 40.0 + boardSize / 10 * 10.0;
 
@@ -115,10 +145,12 @@ public class GameController implements Initializable {
             sudokuGrid.getColumnConstraints().add(column);
         }
 
+        int maxDigitsInField = boardSize / 10 + 1;
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 int fieldValue = sudokuBoard.get(row, column);
-                TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue);
+                TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue,
+                        maxDigitsInField);
                 addFieldValueListener(textField, row, column);
                 sudokuGrid.add(textField, column, row);
             }
@@ -162,4 +194,12 @@ public class GameController implements Initializable {
         }
         return false;
     }
+
+    private void generatePossibleValues() {
+        possibleValues = new String[boardSize];
+        for (int i = 0; i < possibleValues.length; i++) {
+            possibleValues[i] = Integer.toString(i + 1);
+        }
+    }
+
 }

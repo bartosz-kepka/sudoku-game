@@ -21,7 +21,7 @@ class SudokuTextFieldFactoryTest {
     @Start
     private void start(Stage stage) {
         int fieldValue = 1;
-        sudokuTextField = SudokuTextFieldFactory.getSudokuTextField(fieldValue);
+        sudokuTextField = SudokuTextFieldFactory.getSudokuTextField(fieldValue, 1);
         stage.setScene(new Scene(new StackPane(sudokuTextField), 100, 100));
         stage.setAlwaysOnTop(true);
         stage.show();
@@ -36,7 +36,7 @@ class SudokuTextFieldFactoryTest {
     void getSudokuTextField_ZeroValue_ShouldReturnTextFieldWithNoText() {
         SudokuTextFieldFactory factory = new SudokuTextFieldFactory();
         int fieldValue = 0;
-        TextField sudokuTextFieldTest = factory.getSudokuTextField(fieldValue);
+        TextField sudokuTextFieldTest = factory.getSudokuTextField(fieldValue, 1 );
 
         assertEquals("", sudokuTextFieldTest.getText());
     }

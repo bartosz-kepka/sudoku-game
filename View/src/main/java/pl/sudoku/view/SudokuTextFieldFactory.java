@@ -13,7 +13,7 @@ public class SudokuTextFieldFactory {
      * @param fieldValue value to display in TextField
      * @return Formatted TextField with input length restriction
      */
-    public static TextField getSudokuTextField(int fieldValue) {
+    public static TextField getSudokuTextField(int fieldValue, int maxDigits) {
         TextField sudokuTextField = new TextField();
 
         if (fieldValue != 0) {
@@ -26,7 +26,7 @@ public class SudokuTextFieldFactory {
         sudokuTextField.setTextFormatter(
                 new TextFormatter<String>((TextFormatter.Change change) -> {
                     String newText = change.getControlNewText();
-                     if (newText.length() > 1) {
+                     if (newText.length() > maxDigits) {
                         return null;
                     } else {
                         return change;

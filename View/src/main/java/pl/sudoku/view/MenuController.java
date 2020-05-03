@@ -93,6 +93,7 @@ public class MenuController implements Initializable {
         Stage stage = new Stage();
         stage.setAlwaysOnTop(true);
         stage.setTitle("Choose save file");
+        stage.setAlwaysOnTop(true);
         FileChooser fileChooser = new FileChooser();
         File saveFile = fileChooser.showOpenDialog(stage);
 

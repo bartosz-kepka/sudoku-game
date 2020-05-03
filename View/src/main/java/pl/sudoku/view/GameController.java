@@ -39,6 +39,11 @@ public class GameController implements Initializable {
     @FXML
     public Button cancelButton;
 
+    /**
+     * Closes current game and returns to main menu when "Cancel" button clicked.
+     *
+     * @param event onClick event
+     */
     @FXML
     private void handleCancelButtonAction(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"));
@@ -55,6 +60,11 @@ public class GameController implements Initializable {
     @FXML
     public Button saveButton;
 
+    /**
+     * Saves game when "Save game" button clicked.
+     *
+     * @param event onClick Event
+     */
     @FXML
     private void handleSaveButtonAction(ActionEvent event) {
         Stage stage = new Stage();
@@ -84,6 +94,7 @@ public class GameController implements Initializable {
      * Game controller constructor used for creating new game.
      *
      * @param gameDifficultyEnum chosen difficulty
+     * @param boardSizeEnum      chosen board size
      */
     public GameController(GameDifficultyEnum gameDifficultyEnum, BoardSizeEnum boardSizeEnum) {
         sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
@@ -133,6 +144,9 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Creates proper number of rows and columns in sudokuGrid then fills grid with TextFields.
+     */
     private void fillSudokuGrid() {
         double textFieldPixelSize = 40.0 + boardSize / 10 * 10.0;
 
@@ -157,6 +171,14 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Searches for TextField in GridPane with given coordinates.
+     *
+     * @param row      number of row in which TextField is
+     * @param column   number of column in which TextField is
+     * @param gridPane GridPane in which TextField is
+     * @return TextField at given position in GridPane
+     */
     private TextField getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> children = gridPane.getChildren();
@@ -172,6 +194,13 @@ public class GameController implements Initializable {
         return (TextField) result;
     }
 
+    /**
+     * Adds TextProperty ValueListener to given TextField.
+     *
+     * @param textField TextField to add ValueListener to
+     * @param row number of row in which corresponding SudokuField from SudokuBoard is
+     * @param column number of column in which corresponding SudokuField from SudokuBoard is
+     */
     private void addFieldValueListener(TextField textField, int row, int column) {
         textField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -186,6 +215,12 @@ public class GameController implements Initializable {
         });
     }
 
+    /**
+     * Checks whether given value can be inserted into used SudokuBoard.
+     *
+     * @param newVal value to check
+     * @return true is can be inserted, otherwise false
+     */
     private boolean validateValue(String newVal) {
         for (String value : possibleValues) {
             if (value.equals(newVal)) {
@@ -195,6 +230,9 @@ public class GameController implements Initializable {
         return false;
     }
 
+    /**
+     * Generates string representations of values than can inserted into used SudokuBoard
+     */
     private void generatePossibleValues() {
         possibleValues = new String[boardSize];
         for (int i = 0; i < possibleValues.length; i++) {

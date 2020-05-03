@@ -20,7 +20,6 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"));
         MenuController primaryController = new MenuController();
         loader.setController(primaryController);
-
         primaryStage.setScene(new Scene(loader.load()));
         primaryStage.setTitle("Sudoku game");
         primaryStage.show();

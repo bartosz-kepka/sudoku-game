@@ -11,6 +11,7 @@ public class SudokuTextFieldFactory {
      * Creates JavaFX TextField corresponding to single field in sudoku board.
      *
      * @param fieldValue value to display in TextField
+     * @param maxDigits  max number of digits in TextField
      * @return Formatted TextField with input length restriction
      */
     public static TextField getSudokuTextField(int fieldValue, int maxDigits) {

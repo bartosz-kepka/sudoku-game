@@ -3,14 +3,15 @@ package pl.sudoku.view;
 import java.util.Random;
 import pl.sudoku.model.SudokuBoard;
 
-public enum GameDifficulty {
+public enum GameDifficultyEnum {
     EASY(3),
     MEDIUM(5),
     HARD(7);
 
     private final int multiplier;
+    private final int ten = 10;
 
-    GameDifficulty(int multiplier) {
+    GameDifficultyEnum(int multiplier) {
         this.multiplier = multiplier;
     }
 
@@ -32,7 +33,7 @@ public enum GameDifficulty {
      */
     public void clearSudokuFields(SudokuBoard sudokuBoard) {
         int boardSize = sudokuBoard.getBoardSize();
-        int fieldsToClear = boardSize * multiplier;
+        int fieldsToClear = boardSize * boardSize * multiplier / ten;
 
         for (int fieldsCleared = 0; fieldsCleared < fieldsToClear; ) {
             Random random = new Random();

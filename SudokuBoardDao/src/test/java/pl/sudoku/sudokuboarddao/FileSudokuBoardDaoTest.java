@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.sudoku.dao.Dao;
 import pl.sudoku.model.BacktrackingSudokuSolver;
+import pl.sudoku.model.BoardSizeEnum;
 import pl.sudoku.model.SudokuBoard;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,7 +14,7 @@ class FileSudokuBoardDaoTest {
 
     @Test
     public void read_write_SerializeAndDeserializeSudokuBoard_ShouldNotChange() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         SudokuBoard sudokuBoard2;
 
         try (Dao<SudokuBoard> fileSudokuBoardDao = SudokuBoardDaoFactory.getFileDao("properFile")) {
@@ -33,7 +34,7 @@ class FileSudokuBoardDaoTest {
 
     @Test
     public void write_ToImproperFile_ShouldThrowException() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         Dao<SudokuBoard> fileSudokuBoardDao = SudokuBoardDaoFactory.getFileDao("/:;:");
         Assertions.assertThrows(RuntimeException.class, () -> fileSudokuBoardDao.write(sudokuBoard));
     }

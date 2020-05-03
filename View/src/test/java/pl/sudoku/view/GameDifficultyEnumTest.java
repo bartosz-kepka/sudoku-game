@@ -3,19 +3,20 @@ package pl.sudoku.view;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import pl.sudoku.model.BacktrackingSudokuSolver;
+import pl.sudoku.model.BoardSizeEnum;
 import pl.sudoku.model.SudokuBoard;
 
-public class GameDifficultyTest {
+public class GameDifficultyEnumTest {
 
     @Test
     public void clearSudokuFields_Easy_ShouldClearProperNumberOfFields() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         sudokuBoard.solveGame();
-        GameDifficulty gameDifficulty = GameDifficulty.EASY;
+        GameDifficultyEnum gameDifficulty = GameDifficultyEnum.EASY;
         gameDifficulty.clearSudokuFields(sudokuBoard);
 
         int boardSize = sudokuBoard.getBoardSize();
-        int expectedClearedFields = boardSize * gameDifficulty.getMultiplier();
+        int expectedClearedFields = boardSize * boardSize * gameDifficulty.getMultiplier() / 10;
         int clearedFields = countClearedFields(sudokuBoard);
 
         assertEquals(expectedClearedFields, clearedFields);
@@ -23,13 +24,13 @@ public class GameDifficultyTest {
 
     @Test
     public void clearSudokuFields_Medium_ShouldClearProperNumberOfFields() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         sudokuBoard.solveGame();
-        GameDifficulty gameDifficulty = GameDifficulty.MEDIUM;
+        GameDifficultyEnum gameDifficulty = GameDifficultyEnum.MEDIUM;
         gameDifficulty.clearSudokuFields(sudokuBoard);
 
         int boardSize = sudokuBoard.getBoardSize();
-        int expectedClearedFields = boardSize * gameDifficulty.getMultiplier();
+        int expectedClearedFields = boardSize * boardSize * gameDifficulty.getMultiplier() / 10;
         int clearedFields = countClearedFields(sudokuBoard);
 
         assertEquals(expectedClearedFields, clearedFields);
@@ -37,13 +38,13 @@ public class GameDifficultyTest {
 
     @Test
     public void clearSudokuFields_Hard_ShouldClearProperNumberOfFields() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         sudokuBoard.solveGame();
-        GameDifficulty gameDifficulty = GameDifficulty.HARD;
+        GameDifficultyEnum gameDifficulty = GameDifficultyEnum.HARD;
         gameDifficulty.clearSudokuFields(sudokuBoard);
 
         int boardSize = sudokuBoard.getBoardSize();
-        int expectedClearedFields = boardSize * gameDifficulty.getMultiplier();
+        int expectedClearedFields = boardSize * boardSize * gameDifficulty.getMultiplier() / 10;
         int clearedFields = countClearedFields(sudokuBoard);
 
         assertEquals(expectedClearedFields, clearedFields);

@@ -7,7 +7,7 @@ public class BacktrackingSudokuSolverTest {
 
     @Test
     public void solve_GivenUnsolvableBoard_ShouldReturnFalse() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         BacktrackingSudokuSolver solver = new BacktrackingSudokuSolver();
 

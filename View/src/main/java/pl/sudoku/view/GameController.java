@@ -27,6 +27,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import pl.sudoku.fxmodel.FXsudokuBoard;
 import pl.sudoku.model.BacktrackingSudokuSolver;
+import pl.sudoku.model.BoardSizeEnum;
 import pl.sudoku.model.SudokuBoard;
 
 public class GameController implements Initializable {
@@ -53,12 +54,12 @@ public class GameController implements Initializable {
     @FXML
     public GridPane sudokuGrid;
 
-    GameDifficulty gameDifficulty;
-    FXsudokuBoard sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
+    GameDifficultyEnum gameDifficulty;
+    FXsudokuBoard sudokuBoard;
+    int boardSize;
+    String[] possibleValues;
 
-
-
-    public GameController(GameDifficulty gameDifficulty) {
+    public GameController(GameDifficultyEnum gameDifficulty) {
         this.gameDifficulty = gameDifficulty;
     }
 
@@ -66,8 +67,17 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         cancelButton.setOnAction(this::handleCancelButtonAction);
         levelLabel.setText("Level: " + gameDifficulty.toString());
-        sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver()));
-        sudokuBoard.addPropertyChangeListener("value", new ValueListener());
+        sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
+                BoardSizeEnum.CLASSIC));
+        boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
+
+        possibleValues = new String[boardSize];
+        for (int i = 0; i < possibleValues.length; i++) {
+            possibleValues[i] = Integer.toString(i + 1);
+        }
+
+        sudokuBoard.addPropertyChangeListener(
+                FXsudokuBoard.FIELD_VALUE_PROPERTY, new ValueListener());
         initializeBoard();
     }
 
@@ -76,14 +86,13 @@ public class GameController implements Initializable {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
-            if ("value".equals(propertyName)) {
+            if (FXsudokuBoard.FIELD_VALUE_PROPERTY.equals(propertyName)) {
                 IndexedPropertyChangeEvent event = (IndexedPropertyChangeEvent) evt;
-                int row = event.getIndex() / 9;
-                int column = event.getIndex() % 9;
+                int row = event.getIndex() / boardSize;
+                int column = event.getIndex() % boardSize;
                 int newFieldValue = (int) event.getNewValue();
                 TextField textField = getNodeByRowColumnIndex(row, column, sudokuGrid);
                 textField.setText(Integer.toString(newFieldValue));
-                System.out.println("EventFired");
             }
         }
     }
@@ -95,17 +104,16 @@ public class GameController implements Initializable {
     }
 
     private void fillSudokuGrid() {
-        int boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
+        double textFieldPixelSize = 40.0 + boardSize / 10 * 10.0;
 
-        for (int i = 0; i < 9; i++) {
-            RowConstraints row = new RowConstraints(40.0, 40.0, 40.0, Priority.SOMETIMES,
-                    VPos.CENTER, true);
-            ColumnConstraints column = new ColumnConstraints(40.0, 40.0, 40.0, Priority.SOMETIMES
-                    , HPos.CENTER, true);
+        for (int i = 0; i < boardSize; i++) {
+            RowConstraints row = new RowConstraints(textFieldPixelSize, textFieldPixelSize,
+                    textFieldPixelSize, Priority.ALWAYS, VPos.CENTER, true);
+            ColumnConstraints column = new ColumnConstraints(textFieldPixelSize, textFieldPixelSize,
+                    textFieldPixelSize, Priority.ALWAYS, HPos.CENTER, true);
             sudokuGrid.getRowConstraints().add(row);
             sudokuGrid.getColumnConstraints().add(column);
         }
-
 
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
@@ -123,13 +131,11 @@ public class GameController implements Initializable {
 
         for (Node node : children) {
             if (GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null) {
-                System.out.println(GridPane.getRowIndex(node) + " " + GridPane.getColumnIndex(node));
                 if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                     result = node;
                     break;
                 }
             }
-
         }
         return (TextField) result;
     }
@@ -137,7 +143,8 @@ public class GameController implements Initializable {
     private void addFieldValueListener(TextField textField, int row, int column) {
         textField.textProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldVal, String newVal) {
+            public void changed(ObservableValue<? extends String> observableValue,
+                                String oldVal, String newVal) {
                 if (!validateValue(newVal)) {
                     Platform.runLater(textField::clear);
                 } else {
@@ -148,6 +155,11 @@ public class GameController implements Initializable {
     }
 
     private boolean validateValue(String newVal) {
-        return newVal.length() == 1 & "123456789".contains(newVal);
+        for (String value : possibleValues) {
+            if (value.equals(newVal)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -10,7 +10,6 @@ public class SudokuTextFieldFactory {
     /**
      * Creates JavaFX TextField corresponding to single field in sudoku board.
      *
-     *
      * @param fieldValue value to display in TextField
      * @return Formatted TextField with input length restriction
      */
@@ -22,11 +21,12 @@ public class SudokuTextFieldFactory {
         }
 
         sudokuTextField.setAlignment(Pos.CENTER);
+        sudokuTextField.setPrefSize(50.0, 50.0);
         sudokuTextField.setFont(Font.font(20.0));
         sudokuTextField.setTextFormatter(
                 new TextFormatter<String>((TextFormatter.Change change) -> {
                     String newText = change.getControlNewText();
-                    if (newText.length() > 1) {
+                     if (newText.length() > 1) {
                         return null;
                     } else {
                         return change;

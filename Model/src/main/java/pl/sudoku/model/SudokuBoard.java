@@ -16,21 +16,21 @@ public final class SudokuBoard implements Serializable, Cloneable {
      * For future development (different board sizes)
      * The value for this field is {@value}.
      */
-    private final int boardSize = 9;
+    private final int boardSize;
 
     /**
      * Represents side size of box in sudoku board.
      * For future development (different board sizes)
      * The value for this field is {@value}.
      */
-    private final int boxSize = (int) Math.sqrt(boardSize);
+    private final int boxSize;
 
     /**
      * Board is stored as a square array of ints.
      * Size: {@link #boardSize}x{@link #boardSize}.
      * 0 means that cell in unassigned
      */
-    private SudokuField[][] board = new SudokuField[boardSize][boardSize];
+    private SudokuField[][] board;
 
     /**
      * Implementation of sudokuSolver to use for solving sudoku game.
@@ -45,13 +45,18 @@ public final class SudokuBoard implements Serializable, Cloneable {
     }
 
     /**
-     * Creates an instance of sudoku board with given solver.
+     * Creates an instance of sudoku board with given solver and size.
      *
-     * @param solver to use for solving
+     * @param solver        instance of SudokuSolver to use for solving
+     * @param boardSizeEnum size of board to create
      */
-    public SudokuBoard(final SudokuSolver solver) {
-        for (int row = 0; row < boardSize; row++) {
-            for (int column = 0; column < boardSize; column++) {
+    public SudokuBoard(final SudokuSolver solver, BoardSizeEnum boardSizeEnum) {
+        this.boardSize = boardSizeEnum.getSize();
+        boxSize = (int) Math.sqrt(boardSize);
+        board = new SudokuField[boardSize][boardSize];
+
+        for (int row = 0; row < this.boardSize; row++) {
+            for (int column = 0; column < this.boardSize; column++) {
                 this.board[row][column] = new SudokuField();
             }
         }
@@ -220,7 +225,7 @@ public final class SudokuBoard implements Serializable, Cloneable {
      */
     @Override
     public SudokuBoard clone() {
-        SudokuBoard clone = new SudokuBoard(sudokuSolver);
+        SudokuBoard clone = new SudokuBoard(sudokuSolver, BoardSizeEnum.CLASSIC);
 
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {

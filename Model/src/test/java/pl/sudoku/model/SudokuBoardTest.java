@@ -10,7 +10,7 @@ public class SudokuBoardTest {
     @Test
     public void solveGame_FillOneBoard_ShouldBeFilledCorrectly() {
         SudokuField[][] board;
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         int boardSize = sudokuBoard.getBoardSize();
         int boxSize = sudokuBoard.getBoxSize();
 
@@ -43,8 +43,8 @@ public class SudokuBoardTest {
 
     @Test
     public void solveGame_FillTwoBoards_ShouldBeDifferent() {
-        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
-        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
+        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         sudokuBoard1.solveGame();
         sudokuBoard2.solveGame();
@@ -54,14 +54,14 @@ public class SudokuBoardTest {
 
     @Test
     public void equals_CompareToNull_ShouldReturnFalse() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         assertNotEquals(null, sudokuBoard);
     }
 
     @Test
     public void equals_CompareToString_ShouldReturnFalse() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         String test = "Test";
 
@@ -70,23 +70,23 @@ public class SudokuBoardTest {
 
     @Test
     public void equals_CompareToItself_ShouldReturnTrue() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         assertEquals(sudokuBoard, sudokuBoard);
     }
 
     @Test
     public void hashCode_TwoEmptyBoards_ShouldReturnTheSameHash() {
-        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
-        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
+        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         assertEquals(sudokuBoard1.hashCode(), sudokuBoard2.hashCode(), "Hash for two empty boards with the same size should be the same.");
     }
 
     @Test
     public void hashCode_TwoTheSameBoards_ShouldReturnTheSameHash() {
-        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
-        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
+        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         sudokuBoard1.set(3, 3, 4);
         sudokuBoard2.set(3, 3, 4);
@@ -96,8 +96,8 @@ public class SudokuBoardTest {
 
     @Test
     public void hashCode_TwoDifferentBoards_ShouldReturnTheDifferentHashes() {
-        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver());
-        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard1 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
+        SudokuBoard sudokuBoard2 = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         sudokuBoard1.solveGame();
         sudokuBoard2.solveGame();
@@ -142,14 +142,14 @@ public class SudokuBoardTest {
 
     @Test
     public void toString_EmptyBoard_ReturnsProperValues() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
 
         assertThat(sudokuBoard.toString(), containsString("value=0"));
     }
 
     @Test
     public void clone_CompareOriginalWithClone_ShouldBeEqual() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         sudokuBoard.solveGame();
         SudokuBoard sudokuBoardClone = sudokuBoard.clone();
 
@@ -158,7 +158,7 @@ public class SudokuBoardTest {
 
     @Test
     public void clone_ModifyClone_ShouldNotChangeOriginal() {
-        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver());
+        SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         sudokuBoard.solveGame();
         SudokuBoard sudokuBoardClone = sudokuBoard.clone();
 

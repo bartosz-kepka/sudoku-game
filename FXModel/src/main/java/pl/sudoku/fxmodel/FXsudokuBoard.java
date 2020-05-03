@@ -9,6 +9,8 @@ import pl.sudoku.model.SudokuBoard;
 
 public class FXsudokuBoard {
 
+    public static final String FIELD_VALUE_PROPERTY = "fieldValue";
+
     /**
      * PropertyChangeSupport for implementing Observer/Observable pattern.
      */
@@ -22,6 +24,7 @@ public class FXsudokuBoard {
 
     /**
      * Constructor for FXsudokuBoard.
+     *
      * @param sudokuBoardPlaceholder SudokuBoard to integrate
      */
     public FXsudokuBoard(SudokuBoard sudokuBoardPlaceholder) {
@@ -32,8 +35,9 @@ public class FXsudokuBoard {
 
     /**
      * Add a PropertyChangeListener for a specific property.
+     *
      * @param propertyName property that will fire propertyChange.
-     * @param listener listens to value change
+     * @param listener     listens to value change
      */
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         this.propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
@@ -41,8 +45,9 @@ public class FXsudokuBoard {
 
     /**
      * Remove a PropertyChangeListener for a specific property.
+     *
      * @param propertyName -> property that listener will be removed from
-     * @param listener -> listener to remove
+     * @param listener     -> listener to remove
      */
     public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         this.propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
@@ -51,6 +56,7 @@ public class FXsudokuBoard {
     /**
      * Returns an array of all the listeners that were added to the
      * PropertyChangeSupport object with addPropertyChangeListener().
+     *
      * @return array of all the listeners
      */
     public PropertyChangeListener[] getAllListeners() {
@@ -69,6 +75,7 @@ public class FXsudokuBoard {
     /**
      * Sets a new SudokuBoard to be stored in placeholder.
      * Swaps all values independently.
+     *
      * @param newBoard SudokuBoard to swap
      */
     public void setSudokuBoardPlaceholder(SudokuBoard newBoard) {
@@ -82,8 +89,9 @@ public class FXsudokuBoard {
 
     /**
      * Gets value of SudokuField stored in sudokuBoardPlaceholder.
-     * @param x  x coordinate of field
-     * @param y  y coordinate of field
+     *
+     * @param x x coordinate of field
+     * @param y y coordinate of field
      * @return value stored
      */
     public int get(int x, int y) {
@@ -93,19 +101,18 @@ public class FXsudokuBoard {
     /**
      * Gets value of SudokuField stored in sudokuBoardPlaceholder.
      * Fires propertyChange.
-     * @param x  x coordinate of field
-     * @param y  y coordinate of field
+     *
+     * @param x      x coordinate of field
+     * @param y      y coordinate of field
      * @param newVal value to be stored
      */
     public void set(int x, int y, int newVal) {
-        System.out.println("Model set method fired");
-        if (sudokuBoardPlaceholder.get(x, y) != newVal) {
-            int oldValue = sudokuBoardPlaceholder.get(x, y);
-            sudokuBoardPlaceholder.set(x, y, newVal);
-            int index = x * 9 + y;
-            propertyChangeSupport.fireIndexedPropertyChange("value", index, oldValue, newVal);
-            System.out.println("Model indexed event fired");
-        }
+        int boardSize = sudokuBoardPlaceholder.getBoardSize();
+        int oldValue = sudokuBoardPlaceholder.get(x, y);
+        sudokuBoardPlaceholder.set(x, y, newVal);
+        int index = x * boardSize + y;
+        propertyChangeSupport.fireIndexedPropertyChange(
+                FIELD_VALUE_PROPERTY, index, oldValue, newVal);
     }
 
     /**
@@ -146,6 +153,7 @@ public class FXsudokuBoard {
 
     /**
      * Stringifies placeholder and instance ID.
+     *
      * @return String with values
      */
     @Override

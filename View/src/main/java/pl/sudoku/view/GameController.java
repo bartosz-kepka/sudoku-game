@@ -69,7 +69,6 @@ public class GameController implements Initializable {
     private void handleSaveButtonAction(ActionEvent event) {
         Stage stage = new Stage();
         stage.setAlwaysOnTop(true);
-        stage.setTitle("Choose file to save");
         FileChooser fileChooser = new FileChooser();
         File saveFile = fileChooser.showSaveDialog(stage);
 

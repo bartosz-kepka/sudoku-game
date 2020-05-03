@@ -9,7 +9,6 @@ public enum GameDifficultyEnum {
     HARD(7);
 
     private final int multiplier;
-    private final int ten = 10;
 
     GameDifficultyEnum(int multiplier) {
         this.multiplier = multiplier;
@@ -33,7 +32,7 @@ public enum GameDifficultyEnum {
      */
     public void clearSudokuFields(SudokuBoard sudokuBoard) {
         int boardSize = sudokuBoard.getBoardSize();
-        int fieldsToClear = boardSize * boardSize * multiplier / ten;
+        int fieldsToClear = boardSize * boardSize * multiplier / 10;
 
         for (int fieldsCleared = 0; fieldsCleared < fieldsToClear; ) {
             Random random = new Random();

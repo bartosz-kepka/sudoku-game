@@ -1,55 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<VBox alignment="CENTER" prefHeight="300.0" prefWidth="330.0" spacing="20.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox alignment="CENTER" prefHeight="300.0" prefWidth="330.0" spacing="20.0"
+      xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label text="%NewGameLabel">
             <font>
-                <Font size="20.0" />
+                <Font size="20.0"/>
             </font>
         </Label>
-        <Label text="%ChooseSizeLabel" />
+        <Label text="%ChooseSizeLabel"/>
         <HBox alignment="CENTER" prefHeight="71.0" spacing="20.0">
             <padding>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
             </padding>
             <children>
-                <RadioButton fx:id="smallRadioButton" mnemonicParsing="false" text="%SmallRadioButton">
-               <toggleGroup>
-                  <ToggleGroup fx:id="size" />
-               </toggleGroup></RadioButton>
-                <RadioButton fx:id="classicRadioButton" mnemonicParsing="false" selected="true" text="%ClassicRadioButton" toggleGroup="$size" />
-                <RadioButton fx:id="largeRadioButton" mnemonicParsing="false" text="%LargeRadioButton" toggleGroup="$size" />
+                <RadioButton fx:id="smallRadioButton" mnemonicParsing="false"
+                             text="%SmallRadioButton">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="size"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="classicRadioButton" mnemonicParsing="false" selected="true"
+                             text="%ClassicRadioButton" toggleGroup="$size"/>
+                <RadioButton fx:id="largeRadioButton" mnemonicParsing="false"
+                             text="%LargeRadioButton" toggleGroup="$size"/>
             </children>
         </HBox>
-        <Label text="%ChooseDifficultyLabel" />
-        <Button fx:id="easyButton" minWidth="100.0" text="%EasyButton" textAlignment="CENTER" />
-        <Button fx:id="mediumButton" minWidth="100.0" text="%MediumButton" textAlignment="CENTER" />
-        <Button fx:id="hardButton" minWidth="100.0" text="%HardButton" textAlignment="CENTER" />
+        <Label text="%ChooseDifficultyLabel"/>
+        <Button fx:id="easyButton" minWidth="100.0" text="%EasyButton" textAlignment="CENTER"/>
+        <Button fx:id="mediumButton" minWidth="100.0" text="%MediumButton" textAlignment="CENTER"/>
+        <Button fx:id="hardButton" minWidth="100.0" text="%HardButton" textAlignment="CENTER"/>
         <Label text="%LoadGameLabel">
             <font>
-                <Font size="20.0" />
+                <Font size="20.0"/>
             </font>
         </Label>
-        <Button fx:id="loadButton" minWidth="100.0" text="%LoadButton" textAlignment="CENTER" />
+        <Button fx:id="loadButton" minWidth="100.0" text="%LoadButton" textAlignment="CENTER"/>
         <Label text="%ExitLabel">
             <font>
-                <Font size="20.0" />
+                <Font size="20.0"/>
             </font>
         </Label>
-        <Button fx:id="exitButton" minWidth="100.0" text="%ExitButton" textAlignment="CENTER" />
-      <HBox alignment="CENTER" prefHeight="0.0" prefWidth="300.0">
-         <children>
-            <Button fx:id="LangEN" mnemonicParsing="false" text="%LangEN" />
-            <Button fx:id="LangPL" mnemonicParsing="false" text="%LangPL" />
-         </children>
-      </HBox>
+        <Button fx:id="exitButton" minWidth="100.0" text="%ExitButton" textAlignment="CENTER"
+                style="-fx-text-fill: Red;"/>
+        <Label text="%ChangeLanguageLabel">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="300.0" spacing="20.0">
+            <children>
+                <Button fx:id="LangEN" mnemonicParsing="false" text="%LangEN" minWidth="100.0"/>
+                <Button fx:id="LangPL" mnemonicParsing="false" text="%LangPL" minWidth="100.0"/>
+            </children>
+        </HBox>
     </children>
     <padding>
-        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
     </padding>
 </VBox>

@@ -26,6 +26,7 @@ public class App extends Application {
         MenuController primaryController = new MenuController();
         loader.setController(primaryController);
         primaryStage.setScene(new Scene(loader.load()));
+        primaryStage.setTitle(bundle.getString("MainWindowTitle"));
         primaryStage.show();
     }
 

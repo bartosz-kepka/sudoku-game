@@ -48,7 +48,7 @@ public class GameController implements Initializable {
     @FXML
     private void handleCancelButtonAction(ActionEvent event) {
         ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.menu", locale);
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"),bundle);
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"), bundle);
         MenuController primaryController = new MenuController();
         loader.setController(primaryController);
         try {
@@ -130,11 +130,11 @@ public class GameController implements Initializable {
         boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
         generatePossibleValues();
         sudokuBoard.addPropertyChangeListener(
-                FXsudokuBoard.FIELD_VALUE_PROPERTY, new ValueListener());
+                FXsudokuBoard.FIELD_VALUE_PROPERTY, new SudokuFieldValueListener());
         fillSudokuGrid();
     }
 
-    class ValueListener implements PropertyChangeListener {
+    class SudokuFieldValueListener implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
@@ -204,8 +204,8 @@ public class GameController implements Initializable {
      * Adds TextProperty ValueListener to given TextField.
      *
      * @param textField TextField to add ValueListener to
-     * @param row number of row in which corresponding SudokuField from SudokuBoard is
-     * @param column number of column in which corresponding SudokuField from SudokuBoard is
+     * @param row       number of row in which corresponding SudokuField from SudokuBoard is
+     * @param column    number of column in which corresponding SudokuField from SudokuBoard is
      */
     private void addFieldValueListener(TextField textField, int row, int column) {
         textField.textProperty().addListener(new ChangeListener<String>() {

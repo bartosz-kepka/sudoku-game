@@ -11,41 +11,41 @@
 
 <VBox alignment="CENTER" prefHeight="300.0" prefWidth="330.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label text="New game">
+        <Label text="%NewGameLabel">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Label text="Choose board size" />
+        <Label text="%ChooseSizeLabel" />
         <HBox alignment="CENTER" prefHeight="71.0" spacing="20.0">
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
             <children>
-                <RadioButton fx:id="smallRadioButton" mnemonicParsing="false" text="Small">
+                <RadioButton fx:id="smallRadioButton" mnemonicParsing="false" text="%SmallRadioButton">
                <toggleGroup>
                   <ToggleGroup fx:id="size" />
                </toggleGroup></RadioButton>
-                <RadioButton fx:id="classicRadioButton" mnemonicParsing="false" selected="true" text="Classic" toggleGroup="$size"/>
-                <RadioButton fx:id="largeRadioButton" mnemonicParsing="false" text="Large" toggleGroup="$size"/>
+                <RadioButton fx:id="classicRadioButton" mnemonicParsing="false" selected="true" text="%ClassicRadioButton" toggleGroup="$size"/>
+                <RadioButton fx:id="largeRadioButton" mnemonicParsing="false" text="%LargeRadioButton" toggleGroup="$size"/>
             </children>
         </HBox>
-        <Label text="Choose difficulty level" />
-        <Button fx:id="easyButton" minWidth="100.0" text="Easy" textAlignment="CENTER" />
-        <Button fx:id="mediumButton" minWidth="100.0" text="Medium" textAlignment="CENTER" />
-        <Button fx:id="hardButton" minWidth="100.0" text="Hard" textAlignment="CENTER" />
-        <Label text="Load game">
+        <Label text="%ChooseDifficultyLabel" />
+        <Button fx:id="easyButton" minWidth="100.0" text="%EasyButton" textAlignment="CENTER" />
+        <Button fx:id="mediumButton" minWidth="100.0" text="%MediumButton" textAlignment="CENTER" />
+        <Button fx:id="hardButton" minWidth="100.0" text="%HardButton" textAlignment="CENTER" />
+        <Label text="%LoadGameLabel">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Button fx:id="loadButton" minWidth="100.0" text="Load" textAlignment="CENTER" />
-        <Label text="Exit game">
+        <Button fx:id="loadButton" minWidth="100.0" text="%LoadButton" textAlignment="CENTER" />
+        <Label text="%ExitLabel">
             <font>
                 <Font size="20.0" />
             </font>
         </Label>
-        <Button fx:id="exitButton" minWidth="100.0" text="Exit" textAlignment="CENTER" />
+        <Button fx:id="exitButton" minWidth="100.0" text="%ExitButton" textAlignment="CENTER" />
     </children>
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

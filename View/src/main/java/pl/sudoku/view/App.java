@@ -1,6 +1,8 @@
 package pl.sudoku.view;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,11 +19,14 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"));
+
+        Locale locale = new Locale("pl, PL");
+        ResourceBundle bundle = ResourceBundle.getBundle("bundles/menu", locale);
+
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"), bundle);
         MenuController primaryController = new MenuController();
         loader.setController(primaryController);
         primaryStage.setScene(new Scene(loader.load()));
-        primaryStage.setTitle("Sudoku game");
         primaryStage.show();
     }
 

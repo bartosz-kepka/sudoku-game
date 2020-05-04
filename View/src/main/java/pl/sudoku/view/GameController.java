@@ -6,6 +6,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -46,7 +47,8 @@ public class GameController implements Initializable {
      */
     @FXML
     private void handleCancelButtonAction(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"));
+        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.menu", locale);
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"),bundle);
         MenuController primaryController = new MenuController();
         loader.setController(primaryController);
         try {
@@ -86,8 +88,12 @@ public class GameController implements Initializable {
     public GridPane sudokuGrid;
 
     FXsudokuBoard sudokuBoard;
+
     int boardSize;
+
     String[] possibleValues;
+
+    private Locale locale;
 
     /**
      * Game controller constructor used for creating new game.
@@ -118,6 +124,7 @@ public class GameController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        locale = resources.getLocale();
         cancelButton.setOnAction(this::handleCancelButtonAction);
         saveButton.setOnAction(this::handleSaveButtonAction);
         boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();

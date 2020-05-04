@@ -3,7 +3,9 @@ package pl.sudoku.view;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,8 +73,44 @@ public class MenuController implements Initializable {
         stage.close();
     }
 
+    @FXML
+    public Button LangEN;
+
+    @FXML
+    private void handleLangEnButtonAction(ActionEvent event) {
+        locale = new Locale("en");
+        changeUiLanguage(locale);
+    }
+
+    @FXML
+    public Button LangPL;
+
+    @FXML
+    private void handleLangPlButtonAction(ActionEvent event) {
+        locale = new Locale("pl");
+        changeUiLanguage(locale);
+    }
+
+    private void changeUiLanguage(Locale locale) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.menu", locale);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"), resourceBundle);
+
+        try {
+            loader.setController(this);
+            Parent root = loader.load();
+            App.setScene(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Locale locale;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        locale = resources.getLocale();
+        LangEN.setOnAction(this::handleLangEnButtonAction);
+        LangPL.setOnAction(this::handleLangPlButtonAction);
         easyButton.setOnAction(this::handleEasyButtonAction);
         mediumButton.setOnAction(this::handleMediumButtonAction);
         hardButton.setOnAction(this::handleHardButtonAction);
@@ -103,7 +141,8 @@ public class MenuController implements Initializable {
     }
 
     private void openGameView(GameController gameController) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("game.fxml"));
+        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.game", locale);
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("game.fxml"), bundle);
         loader.setController(gameController);
 
         try {

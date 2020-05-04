@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
@@ -74,7 +74,7 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public Button LangEN;
+    public Button langEN;
 
     @FXML
     private void handleLangEnButtonAction(ActionEvent event) {
@@ -83,7 +83,7 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public Button LangPL;
+    public Button langPL;
 
     @FXML
     private void handleLangPlButtonAction(ActionEvent event) {
@@ -91,8 +91,17 @@ public class MenuController implements Initializable {
         changeUiLanguage(locale);
     }
 
+    @FXML
+    public Label authorOne;
+
+    @FXML
+    public Label authorTwo;
+
+    private Locale locale;
+
     private void changeUiLanguage(Locale locale) {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.menu", locale);
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.menu",
+                locale);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"), resourceBundle);
 
         try {
@@ -104,13 +113,11 @@ public class MenuController implements Initializable {
         }
     }
 
-    private Locale locale;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         locale = resources.getLocale();
-        LangEN.setOnAction(this::handleLangEnButtonAction);
-        LangPL.setOnAction(this::handleLangPlButtonAction);
+        langEN.setOnAction(this::handleLangEnButtonAction);
+        langPL.setOnAction(this::handleLangPlButtonAction);
         easyButton.setOnAction(this::handleEasyButtonAction);
         mediumButton.setOnAction(this::handleMediumButtonAction);
         hardButton.setOnAction(this::handleHardButtonAction);
@@ -119,6 +126,7 @@ public class MenuController implements Initializable {
         smallRadioButton.setUserData(BoardSizeEnum.SMALL);
         classicRadioButton.setUserData(BoardSizeEnum.CLASSIC);
         largeRadioButton.setUserData(BoardSizeEnum.LARGE);
+        setAuthors(locale);
     }
 
     private void startNewGame(GameDifficultyEnum gameDifficulty) {
@@ -141,7 +149,7 @@ public class MenuController implements Initializable {
     }
 
     private void openGameView(GameController gameController) {
-        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.game", locale);
+        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.game", locale);
         FXMLLoader loader = new FXMLLoader(App.class.getResource("game.fxml"), bundle);
         loader.setController(gameController);
 
@@ -151,6 +159,14 @@ public class MenuController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setAuthors(Locale locale) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(
+                "pl.sudoku.view.bundles.Authors", locale);
+
+        authorOne.setText(resourceBundle.getString("224326"));
+        authorTwo.setText(resourceBundle.getString("224248"));
     }
 
 }

@@ -47,7 +47,7 @@ public class GameController implements Initializable {
      */
     @FXML
     private void handleCancelButtonAction(ActionEvent event) {
-        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.menu", locale);
+        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.menu", locale);
         FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"), bundle);
         MenuController primaryController = new MenuController();
         loader.setController(primaryController);
@@ -237,7 +237,7 @@ public class GameController implements Initializable {
     }
 
     /**
-     * Generates string representations of values than can inserted into used SudokuBoard
+     * Generates string representations of values than can inserted into used SudokuBoard.
      */
     private void generatePossibleValues() {
         possibleValues = new String[boardSize];

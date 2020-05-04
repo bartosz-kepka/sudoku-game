@@ -55,10 +55,17 @@
         </Label>
         <HBox alignment="CENTER" prefHeight="0.0" prefWidth="300.0" spacing="20.0">
             <children>
-                <Button fx:id="LangEN" mnemonicParsing="false" text="%LangEN" minWidth="100.0"/>
-                <Button fx:id="LangPL" mnemonicParsing="false" text="%LangPL" minWidth="100.0"/>
+                <Button fx:id="langEN" mnemonicParsing="false" text="%LangEN" minWidth="100.0"/>
+                <Button fx:id="langPL" mnemonicParsing="false" text="%LangPL" minWidth="100.0"/>
             </children>
         </HBox>
+        <Label text="%AuthorsLabel">
+            <font>
+                <Font size="20.0"/>
+            </font>
+        </Label>
+        <Label fx:id="authorOne"/>
+        <Label fx:id="authorTwo"/>
     </children>
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>

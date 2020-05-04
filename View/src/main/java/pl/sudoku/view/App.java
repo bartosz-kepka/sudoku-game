@@ -20,8 +20,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
 
-        Locale locale = new Locale("pl");
-        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view/bundles.menu", locale);
+        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.menu");
         FXMLLoader loader = new FXMLLoader(App.class.getResource("menu.fxml"), bundle);
         MenuController primaryController = new MenuController();
         loader.setController(primaryController);

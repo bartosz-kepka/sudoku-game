@@ -91,39 +91,39 @@ public final class SudokuBoard implements Serializable, Cloneable {
     }
 
     /**
-     * Returns value in board cell at certain position.
+     * Returns value in sudoku board cell at certain position.
      * 0 means that this cell is unassigned.
      *
-     * @param x number of row starting from 0
-     * @param y number of column starting from 0
-     * @return value in call at given row and column
+     * @param row    number of row starting from 0
+     * @param column number of column starting from 0
+     * @return value in cell at given at position [row][column]
      */
-    public int get(final int x, final int y) {
-        return board[x][y].getFieldValue();
+    public int get(final int row, final int column) {
+        return board[row][column].getFieldValue();
     }
 
     /**
-     * Sets value in board cell at certain position.
+     * Sets value in sudoku board cell at certain position.
      * 0 means that this cell is unassigned.
      *
-     * @param x     number of row starting from 0
-     * @param y     number of column starting from 0
-     * @param value value to assign to cell at position [x][y]
+     * @param row    number of row starting from 0
+     * @param column number of column starting from 0
+     * @param value  value to assign to cell at position [row][column]
      */
-    public void set(final int x, final int y, final int value) {
-        this.board[x][y].setFieldValue(value);
+    public void set(final int row, final int column, final int value) {
+        this.board[row][column].setFieldValue(value);
     }
 
     /**
      * Gets certain sudoku row by it's index.
      *
-     * @param rowIndex index of row in sudoku board
+     * @param row number of row in sudoku board
      * @return copy of row
      */
-    public SudokuRow getRow(final int rowIndex) {
+    public SudokuRow getRow(final int row) {
         SudokuField[] fields = new SudokuField[boardSize];
         for (int i = 0; i < boardSize; i++) {
-            fields[i] = board[rowIndex][i];
+            fields[i] = board[row][i];
         }
         return new SudokuRow(fields);
     }
@@ -131,13 +131,13 @@ public final class SudokuBoard implements Serializable, Cloneable {
     /**
      * Gets certain sudoku column by it's index.
      *
-     * @param columnIndex index of column in sudoku board
+     * @param column number of column in sudoku board
      * @return copy of column
      */
-    public SudokuColumn getColumn(final int columnIndex) {
+    public SudokuColumn getColumn(final int column) {
         SudokuField[] fields = new SudokuField[boardSize];
         for (int i = 0; i < boardSize; i++) {
-            fields[i] = board[i][columnIndex];
+            fields[i] = board[i][column];
         }
 
         return new SudokuColumn(fields);
@@ -146,13 +146,13 @@ public final class SudokuBoard implements Serializable, Cloneable {
     /**
      * Gets sudokuBox indicated by coordinates.
      *
-     * @param rowIndex    index of row in sudoku board
-     * @param columnIndex index of column in sudoku board
+     * @param row    number of row in sudoku board
+     * @param column number of column in sudoku board
      * @return copy of indicated sudokuBox
      */
-    public SudokuBox getBox(final int rowIndex, final int columnIndex) {
-        int firstRowInBox = rowIndex - (rowIndex % boxSize);
-        int firstColumnInBox = columnIndex - (columnIndex % boxSize);
+    public SudokuBox getBox(final int row, final int column) {
+        int firstRowInBox = row - (row % boxSize);
+        int firstColumnInBox = column - (column % boxSize);
 
         SudokuField[] fields = new SudokuField[boardSize];
         int index = 0;

@@ -2,7 +2,7 @@ package pl.sudoku.view;
 
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,17 @@ import org.testfx.framework.junit5.Start;
 class SudokuTextFieldFactoryTest {
 
     private TextField sudokuTextField;
+    private TextField sudokuTextField1;
+
 
     // TestFX
     @Start
     private void start(Stage stage) {
-        int fieldValue = 1;
-        sudokuTextField = SudokuTextFieldFactory.getSudokuTextField(fieldValue, 1);
-        stage.setScene(new Scene(new StackPane(sudokuTextField), 100, 100));
+        sudokuTextField = SudokuTextFieldFactory.getSudokuTextField(1,
+                SudokuTextFieldFactory.MaxDigitsEnum.ONE);
+        sudokuTextField1 = SudokuTextFieldFactory.getSudokuTextField(0,
+                SudokuTextFieldFactory.MaxDigitsEnum.ONE);
+        stage.setScene(new Scene(new VBox(sudokuTextField, sudokuTextField1), 200, 100));
         stage.setAlwaysOnTop(true);
         stage.show();
     }
@@ -36,7 +40,8 @@ class SudokuTextFieldFactoryTest {
     void getSudokuTextField_ZeroValue_ShouldReturnTextFieldWithNoText() {
         SudokuTextFieldFactory factory = new SudokuTextFieldFactory();
         int fieldValue = 0;
-        TextField sudokuTextFieldTest = factory.getSudokuTextField(fieldValue, 1 );
+        TextField sudokuTextFieldTest = factory.getSudokuTextField(fieldValue,
+                SudokuTextFieldFactory.MaxDigitsEnum.ONE);
 
         assertEquals("", sudokuTextFieldTest.getText());
     }
@@ -48,5 +53,14 @@ class SudokuTextFieldFactoryTest {
         robot.write("2");
 
         Assertions.assertThat(sudokuTextField).hasText("1");
+    }
+
+    // TestFX
+    @Test
+    void textFormatter_ChangeToProperText_ShouldAllowChange(FxRobot robot) {
+        robot.clickOn(sudokuTextField1);
+        robot.write("2");
+
+        Assertions.assertThat(sudokuTextField1).hasText("2");
     }
 }

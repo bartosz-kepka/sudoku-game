@@ -88,31 +88,32 @@ public class FXsudokuBoard {
     }
 
     /**
-     * Gets value of SudokuField stored in sudokuBoardPlaceholder.
+     * Returns value in sudoku board cell at certain position.
+     * 0 means that this cell is unassigned.
      *
-     * @param x x coordinate of field
-     * @param y y coordinate of field
-     * @return value stored
+     * @param row    number of row starting from 0
+     * @param column number of column starting from 0
+     * @return value in cell at at position [row][column]
      */
-    public int get(int x, int y) {
-        return sudokuBoardPlaceholder.get(x, y);
+    public int get(int row, int column) {
+        return sudokuBoardPlaceholder.get(row, column);
     }
 
     /**
-     * Gets value of SudokuField stored in sudokuBoardPlaceholder.
-     * Fires propertyChange.
+     * Sets value in sudoku board cell at certain position.
+     * 0 means that this cell is unassigned.
      *
-     * @param x      x coordinate of field
-     * @param y      y coordinate of field
-     * @param newVal value to be stored
+     * @param row    number of row starting from 0
+     * @param column number of column starting from 0
+     * @param value  value to assign to cell at position [row][column]
      */
-    public void set(int x, int y, int newVal) {
+    public void set(int row, int column, int value) {
         int boardSize = sudokuBoardPlaceholder.getBoardSize();
-        int oldValue = sudokuBoardPlaceholder.get(x, y);
-        sudokuBoardPlaceholder.set(x, y, newVal);
-        int index = x * boardSize + y;
+        int oldValue = sudokuBoardPlaceholder.get(row, column);
+        sudokuBoardPlaceholder.set(row, column, value);
+        int index = row * boardSize + column;
         propertyChangeSupport.fireIndexedPropertyChange(
-                FIELD_VALUE_PROPERTY, index, oldValue, newVal);
+                FIELD_VALUE_PROPERTY, index, oldValue, value);
     }
 
     /**

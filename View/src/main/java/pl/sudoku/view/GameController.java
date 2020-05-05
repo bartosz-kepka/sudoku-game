@@ -132,6 +132,7 @@ public class GameController implements Initializable {
         sudokuBoard.addPropertyChangeListener(
                 FXsudokuBoard.FIELD_VALUE_PROPERTY, new SudokuFieldValueListener());
         fillSudokuGrid();
+        setWarnings();
     }
 
     class SudokuFieldValueListener implements PropertyChangeListener {
@@ -145,7 +146,42 @@ public class GameController implements Initializable {
                 int column = event.getIndex() % boardSize;
                 int newFieldValue = (int) event.getNewValue();
                 TextField textField = getNodeByRowColumnIndex(row, column, sudokuGrid);
-                textField.setText(Integer.toString(newFieldValue));
+
+                if (newFieldValue == 0) {
+                    textField.setText("");
+                } else {
+                    textField.setText(Integer.toString(newFieldValue));
+                }
+
+                setWarnings();
+            }
+        }
+    }
+
+    /**
+     * Sets red background in fields which are part of row/column/box that is not correctly filled.
+     */
+    private void setWarnings() {
+        ObservableList<Node> children = sudokuGrid.getChildren();
+
+        for (Node node : children) {
+            if (GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null) {
+                int nodeRow = GridPane.getRowIndex(node);
+                int nodeColumn = GridPane.getColumnIndex(node);
+
+                boolean rowIsCorrect =
+                        sudokuBoard.getSudokuBoardPlaceholder().getRow(nodeRow).verify();
+                boolean columnIsCorrect =
+                        sudokuBoard.getSudokuBoardPlaceholder().getColumn(nodeColumn).verify();
+                boolean boxIsCorrect =
+                        sudokuBoard.getSudokuBoardPlaceholder().getBox(nodeRow, nodeColumn)
+                                .verify();
+
+                if (rowIsCorrect && columnIsCorrect && boxIsCorrect) {
+                    node.setStyle("-fx-background-color: White; -fx-border-color: Grey;");
+                } else {
+                    node.setStyle("-fx-background-color: Tomato; -fx-border-color: Grey;");
+                }
             }
         }
     }
@@ -154,7 +190,7 @@ public class GameController implements Initializable {
      * Creates proper number of rows and columns in sudokuGrid then fills grid with TextFields.
      */
     private void fillSudokuGrid() {
-        double textFieldPixelSize = 40.0 + boardSize / 10 * 10.0;
+        double textFieldPixelSize = 54.0; //+ boardSize / 10 * 14.0;
 
         for (int i = 0; i < boardSize; i++) {
             RowConstraints row = new RowConstraints(textFieldPixelSize, textFieldPixelSize,
@@ -165,12 +201,20 @@ public class GameController implements Initializable {
             sudokuGrid.getColumnConstraints().add(column);
         }
 
-        int maxDigitsInField = boardSize / 10 + 1;
+        SudokuTextFieldFactory.MaxDigitsEnum maxDigitsEnum;
+        if (boardSize >= 1 && boardSize <= 9) {
+            maxDigitsEnum = SudokuTextFieldFactory.MaxDigitsEnum.ONE;
+        } else if (boardSize >= 10 && boardSize <= 99) {
+            maxDigitsEnum = SudokuTextFieldFactory.MaxDigitsEnum.TWO;
+        } else {
+            throw new RuntimeException();
+        }
+
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 int fieldValue = sudokuBoard.get(row, column);
                 TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue,
-                        maxDigitsInField);
+                        maxDigitsEnum);
                 addFieldValueListener(textField, row, column);
                 sudokuGrid.add(textField, column, row);
             }
@@ -207,13 +251,17 @@ public class GameController implements Initializable {
      * @param row       number of row in which corresponding SudokuField from SudokuBoard is
      * @param column    number of column in which corresponding SudokuField from SudokuBoard is
      */
-    private void addFieldValueListener(TextField textField, int row, int column) {
+    private void addFieldValueListener(TextField textField, final int row, final int column) {
         textField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue,
                                 String oldVal, String newVal) {
                 if (!validateValue(newVal)) {
-                    Platform.runLater(textField::clear);
+                    if (newVal.equals("")) {
+                        sudokuBoard.set(row, column, 0);
+                    } else {
+                        Platform.runLater(textField::clear);
+                    }
                 } else {
                     sudokuBoard.set(row, column, Integer.parseInt(newVal));
                 }
@@ -227,7 +275,7 @@ public class GameController implements Initializable {
      * @param newVal value to check
      * @return true is can be inserted, otherwise false
      */
-    private boolean validateValue(String newVal) {
+    private boolean validateValue(final String newVal) {
         for (String value : possibleValues) {
             if (value.equals(newVal)) {
                 return true;

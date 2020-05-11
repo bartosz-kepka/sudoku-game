@@ -5,3 +5,7 @@ Nadrzedny raport w target/deploy
 Do odpalenia GUI:
 mvn clean install
 mvn -pl View javafx:run
+
+Logi:
+cat /tmp/Sudoku.logs
+cat /tmp/Sudoku.logs | grep 'INFO\|SEVERE'

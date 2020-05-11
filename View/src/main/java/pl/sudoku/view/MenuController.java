@@ -16,9 +16,14 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.sudoku.model.BoardSizeEnum;
 
 public class MenuController implements Initializable {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(MenuController.class);
 
     @FXML
     public ToggleGroup size;
@@ -109,7 +114,8 @@ public class MenuController implements Initializable {
             Parent root = loader.load();
             App.setScene(root);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception while changing UI language:\n"
+                            + ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -157,7 +163,8 @@ public class MenuController implements Initializable {
             Parent newRoot = loader.load();
             App.setScene(newRoot);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception while opening game view:\n"
+                    + ExceptionUtils.getStackTrace(e));
         }
     }
 

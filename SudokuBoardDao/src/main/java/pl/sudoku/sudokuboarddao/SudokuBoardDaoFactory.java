@@ -14,4 +14,6 @@ public class SudokuBoardDaoFactory {
     public static Dao<SudokuBoard> getFileDao(final String filename) {
         return new FileSudokuBoardDao(filename);
     }
+
+    private SudokuBoardDaoFactory() {}
 }

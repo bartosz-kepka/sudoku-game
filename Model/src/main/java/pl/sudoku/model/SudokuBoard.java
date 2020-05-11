@@ -14,14 +14,18 @@ public final class SudokuBoard implements Serializable, Cloneable {
     /**
      * Represents side size of sudoku board.
      * For future development (different board sizes)
-     * The value for this field is {@value}.
      */
     private final int boardSize;
 
     /**
+     * Enum representing side size of sudoku board.
+     * For future development (different board sizes)
+     */
+    private final BoardSizeEnum boardSizeEnum;
+
+    /**
      * Represents side size of box in sudoku board.
      * For future development (different board sizes)
-     * The value for this field is {@value}.
      */
     private final int boxSize;
 
@@ -51,7 +55,8 @@ public final class SudokuBoard implements Serializable, Cloneable {
      * @param boardSizeEnum size of board to create
      */
     public SudokuBoard(final SudokuSolver solver, BoardSizeEnum boardSizeEnum) {
-        this.boardSize = boardSizeEnum.getSize();
+        this.boardSizeEnum = boardSizeEnum;
+        this.boardSize = this.boardSizeEnum.getSize();
         boxSize = (int) Math.sqrt(boardSize);
         board = new SudokuField[boardSize][boardSize];
 
@@ -225,7 +230,7 @@ public final class SudokuBoard implements Serializable, Cloneable {
      */
     @Override
     public SudokuBoard clone() {
-        SudokuBoard clone = new SudokuBoard(sudokuSolver, BoardSizeEnum.CLASSIC);
+        SudokuBoard clone = new SudokuBoard(sudokuSolver, boardSizeEnum);
 
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {

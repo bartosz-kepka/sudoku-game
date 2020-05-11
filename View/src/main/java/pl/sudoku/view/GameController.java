@@ -201,11 +201,11 @@ public class GameController implements Initializable {
             sudokuGrid.getColumnConstraints().add(column);
         }
 
-        SudokuTextFieldFactory.MaxDigitsEnum maxDigitsEnum;
+        MaxDigitsEnum maxDigitsEnum;
         if (boardSize >= 1 && boardSize <= 9) {
-            maxDigitsEnum = SudokuTextFieldFactory.MaxDigitsEnum.ONE;
+            maxDigitsEnum = MaxDigitsEnum.ONE;
         } else if (boardSize >= 10 && boardSize <= 99) {
-            maxDigitsEnum = SudokuTextFieldFactory.MaxDigitsEnum.TWO;
+            maxDigitsEnum = MaxDigitsEnum.TWO;
         } else {
             throw new RuntimeException();
         }

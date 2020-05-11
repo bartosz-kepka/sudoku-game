@@ -9,9 +9,4 @@ class SudokuBoardDaoFactoryTest {
     public void getFileDao_ShouldNotReturnNull() {
         Assertions.assertNotNull(SudokuBoardDaoFactory.getFileDao("testfile.txt"));
     }
-
-    @Test
-    public void constructor_ShouldNotThrowAnyException() {
-        Assertions.assertDoesNotThrow(SudokuBoardDaoFactory::new);
-    }
 }

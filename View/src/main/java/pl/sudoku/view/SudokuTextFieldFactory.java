@@ -24,7 +24,7 @@ public class SudokuTextFieldFactory {
         sudokuTextField.setAlignment(Pos.CENTER);
         sudokuTextField.setPrefSize(54.0, 54.0);
         sudokuTextField.setFont(Font.font(20.0));
-        sudokuTextField.setStyle("-fx-border-color: Grey; -fx-border-width: 1px;");
+        sudokuTextField.setId("sudoku-field");
 
         int maxDigits = maxDigitsEnum.getDigits();
         sudokuTextField.setTextFormatter(
@@ -43,20 +43,5 @@ public class SudokuTextFieldFactory {
                 }));
 
         return sudokuTextField;
-    }
-
-    public enum MaxDigitsEnum {
-        ONE(1),
-        TWO(2);
-
-        private final int digits;
-
-        MaxDigitsEnum(int digits) {
-            this.digits = digits;
-        }
-
-        public int getDigits() {
-            return digits;
-        }
     }
 }

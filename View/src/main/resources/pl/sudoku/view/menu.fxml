@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import java.net.URL?>
 <VBox alignment="CENTER" prefHeight="300.0" prefWidth="330.0" spacing="20.0"
       xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -46,8 +47,7 @@
                 <Font size="20.0"/>
             </font>
         </Label>
-        <Button fx:id="exitButton" minWidth="100.0" text="%ExitButton" textAlignment="CENTER"
-                style="-fx-text-fill: Red;"/>
+        <Button fx:id="exitButton" id="exit-button" minWidth="100.0" text="%ExitButton" textAlignment="CENTER"/>
         <Label text="%ChangeLanguageLabel">
             <font>
                 <Font size="20.0"/>
@@ -70,4 +70,7 @@
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
     </padding>
+    <stylesheets>
+        <URL value="@game.css" />
+    </stylesheets>
 </VBox>

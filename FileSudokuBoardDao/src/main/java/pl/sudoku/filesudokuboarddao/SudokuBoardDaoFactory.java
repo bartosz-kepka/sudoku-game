@@ -1,4 +1,4 @@
-package pl.sudoku.sudokuboarddao;
+package pl.sudoku.filesudokuboarddao;
 
 import pl.sudoku.dao.Dao;
 import pl.sudoku.model.SudokuBoard;

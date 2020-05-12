@@ -34,12 +34,12 @@ public final class SudokuBoard implements Serializable, Cloneable {
      * Size: {@link #boardSize}x{@link #boardSize}.
      * 0 means that cell in unassigned
      */
-    private SudokuField[][] board;
+    private final SudokuField[][] board;
 
     /**
      * Implementation of sudokuSolver to use for solving sudoku game.
      */
-    private SudokuSolver sudokuSolver;
+    private final SudokuSolver sudokuSolver;
 
     /**
      * Fills sudoku board using solver given in constructor.

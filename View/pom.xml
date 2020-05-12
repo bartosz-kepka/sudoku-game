@@ -34,8 +34,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>pl.sudoku.sudokuboarddao</groupId>
-            <artifactId>SudokuBoardDaoProject</artifactId>
+            <groupId>pl.sudoku.filesudokuboarddao</groupId>
+            <artifactId>FileSudokuBoardDaoProject</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

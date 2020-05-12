@@ -1,4 +1,4 @@
-package pl.sudoku.sudokuboarddao;
+package pl.sudoku.filesudokuboarddao;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

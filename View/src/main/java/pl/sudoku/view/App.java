@@ -33,7 +33,6 @@ public class App extends Application {
         primaryStage.setScene(new Scene(loader.load()));
         primaryStage.setTitle(bundle.getString("MainWindowTitle"));
         primaryStage.show();
-        LOGGER.info("Application started successfully");
     }
 
     static void setScene(Parent root) {

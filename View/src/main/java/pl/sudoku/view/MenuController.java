@@ -105,6 +105,7 @@ public class MenuController implements Initializable {
     private Locale locale;
 
     private void changeUiLanguage(Locale locale) {
+        Locale.setDefault(locale);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.menu",
                 locale);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"), resourceBundle);
@@ -114,8 +115,7 @@ public class MenuController implements Initializable {
             Parent root = loader.load();
             App.setScene(root);
         } catch (IOException e) {
-            LOGGER.error("Exception while changing UI language:\n"
-                            + ExceptionUtils.getStackTrace(e));
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -149,8 +149,12 @@ public class MenuController implements Initializable {
         File saveFile = fileChooser.showOpenDialog(stage);
 
         if (saveFile != null) {
-            GameController gameController = new GameController(saveFile);
-            openGameView(gameController);
+            try {
+                GameController gameController = new GameController(saveFile);
+                openGameView(gameController);
+            } catch (GameLoadingException e) {
+                LOGGER.error(ExceptionUtils.getStackTrace(e));
+            }
         }
     }
 
@@ -163,8 +167,7 @@ public class MenuController implements Initializable {
             Parent newRoot = loader.load();
             App.setScene(newRoot);
         } catch (IOException e) {
-            LOGGER.error("Exception while opening game view:\n"
-                    + ExceptionUtils.getStackTrace(e));
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

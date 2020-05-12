@@ -114,6 +114,8 @@ public final class SudokuBoard implements Serializable, Cloneable {
      * @param row    number of row starting from 0
      * @param column number of column starting from 0
      * @param value  value to assign to cell at position [row][column]
+     * @throws IllegalFieldValueException if given value cannot be stored in this instance of
+     *                                    SudokuBoard
      */
     public void set(final int row, final int column, final int value) {
         this.board[row][column].setFieldValue(value);

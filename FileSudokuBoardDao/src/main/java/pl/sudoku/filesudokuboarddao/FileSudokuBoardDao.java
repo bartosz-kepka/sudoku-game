@@ -13,7 +13,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     /**
      * String representing file with extension.
      */
-    private String fileName;
+    private final String fileName;
 
     /**
      * Constructor for FileSudokuBoardDao class.
@@ -29,16 +29,17 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
      * Uses try-with-resources instruction.
      *
      * @return SudokuBoard obj read from file
+     * @throws FileDaoReadException if error while reading from file happens
      */
     @Override
-    public SudokuBoard read() {
+    public SudokuBoard read() throws FileDaoReadException {
         SudokuBoard sudokuBoard;
         try (FileInputStream fileInputStream = new FileInputStream(fileName);
              ObjectInputStream objectInputStream =
                      new ObjectInputStream(fileInputStream)) {
             sudokuBoard = (SudokuBoard) objectInputStream.readObject();
-        } catch (ClassNotFoundException | IOException e) {
-            throw new RuntimeException(e);
+        } catch (ClassNotFoundException | IOException cause) {
+            throw new FileDaoReadException(cause);
         }
         return sudokuBoard;
     }
@@ -48,15 +49,16 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
      * Uses try-with-resources instruction.
      *
      * @param obj SudokuBoard to be serialized
+     * @throws FileDaoWriteException if error while writing to file happens
      */
     @Override
-    public void write(final SudokuBoard obj) {
+    public void write(final SudokuBoard obj) throws FileDaoWriteException {
         try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
              ObjectOutputStream objectOutputStream =
                      new ObjectOutputStream(fileOutputStream)) {
             objectOutputStream.writeObject(obj);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException cause) {
+            throw new FileDaoWriteException(cause);
         }
     }
 

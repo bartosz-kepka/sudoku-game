@@ -29,18 +29,19 @@ class FileSudokuBoardDaoTest {
     @Test
     public void read_FromNonExistentFile_ShouldThrowException() {
         Dao<SudokuBoard> fileSudokuBoardDao = SudokuBoardDaoFactory.getFileDao("nonExistent");
-        Assertions.assertThrows(RuntimeException.class, () -> fileSudokuBoardDao.read());
+        Assertions.assertThrows(FileDaoReadException.class, fileSudokuBoardDao::read);
     }
 
     @Test
     public void write_ToImproperFile_ShouldThrowException() {
         SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(), BoardSizeEnum.CLASSIC);
         Dao<SudokuBoard> fileSudokuBoardDao = SudokuBoardDaoFactory.getFileDao("/:;:");
-        Assertions.assertThrows(RuntimeException.class, () -> fileSudokuBoardDao.write(sudokuBoard));
+        Assertions.assertThrows(FileDaoWriteException.class,
+                () -> fileSudokuBoardDao.write(sudokuBoard));
     }
 
     @Test
-    public void finalize_ReflectMethodAddInvoke_ShouldNotThrowAnyException() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+    public void finalize_ReflectMethodAddInvoke_ShouldNotThrowAnyException() throws NoSuchMethodException {
         Dao<SudokuBoard> fileSudokuBoardDao = SudokuBoardDaoFactory.getFileDao("Test");
 
         Method finalize = fileSudokuBoardDao.getClass().getDeclaredMethod("finalize");

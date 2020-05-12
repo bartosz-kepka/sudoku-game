@@ -28,15 +28,17 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.dao.Dao;
+import pl.sudoku.filesudokuboarddao.FileDaoReadException;
+import pl.sudoku.filesudokuboarddao.FileDaoWriteException;
+import pl.sudoku.filesudokuboarddao.SudokuBoardDaoFactory;
 import pl.sudoku.fxmodel.FXsudokuBoard;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.BoardSizeEnum;
 import pl.sudoku.model.SudokuBoard;
-import pl.sudoku.filesudokuboarddao.SudokuBoardDaoFactory;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 public class GameController implements Initializable {
 
@@ -60,8 +62,8 @@ public class GameController implements Initializable {
             Parent newRoot = loader.load();
             App.setScene(newRoot);
         } catch (IOException e) {
-            LOGGER.error("Exception while cancelling game:\n"
-                    + ExceptionUtils.getStackTrace(e));        }
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
+        }
     }
 
     @FXML
@@ -83,9 +85,11 @@ public class GameController implements Initializable {
             try (Dao<SudokuBoard> fileSudokuBoardDao =
                          SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
                 fileSudokuBoardDao.write(sudokuBoard.getSudokuBoardPlaceholder());
+            } catch (FileDaoWriteException e) {
+                LOGGER.error(ExceptionUtils.getStackTrace(e));
+                // MOZNA ZROBIC JEDEN BLOCK CATCH ALE JEST TAK ZEBY POKAZAC ZE LAPIEMY SWOJ WYJAEK
             } catch (Exception e) {
-                LOGGER.error("Exception while saving game to " + saveFile.getAbsolutePath() + "\n"
-                        + ExceptionUtils.getStackTrace(e));
+                LOGGER.error(ExceptionUtils.getStackTrace(e));
             }
         }
     }
@@ -119,13 +123,12 @@ public class GameController implements Initializable {
      *
      * @param saveFile save file to load game from
      */
-    public GameController(File saveFile) {
+    public GameController(File saveFile) throws GameLoadingException {
         try (Dao<SudokuBoard> fileSudokuBoardDao =
                      SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
             sudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
-        } catch (Exception e) {
-            LOGGER.error("Exception while loading game from " + saveFile.getAbsolutePath() + "\n"
-                    + ExceptionUtils.getStackTrace(e));
+        } catch (Exception cause) {
+            throw new GameLoadingException(cause);
         }
     }
 
@@ -211,10 +214,8 @@ public class GameController implements Initializable {
         MaxDigitsEnum maxDigitsEnum;
         if (boardSize >= 1 && boardSize <= 9) {
             maxDigitsEnum = MaxDigitsEnum.ONE;
-        } else if (boardSize >= 10 && boardSize <= 99) {
-            maxDigitsEnum = MaxDigitsEnum.TWO;
         } else {
-            throw new RuntimeException();
+            maxDigitsEnum = MaxDigitsEnum.TWO;
         }
 
         for (int row = 0; row < boardSize; row++) {

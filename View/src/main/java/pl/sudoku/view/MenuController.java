@@ -83,8 +83,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void handleLangEnButtonAction(ActionEvent event) {
-        locale = new Locale("en");
-        changeUiLanguage(locale);
+        changeUiLanguage(new Locale("en"));
     }
 
     @FXML
@@ -92,8 +91,7 @@ public class MenuController implements Initializable {
 
     @FXML
     private void handleLangPlButtonAction(ActionEvent event) {
-        locale = new Locale("pl");
-        changeUiLanguage(locale);
+        changeUiLanguage(new Locale("pl"));
     }
 
     @FXML
@@ -102,12 +100,9 @@ public class MenuController implements Initializable {
     @FXML
     public Label authorTwo;
 
-    private Locale locale;
-
     private void changeUiLanguage(Locale locale) {
         Locale.setDefault(locale);
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.menu",
-                locale);
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.menu");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("menu.fxml"), resourceBundle);
 
         try {
@@ -121,7 +116,6 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        locale = resources.getLocale();
         langEN.setOnAction(this::handleLangEnButtonAction);
         langPL.setOnAction(this::handleLangPlButtonAction);
         easyButton.setOnAction(this::handleEasyButtonAction);
@@ -132,7 +126,7 @@ public class MenuController implements Initializable {
         smallRadioButton.setUserData(BoardSizeEnum.SMALL);
         classicRadioButton.setUserData(BoardSizeEnum.CLASSIC);
         largeRadioButton.setUserData(BoardSizeEnum.LARGE);
-        setAuthors(locale);
+        setAuthors();
     }
 
     private void startNewGame(GameDifficultyEnum gameDifficulty) {
@@ -159,7 +153,7 @@ public class MenuController implements Initializable {
     }
 
     private void openGameView(GameController gameController) {
-        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.game", locale);
+        ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.game");
         FXMLLoader loader = new FXMLLoader(App.class.getResource("game.fxml"), bundle);
         loader.setController(gameController);
 
@@ -171,9 +165,9 @@ public class MenuController implements Initializable {
         }
     }
 
-    private void setAuthors(Locale locale) {
+    private void setAuthors() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(
-                "pl.sudoku.view.bundles.Authors", locale);
+                "pl.sudoku.view.bundles.Authors");
 
         authorOne.setText(resourceBundle.getString("224326"));
         authorTwo.setText(resourceBundle.getString("224248"));

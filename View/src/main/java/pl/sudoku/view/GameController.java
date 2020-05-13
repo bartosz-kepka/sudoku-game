@@ -32,7 +32,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.dao.Dao;
-import pl.sudoku.filesudokuboarddao.FileDaoReadException;
 import pl.sudoku.filesudokuboarddao.FileDaoWriteException;
 import pl.sudoku.filesudokuboarddao.SudokuBoardDaoFactory;
 import pl.sudoku.fxmodel.FXsudokuBoard;

@@ -22,6 +22,7 @@
         <module>Dao</module>
         <module>FileSudokuBoardDao</module>
         <module>FXModel</module>
+        <module>JdbcSudokuBoardDao</module>
     </modules>
 
     <distributionManagement>
@@ -86,6 +87,12 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.20</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derby</artifactId>
+                <version>10.15.2.0</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

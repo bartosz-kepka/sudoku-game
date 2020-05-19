@@ -23,6 +23,11 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     private String saveName;
 
+    /**
+     * Method connecting Dao to database.
+     * @param saveName string representing SudokuBaord Save
+     * @throws JdbcDaoConnectException if unable to connect to database
+     */
     public JdbcSudokuBoardDao(String saveName) throws JdbcDaoConnectException {
         this.saveName = saveName;
         try {
@@ -75,16 +80,28 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
         }
     }
 
+    /**
+     * Method deleting SudokuBoard save from database.
+     * @throws JdbcDaoDeleteException if database is unavailable or rows affected by delete == 0
+     *
+     */
     public void delete() throws JdbcDaoDeleteException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM "
                 + "SudokuBoards WHERE savename = ?")) {
             preparedStatement.setString(1, saveName);
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() != 1) {
+                throw new JdbcDaoDeleteException(new IOException());
+            }
         } catch (SQLException e) {
             throw new JdbcDaoDeleteException(e);
         }
     }
 
+    /**
+     * Method returning ArrayList of saves.
+     * @return ArrayList consisting of saveNames
+     * @throws JdbcDaoReadException if unable to access data form database
+     */
     public ArrayList<String> readAvailable() throws JdbcDaoReadException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "SELECT savename FROM SudokuBoards")) {
@@ -117,6 +134,10 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
         return saveName;
     }
 
+    /**
+     * Setter for fileName field.
+     * @param saveName new fileName
+     */
     public void setSaveName(String saveName) {
         this.saveName = saveName;
     }

@@ -107,8 +107,8 @@ public class GameController implements Initializable {
         String saveName = dbSaveTextField.getText();
         ResourceBundle resourceBundle
                 = ResourceBundle.getBundle("pl.sudoku.view.bundles.game");
-        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao(saveName)) {
-            jdbcSudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
+        try (Dao<SudokuBoard> sudokuBoardDao = SudokuBoardDaoFactory.getDatabaseDao(saveName)) {
+            sudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
             dbSaveButton.setStyle("-fx-text-fill: forestgreen");
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

@@ -183,8 +183,8 @@ public class MenuController implements Initializable {
     private void loadGameFromDatabase() {
         String selectedSave = (String) dbLoadChoiceBox.getValue();
 
-        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao(selectedSave)) {
-            FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(jdbcSudokuBoardDao.read());
+        try (Dao<SudokuBoard> sudokuBoardDao = SudokuBoardDaoFactory.getDatabaseDao(selectedSave)) {
+            FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(sudokuBoardDao.read());
             GameController gameController = new GameController(fXsudokuBoard);
             openGameView(gameController);
         } catch (Exception e) {

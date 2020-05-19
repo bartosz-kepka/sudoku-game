@@ -1,6 +1,8 @@
 package pl.sudoku.filesudokuboarddao;
 
 import pl.sudoku.dao.Dao;
+import pl.sudoku.jdbcsudokuboarddao.JdbcDaoConnectException;
+import pl.sudoku.jdbcsudokuboarddao.JdbcSudokuBoardDao;
 import pl.sudoku.model.SudokuBoard;
 
 public class SudokuBoardDaoFactory {
@@ -14,6 +16,12 @@ public class SudokuBoardDaoFactory {
     public static Dao<SudokuBoard> getFileDao(final String filename) {
         return new FileSudokuBoardDao(filename);
     }
+
+    public static Dao<SudokuBoard> getDatabaseDao(final String filename) throws JdbcDaoConnectException {
+        return new JdbcSudokuBoardDao(filename);
+    }
+
+
 
     private SudokuBoardDaoFactory() {}
 }

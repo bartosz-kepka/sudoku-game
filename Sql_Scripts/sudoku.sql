@@ -3,7 +3,7 @@ CREATE DATABASE Sudoku;
 USE Sudoku;
 
 CREATE table SudokuBoards(
-    savename varchar(30) NOT NULL,
+    savename varchar(15) NOT NULL,
     board varbinary(max),
     PRIMARY KEY (savename)
 );

@@ -66,7 +66,7 @@ public class GameController implements Initializable {
     }
 
     @FXML
-    public Button saveButton;
+    public Button fileSaveButton;
 
     /**
      * Saves game when "Save game" button clicked.
@@ -92,6 +92,12 @@ public class GameController implements Initializable {
             }
         }
     }
+
+    @FXML
+    public Button dbSaveButton;
+
+    @FXML
+    public TextField dbSaveTextField;
 
     @FXML
     public GridPane sudokuGrid;
@@ -130,13 +136,14 @@ public class GameController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         locale = resources.getLocale();
         cancelButton.setOnAction(this::handleCancelButtonAction);
-        saveButton.setOnAction(this::handleSaveButtonAction);
+        fileSaveButton.setOnAction(this::handleSaveButtonAction);
         boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
         generatePossibleValues();
         sudokuBoard.addPropertyChangeListener(
                 FXsudokuBoard.FIELD_VALUE_PROPERTY, new SudokuFieldValueListener());
         fillSudokuGrid();
         setWarnings();
+
     }
 
     class SudokuFieldValueListener implements PropertyChangeListener {

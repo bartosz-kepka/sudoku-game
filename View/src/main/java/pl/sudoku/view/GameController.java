@@ -20,11 +20,16 @@ import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,6 +40,7 @@ import pl.sudoku.dao.Dao;
 import pl.sudoku.filesudokuboarddao.FileDaoWriteException;
 import pl.sudoku.filesudokuboarddao.SudokuBoardDaoFactory;
 import pl.sudoku.fxmodel.FXsudokuBoard;
+import pl.sudoku.jdbcsudokuboarddao.JdbcSudokuBoardDao;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.BoardSizeEnum;
 import pl.sudoku.model.SudokuBoard;
@@ -69,12 +75,12 @@ public class GameController implements Initializable {
     public Button fileSaveButton;
 
     /**
-     * Saves game when "Save game" button clicked.
+     * Saves game to file when "Save game" button clicked.
      *
      * @param event onClick Event
      */
     @FXML
-    private void handleSaveButtonAction(ActionEvent event) {
+    private void handleFileSaveButtonAction(ActionEvent event) {
         Stage stage = new Stage();
         stage.setAlwaysOnTop(true);
         FileChooser fileChooser = new FileChooser();
@@ -83,7 +89,7 @@ public class GameController implements Initializable {
         if (saveFile != null) {
             try (Dao<SudokuBoard> fileSudokuBoardDao =
                          SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
-                fileSudokuBoardDao.write(sudokuBoard.getSudokuBoardPlaceholder());
+                fileSudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
             } catch (FileDaoWriteException e) {
                 LOGGER.error(ExceptionUtils.getStackTrace(e));
                 // MOZNA ZROBIC JEDEN BLOCK CATCH ALE JEST TAK ZEBY POKAZAC ZE LAPIEMY SWOJ WYJAEK
@@ -97,12 +103,43 @@ public class GameController implements Initializable {
     public Button dbSaveButton;
 
     @FXML
+    private void handleDbFileSaveButtonAction(ActionEvent event) {
+        String saveName = dbSaveTextField.getText();
+        ResourceBundle resourceBundle
+                = ResourceBundle.getBundle("pl.sudoku.view.bundles.game");
+        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao(saveName)) {
+            jdbcSudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
+            dbSaveButton.setStyle("-fx-text-fill: forestgreen");
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle(resourceBundle.getString("SaveConfirmationDialogTitle"));
+            alert.setHeaderText(resourceBundle.getString("SaveConfirmationDialogHeaderText"));
+            alert.getDialogPane().setMinWidth(300.0);
+            alert.getDialogPane().setGraphic(new ImageView(this.getClass().getResource(
+                    "confirmation_icon.jpg").toString()));
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
+            dbSaveButton.setStyle("-fx-text-fill: tomato");
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(resourceBundle.getString("SaveErrorDialogTitle"));
+            alert.setHeaderText(resourceBundle.getString("SaveErrorDialogHeaderText"));
+            alert.setContentText(e.getLocalizedMessage());
+            alert.getDialogPane().setMinWidth(550.0);
+            alert.showAndWait();
+        }
+
+    }
+
+    @FXML
     public TextField dbSaveTextField;
 
     @FXML
     public GridPane sudokuGrid;
 
-    FXsudokuBoard sudokuBoard;
+    FXsudokuBoard fXsudokuBoard;
 
     int boardSize;
 
@@ -117,33 +154,34 @@ public class GameController implements Initializable {
      * @param boardSizeEnum      chosen board size
      */
     public GameController(GameDifficultyEnum gameDifficultyEnum, BoardSizeEnum boardSizeEnum) {
-        sudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
+        fXsudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
                 boardSizeEnum));
-        sudokuBoard.getSudokuBoardPlaceholder().solveGame();
-        gameDifficultyEnum.clearSudokuFields(sudokuBoard.getSudokuBoardPlaceholder());
+        fXsudokuBoard.getSudokuBoardPlaceholder().solveGame();
+        gameDifficultyEnum.clearSudokuFields(fXsudokuBoard.getSudokuBoardPlaceholder());
     }
 
     /**
      * Game controller constructor used for resuming saved game.
      *
-     * @param sudokuBoard game to resume
+     * @param fXsudokuBoard game to resume
      */
-    public GameController(FXsudokuBoard sudokuBoard) {
-        this.sudokuBoard = sudokuBoard;
+    public GameController(FXsudokuBoard fXsudokuBoard) {
+        this.fXsudokuBoard = fXsudokuBoard;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         locale = resources.getLocale();
         cancelButton.setOnAction(this::handleCancelButtonAction);
-        fileSaveButton.setOnAction(this::handleSaveButtonAction);
-        boardSize = sudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
+        fileSaveButton.setOnAction(this::handleFileSaveButtonAction);
+        dbSaveButton.setOnAction(this::handleDbFileSaveButtonAction);
+        boardSize = fXsudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
         generatePossibleValues();
-        sudokuBoard.addPropertyChangeListener(
+        fXsudokuBoard.addPropertyChangeListener(
                 FXsudokuBoard.FIELD_VALUE_PROPERTY, new SudokuFieldValueListener());
         fillSudokuGrid();
         setWarnings();
-
+        initializeDbSaveTextField();
     }
 
     class SudokuFieldValueListener implements PropertyChangeListener {
@@ -181,11 +219,11 @@ public class GameController implements Initializable {
                 int nodeColumn = GridPane.getColumnIndex(node);
 
                 boolean rowIsCorrect =
-                        sudokuBoard.getSudokuBoardPlaceholder().getRow(nodeRow).verify();
+                        fXsudokuBoard.getSudokuBoardPlaceholder().getRow(nodeRow).verify();
                 boolean columnIsCorrect =
-                        sudokuBoard.getSudokuBoardPlaceholder().getColumn(nodeColumn).verify();
+                        fXsudokuBoard.getSudokuBoardPlaceholder().getColumn(nodeColumn).verify();
                 boolean boxIsCorrect =
-                        sudokuBoard.getSudokuBoardPlaceholder().getBox(nodeRow, nodeColumn)
+                        fXsudokuBoard.getSudokuBoardPlaceholder().getBox(nodeRow, nodeColumn)
                                 .verify();
 
                 if (rowIsCorrect && columnIsCorrect && boxIsCorrect) {
@@ -221,7 +259,7 @@ public class GameController implements Initializable {
 
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
-                int fieldValue = sudokuBoard.get(row, column);
+                int fieldValue = fXsudokuBoard.get(row, column);
                 TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue,
                         maxDigitsEnum);
                 addFieldValueListener(textField, row, column);
@@ -267,12 +305,12 @@ public class GameController implements Initializable {
                                 String oldVal, String newVal) {
                 if (!validateValue(newVal)) {
                     if (newVal.equals("")) {
-                        sudokuBoard.set(row, column, 0);
+                        fXsudokuBoard.set(row, column, 0);
                     } else {
                         Platform.runLater(textField::clear);
                     }
                 } else {
-                    sudokuBoard.set(row, column, Integer.parseInt(newVal));
+                    fXsudokuBoard.set(row, column, Integer.parseInt(newVal));
                 }
             }
         });
@@ -301,6 +339,28 @@ public class GameController implements Initializable {
         for (int i = 0; i < possibleValues.length; i++) {
             possibleValues[i] = Integer.toString(i + 1);
         }
+    }
+
+    private void initializeDbSaveTextField() {
+        dbSaveTextField.setTextFormatter(
+                new TextFormatter<String>((TextFormatter.Change change) -> {
+                    String newText = change.getControlNewText();
+                    String oldText = change.getControlText();
+                    if (newText.length() > 15) {
+                        return null;
+                    }
+
+                    if (newText.length() == 15 && oldText.length() == 15) {
+                        return null;
+                    } else {
+                        return change;
+                    }
+                }));
+
+        dbSaveTextField.textProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    dbSaveButton.setDisable(newValue.equals(""));
+                });
     }
 
 }

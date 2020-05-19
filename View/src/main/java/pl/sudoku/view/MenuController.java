@@ -3,6 +3,7 @@ package pl.sudoku.view;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -19,7 +20,12 @@ import javafx.stage.Stage;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.sudoku.dao.Dao;
+import pl.sudoku.filesudokuboarddao.SudokuBoardDaoFactory;
+import pl.sudoku.fxmodel.FXsudokuBoard;
+import pl.sudoku.jdbcsudokuboarddao.JdbcSudokuBoardDao;
 import pl.sudoku.model.BoardSizeEnum;
+import pl.sudoku.model.SudokuBoard;
 
 public class MenuController implements Initializable {
 
@@ -62,12 +68,21 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public Button loadButton;
+    public Button fileLoadButton;
 
     @FXML
-    private void handleLoadButtonAction(ActionEvent event) {
-        loadGame();
+    private void handleFileLoadButtonAction(ActionEvent event) {
+        loadGameFromFile();
     }
+
+    @FXML
+    public Button dbLoadButton;
+
+    @FXML
+    private void handleDbLoadButtonAction(ActionEvent event) {
+        loadGameFromDatabase();
+    }
+
 
     @FXML
     public Button exitButton;
@@ -121,7 +136,8 @@ public class MenuController implements Initializable {
         easyButton.setOnAction(this::handleEasyButtonAction);
         mediumButton.setOnAction(this::handleMediumButtonAction);
         hardButton.setOnAction(this::handleHardButtonAction);
-        loadButton.setOnAction(this::handleLoadButtonAction);
+        fileLoadButton.setOnAction(this::handleFileLoadButtonAction);
+        dbLoadButton.setOnAction(this::handleDbLoadButtonAction);
         exitButton.setOnAction(this::handleExitButtonAction);
         smallRadioButton.setUserData(BoardSizeEnum.SMALL);
         classicRadioButton.setUserData(BoardSizeEnum.CLASSIC);
@@ -135,20 +151,37 @@ public class MenuController implements Initializable {
         openGameView(gameController);
     }
 
-    private void loadGame() {
+    private void loadGameFromFile() {
         Stage stage = new Stage();
-        stage.setAlwaysOnTop(true);
         stage.setAlwaysOnTop(true);
         FileChooser fileChooser = new FileChooser();
         File saveFile = fileChooser.showOpenDialog(stage);
 
         if (saveFile != null) {
             try {
-                GameController gameController = new GameController(saveFile);
-                openGameView(gameController);
+                try (Dao<SudokuBoard> fileSudokuBoardDao =
+                             SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
+                    FXsudokuBoard sudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
+                    GameController gameController = new GameController(sudokuBoard);
+                    openGameView(gameController);
+                } catch (Exception e) {
+                    throw new GameLoadingException(e);
+                }
             } catch (GameLoadingException e) {
                 LOGGER.error(ExceptionUtils.getStackTrace(e));
             }
+        }
+    }
+
+    private void loadGameFromDatabase() {
+        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("")) {
+            ArrayList<String> available = jdbcSudokuBoardDao.readAvailable();
+
+            for (String av : available) {
+                System.out.println(av);
+            }
+        } catch (Exception e) {
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

@@ -41,7 +41,8 @@
                 <Font size="20.0"/>
             </font>
         </Label>
-        <Button fx:id="loadButton" minWidth="100.0" text="%LoadButton" textAlignment="CENTER"/>
+        <Button fx:id="fileLoadButton" minWidth="100.0" text="%FileLoadButton" textAlignment="CENTER"/>
+        <Button fx:id="dbLoadButton" minWidth="100.0" text="%DbLoadButton" textAlignment="CENTER"/>
         <Label text="%ExitLabel">
             <font>
                 <Font size="20.0"/>

@@ -89,12 +89,6 @@
                 <version>1.7.20</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.derby</groupId>
-                <artifactId>derby</artifactId>
-                <version>10.15.2.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>mssql-jdbc</artifactId>
                 <version>8.3.0.jre11-preview</version>

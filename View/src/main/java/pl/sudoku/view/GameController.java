@@ -120,15 +120,10 @@ public class GameController implements Initializable {
     /**
      * Game controller constructor used for resuming saved game.
      *
-     * @param saveFile save file to load game from
+     * @param sudokuBoard game to resume
      */
-    public GameController(File saveFile) throws GameLoadingException {
-        try (Dao<SudokuBoard> fileSudokuBoardDao =
-                     SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
-            sudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
-        } catch (Exception cause) {
-            throw new GameLoadingException(cause);
-        }
+    public GameController(FXsudokuBoard sudokuBoard) {
+        this.sudokuBoard = sudokuBoard;
     }
 
     @Override

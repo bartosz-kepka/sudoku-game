@@ -5,6 +5,7 @@ open module pl.sudoku.view {
     requires transitive pl.sudoku.filesudokuboarddao;
     requires transitive pl.sudoku.dao;
     requires transitive pl.sudoku.fxmodel;
+    requires pl.sudoku.jdbcsudokuboarddao;
     requires java.desktop;
     requires slf4j.jdk14;
     requires slf4j.api;

@@ -1,12 +1,14 @@
 package pl.sudoku.jdbcsudokuboarddao;
 
-import java.util.ResourceBundle;
 import pl.sudoku.dao.DaoWriteException;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class JdbcDaoWriteException extends DaoWriteException {
 
     ResourceBundle resourceBundle
-            = ResourceBundle.getBundle("pl.sudoku.jdbcsudokuboarddao.jdbcDaoExceptions");
+            = ResourceBundle.getBundle("jdbcDaoExceptions");
 
 
     public JdbcDaoWriteException(Throwable cause) {

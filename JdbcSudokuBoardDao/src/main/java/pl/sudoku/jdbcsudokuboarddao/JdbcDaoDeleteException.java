@@ -4,7 +4,7 @@ import java.util.ResourceBundle;
 
 public class JdbcDaoDeleteException extends Exception {
     ResourceBundle resourceBundle
-            = ResourceBundle.getBundle("pl.sudoku.jdbcsudokuboarddao.jdbcDaoExceptions");
+            = ResourceBundle.getBundle("jdbcDaoExceptions");
 
     public JdbcDaoDeleteException(Throwable cause) {
         super(cause);

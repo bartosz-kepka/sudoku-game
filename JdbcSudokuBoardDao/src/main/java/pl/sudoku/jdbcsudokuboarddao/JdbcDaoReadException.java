@@ -1,12 +1,14 @@
 package pl.sudoku.jdbcsudokuboarddao;
 
-import java.util.ResourceBundle;
 import pl.sudoku.dao.DaoReadException;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class JdbcDaoReadException extends DaoReadException {
 
     ResourceBundle resourceBundle
-            = ResourceBundle.getBundle("pl.sudoku.jdbcsudokuboarddao.jdbcDaoExceptions");
+            = ResourceBundle.getBundle("jdbcDaoExceptions");
 
 
     public JdbcDaoReadException(Throwable cause) {

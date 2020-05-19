@@ -4,7 +4,7 @@ import java.util.ResourceBundle;
 
 public class JdbcDaoConnectException extends Exception {
     ResourceBundle resourceBundle
-            = ResourceBundle.getBundle("pl.sudoku.jdbcsudokuboarddao.jdbcDaoExceptions");
+            = ResourceBundle.getBundle("jdbcDaoExceptions");
 
 
     public JdbcDaoConnectException(Throwable cause) {

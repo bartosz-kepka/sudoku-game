@@ -50,6 +50,22 @@ public class JdbcSudokuBoardDaoTest {
     }
 
     @Test
+    public void Update_SudokuBoard_toWrongSave_ShouldThrowException() {
+        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("Update5")) {
+            SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(),
+                    BoardSizeEnum.CLASSIC);
+            sudokuBoard.set(0, 0, 1);
+            jdbcSudokuBoardDao.write(sudokuBoard);
+            assertDoesNotThrow(() -> jdbcSudokuBoardDao.update(sudokuBoard));
+            jdbcSudokuBoardDao.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Test
     public void Delete_SudokuBoard_fromWrongSave_ShouldThrowException() {
         try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("WrongDelete")) {
             assertThrows(JdbcDaoDeleteException.class, jdbcSudokuBoardDao::delete);

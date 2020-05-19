@@ -3,15 +3,18 @@ package pl.sudoku.view;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -74,6 +77,9 @@ public class MenuController implements Initializable {
     private void handleFileLoadButtonAction(ActionEvent event) {
         loadGameFromFile();
     }
+
+    @FXML
+    public ChoiceBox dbLoadChoiceBox;
 
     @FXML
     public Button dbLoadButton;
@@ -143,6 +149,7 @@ public class MenuController implements Initializable {
         classicRadioButton.setUserData(BoardSizeEnum.CLASSIC);
         largeRadioButton.setUserData(BoardSizeEnum.LARGE);
         setAuthors();
+        loadAvailableSavesFormDB();
     }
 
     private void startNewGame(GameDifficultyEnum gameDifficulty) {
@@ -161,8 +168,8 @@ public class MenuController implements Initializable {
             try {
                 try (Dao<SudokuBoard> fileSudokuBoardDao =
                              SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
-                    FXsudokuBoard sudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
-                    GameController gameController = new GameController(sudokuBoard);
+                    FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
+                    GameController gameController = new GameController(fXsudokuBoard);
                     openGameView(gameController);
                 } catch (Exception e) {
                     throw new GameLoadingException(e);
@@ -174,12 +181,12 @@ public class MenuController implements Initializable {
     }
 
     private void loadGameFromDatabase() {
-        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("")) {
-            ArrayList<String> available = jdbcSudokuBoardDao.readAvailable();
+        String selectedSave = (String) dbLoadChoiceBox.getValue();
 
-            for (String av : available) {
-                System.out.println(av);
-            }
+        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao(selectedSave)) {
+            FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(jdbcSudokuBoardDao.read());
+            GameController gameController = new GameController(fXsudokuBoard);
+            openGameView(gameController);
         } catch (Exception e) {
             LOGGER.error(ExceptionUtils.getStackTrace(e));
         }
@@ -204,6 +211,19 @@ public class MenuController implements Initializable {
 
         authorOne.setText(resourceBundle.getString("224326"));
         authorTwo.setText(resourceBundle.getString("224248"));
+    }
+
+    private void loadAvailableSavesFormDB() {
+        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("")) {
+            List<String> available = jdbcSudokuBoardDao.readAvailable();
+
+            dbLoadChoiceBox.getItems().addAll(available);
+        } catch (Exception e) {
+            LOGGER.error(ExceptionUtils.getStackTrace(e));
+        }
+
+        dbLoadChoiceBox.getSelectionModel().selectedIndexProperty()
+                .addListener((observable, oldValue, newValue) -> dbLoadButton.setDisable(false));
     }
 
 }

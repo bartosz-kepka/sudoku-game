@@ -11,8 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 import pl.sudoku.dao.Dao;
 import pl.sudoku.dao.DaoReadException;
 import pl.sudoku.dao.DaoWriteException;

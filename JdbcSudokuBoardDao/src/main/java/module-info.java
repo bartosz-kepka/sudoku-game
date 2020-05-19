@@ -1,4 +1,4 @@
-open module pl.sudoku.jdbcsudokuboarddao {
+ open module pl.sudoku.jdbcsudokuboarddao {
     requires pl.sudoku.model;
     requires pl.sudoku.dao;
     requires java.sql;

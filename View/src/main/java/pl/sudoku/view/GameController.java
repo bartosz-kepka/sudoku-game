@@ -6,7 +6,9 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -22,14 +24,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -107,17 +108,27 @@ public class GameController implements Initializable {
         String saveName = dbSaveTextField.getText();
         ResourceBundle resourceBundle
                 = ResourceBundle.getBundle("pl.sudoku.view.bundles.game");
-        try (Dao<SudokuBoard> sudokuBoardDao = SudokuBoardDaoFactory.getDatabaseDao(saveName)) {
-            sudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
-            dbSaveButton.setStyle("-fx-text-fill: forestgreen");
+        try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao(saveName)) {
+            List<String> available = jdbcSudokuBoardDao.readAvailable();
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle(resourceBundle.getString("SaveConfirmationDialogTitle"));
-            alert.setHeaderText(resourceBundle.getString("SaveConfirmationDialogHeaderText"));
-            alert.getDialogPane().setMinWidth(300.0);
-            alert.getDialogPane().setGraphic(new ImageView(this.getClass().getResource(
-                    "confirmation_icon.jpg").toString()));
-            alert.showAndWait();
+            if (available.contains(saveName)) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(resourceBundle.getString("UpdateSaveConfirmationDialogTitle"));
+                alert.setHeaderText(resourceBundle.getString(
+                        "UpdateSaveConfirmationDialogHeaderText"));
+                alert.setContentText(resourceBundle.getString("UpdateSaveConfirmationDialogContentText"));
+                alert.getDialogPane().setMinWidth(550.0);
+
+                Optional<ButtonType> choice = alert.showAndWait();
+
+                if (choice.get() == ButtonType.OK) {
+                    jdbcSudokuBoardDao.update(fXsudokuBoard.getSudokuBoardPlaceholder());
+                    showSuccessDialog(resourceBundle);
+                }
+            } else {
+                jdbcSudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
+                showSuccessDialog(resourceBundle);
+            }
 
         } catch (Exception e) {
             LOGGER.error(ExceptionUtils.getStackTrace(e));
@@ -131,6 +142,18 @@ public class GameController implements Initializable {
             alert.showAndWait();
         }
 
+    }
+
+    private void showSuccessDialog(ResourceBundle resourceBundle) {
+        dbSaveButton.setStyle("-fx-text-fill: forestgreen");
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(resourceBundle.getString("SaveConfirmationDialogTitle"));
+        alert.setHeaderText(resourceBundle.getString("SaveConfirmationDialogHeaderText"));
+        alert.getDialogPane().setMinWidth(300.0);
+        alert.getDialogPane().setGraphic(new ImageView(this.getClass().getResource(
+                "confirmation_icon.jpg").toString()));
+        alert.showAndWait();
     }
 
     @FXML

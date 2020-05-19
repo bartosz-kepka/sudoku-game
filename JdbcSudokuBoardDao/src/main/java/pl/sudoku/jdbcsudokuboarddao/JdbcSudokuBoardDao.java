@@ -97,6 +97,24 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
         }
     }
 
+    public void update(SudokuBoard obj) throws DaoWriteException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE "
+                + "SudokuBoards SET board = ? WHERE savename = ?")) {
+            preparedStatement.setString(2, saveName);
+
+            try (ByteArrayOutputStream boos = new ByteArrayOutputStream();
+                 ObjectOutputStream oos = new ObjectOutputStream(boos)) {
+
+                oos.writeObject(obj);
+                preparedStatement.setBytes(1, boos.toByteArray());
+                preparedStatement.executeUpdate();
+            }
+
+        } catch (SQLException | IOException e) {
+            throw new JdbcDaoWriteException(e);
+        }
+    }
+
     /**
      * Method returning ArrayList of saves.
      * @return ArrayList consisting of saveNames

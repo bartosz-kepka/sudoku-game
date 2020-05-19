@@ -116,7 +116,6 @@ public class GameController implements Initializable {
                 alert.setTitle(resourceBundle.getString("UpdateSaveConfirmationDialogTitle"));
                 alert.setHeaderText(resourceBundle.getString(
                         "UpdateSaveConfirmationDialogHeaderText"));
-                alert.setContentText(resourceBundle.getString("UpdateSaveConfirmationDialogContentText"));
                 alert.getDialogPane().setMinWidth(550.0);
 
                 Optional<ButtonType> choice = alert.showAndWait();

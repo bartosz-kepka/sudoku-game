@@ -1,8 +1,7 @@
 package pl.sudoku.jdbcsudokuboarddao;
 
-import pl.sudoku.dao.DaoWriteException;
-
 import java.util.ResourceBundle;
+import pl.sudoku.dao.DaoWriteException;
 
 public class JdbcDaoWriteException extends DaoWriteException {
 
@@ -17,5 +16,6 @@ public class JdbcDaoWriteException extends DaoWriteException {
     @Override
     public String getLocalizedMessage() {
         return resourceBundle.getString("JdbcWriteExceptionMessage");
+        //return "Writteeeee";
     }
 }

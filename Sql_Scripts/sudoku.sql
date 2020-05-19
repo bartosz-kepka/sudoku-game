@@ -4,7 +4,7 @@ USE Sudoku;
 
 CREATE table SudokuBoards(
     savename varchar(30) NOT NULL,
-    board varbinary(4096),
+    board varbinary(max),
     PRIMARY KEY (savename)
 );
 

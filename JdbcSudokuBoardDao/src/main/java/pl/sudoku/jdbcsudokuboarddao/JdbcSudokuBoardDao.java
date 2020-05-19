@@ -1,5 +1,10 @@
 package pl.sudoku.jdbcsudokuboarddao;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,46 +22,61 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     private String saveName;
 
-    public JdbcSudokuBoardDao(String saveName) throws JdcbDaoConnectException {
+    public JdbcSudokuBoardDao(String saveName) throws JdbcDaoConnectException {
         this.saveName = saveName;
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;" +
-                    "databaseName=Sudoku;", "SA", "Password.2020");
+            connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;"
+                    + "databaseName=Sudoku;", "SA", "Password.2020");
         } catch (ClassNotFoundException | SQLException e) {
-            throw new JdcbDaoConnectException(e);
+            throw new JdbcDaoConnectException(e);
         }
     }
 
-
     @Override
     public SudokuBoard read() throws DaoReadException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT board FROM " +
-                "SudokuBoards WHERE savename = ?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT board FROM "
+                + "SudokuBoards WHERE savename = ?")) {
             preparedStatement.setString(1, saveName);
+
             ResultSet resultSet = preparedStatement.executeQuery();
-            return (SudokuBoard) resultSet.getObject(1);
-        } catch (SQLException e) {
+            resultSet.next();
+
+            byte[] input = resultSet.getBytes(1);
+
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(input);
+                 ObjectInputStream objectIn = new ObjectInputStream(bais)) {
+
+                return (SudokuBoard) objectIn.readObject();
+            }
+
+        } catch (SQLException | IOException | ClassNotFoundException e) {
             throw new JdbcDaoReadException(e);
         }
     }
 
-
     @Override
     public void write(SudokuBoard obj) throws DaoWriteException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO " +
-                "SudokuBoards VALUES (?,?)")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO "
+                + "SudokuBoards VALUES (?,?)")) {
             preparedStatement.setString(1, saveName);
-            preparedStatement.setObject(2, (Object) obj);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
+
+            try (ByteArrayOutputStream boos = new ByteArrayOutputStream();
+                 ObjectOutputStream oos = new ObjectOutputStream(boos)) {
+
+                oos.writeObject(obj);
+                preparedStatement.setBytes(2, boos.toByteArray());
+                preparedStatement.executeUpdate();
+            }
+
+        } catch (SQLException | IOException e) {
             throw new JdbcDaoWriteException(e);
         }
     }
 
     public void delete() throws JdbcDaoDeleteException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " +
-                "SudokuBoards WHERE savename = ?")) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM "
+                + "SudokuBoards WHERE savename = ?")) {
             preparedStatement.setString(1, saveName);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

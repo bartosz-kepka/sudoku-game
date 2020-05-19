@@ -1,13 +1,11 @@
 package pl.sudoku.filesudokuboarddao;
 
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pl.sudoku.dao.Dao;
 import pl.sudoku.model.BacktrackingSudokuSolver;
 import pl.sudoku.model.BoardSizeEnum;
 import pl.sudoku.model.SudokuBoard;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 class FileSudokuBoardDaoTest {

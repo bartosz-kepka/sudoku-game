@@ -2,12 +2,12 @@ package pl.sudoku.jdbcsudokuboarddao;
 
 import java.util.ResourceBundle;
 
-public class JdcbDaoConnectException extends Exception {
+public class JdbcDaoConnectException extends Exception {
     ResourceBundle resourceBundle
             = ResourceBundle.getBundle("pl.sudoku.jdbcsudokuboarddao.jdbcDaoExceptions");
 
 
-    public JdcbDaoConnectException(Throwable cause) {
+    public JdbcDaoConnectException(Throwable cause) {
         super(cause);
     }
 

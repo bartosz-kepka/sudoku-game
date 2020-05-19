@@ -10,6 +10,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 import pl.sudoku.dao.Dao;
 import pl.sudoku.dao.DaoReadException;
 import pl.sudoku.dao.DaoWriteException;
@@ -81,6 +84,23 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new JdbcDaoDeleteException(e);
+        }
+    }
+
+    public ArrayList<String> readAvailable() throws JdbcDaoReadException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                "SELECT savename FROM SudokuBoards")) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            ArrayList<String> available = new ArrayList<String>();
+
+            while (resultSet.next()) {
+                available.add(resultSet.getString(1));
+            }
+
+            return available;
+        } catch (SQLException e) {
+            throw new JdbcDaoReadException(e);
         }
     }
 

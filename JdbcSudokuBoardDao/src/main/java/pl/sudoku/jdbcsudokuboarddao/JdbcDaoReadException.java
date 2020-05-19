@@ -16,7 +16,5 @@ public class JdbcDaoReadException extends DaoReadException {
     @Override
     public String getLocalizedMessage() {
         return resourceBundle.getString("JdbcReadExceptionMessage");
-        //return "Readdddd";
-
     }
 }

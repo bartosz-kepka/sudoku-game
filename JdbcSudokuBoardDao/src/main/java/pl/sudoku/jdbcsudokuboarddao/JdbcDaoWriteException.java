@@ -16,6 +16,5 @@ public class JdbcDaoWriteException extends DaoWriteException {
     @Override
     public String getLocalizedMessage() {
         return resourceBundle.getString("JdbcWriteExceptionMessage");
-        //return "Writteeeee";
     }
 }

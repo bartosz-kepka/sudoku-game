@@ -4,7 +4,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.dao.Dao;
-import pl.sudoku.dao.DaoCreateException;
 import pl.sudoku.dao.DaoReadException;
 import pl.sudoku.dao.DaoWriteException;
 import pl.sudoku.model.BacktrackingSudokuSolver;
@@ -19,35 +18,37 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
     /**
      * String representing file with extension.
      */
+    private Connection connection;
+
     private final String fileName;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(JdbcSudokuBoardDao.class);
 
     public JdbcSudokuBoardDao(String fileName) {
+
         this.fileName = fileName;
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;database=Sudoku;","sa","root");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private Connection getDatabaseConnection(String URL) {
-        Connection connection = null;
-        try {
-             connection = DriverManager.getConnection(URL);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return connection;
-    }
+
 
     @Override
     public SudokuBoard read() throws DaoReadException {
-        SudokuBoard sudokuBoard;
-        String DbUrl = "jdbc:derby:"+fileName;
-
         return null;
     }
 
     @Override
     public void write(SudokuBoard obj) throws DaoWriteException {
+        try(PreparedStatement statement = connection.prepareStatement("INSERT INTO SudokuBoards(savename, fields) VALUES (?,?)" )) {
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override

@@ -2,8 +2,10 @@ package pl.sudoku.jdbcsudokuboarddao;
 
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+ public class JdbcSudokuBoardDaoTest {
 
-class JdbcSudokuBoardDaoTest {
-
+    @Test
+    public void createDB_test(){
+        JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("ASD");
+    }
 }

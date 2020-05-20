@@ -1,8 +1,6 @@
 package pl.sudoku.dao;
 
-import java.io.IOException;
-
-public class DaoWriteException extends IOException {
+public class DaoWriteException extends Exception {
     public DaoWriteException(Throwable cause) {
         super(cause);
     }

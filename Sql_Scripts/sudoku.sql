@@ -8,11 +8,11 @@ CREATE table SudokuBoards(
     PRIMARY KEY (savename)
 );
 
-INSERT INTO SudokuBoards VALUES ('Tester Baz Trzeci Testowal Ma', 7312);
+INSERT INTO SudokuBoards VALUES ('Tester Baz', 7312);
 
 SELECT * FROM SudokuBoards;
 
-DELETE FROM SudokuBoards WHERE savename = 'Tester Baz Trzeci Testowal Ma';
+DELETE FROM SudokuBoards WHERE savename = 'Tester Baz';
 
 SELECT * FROM SudokuBoards;
 

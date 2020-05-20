@@ -90,7 +90,7 @@ public class GameController implements Initializable {
         if (saveFile != null) {
             try (Dao<SudokuBoard> fileSudokuBoardDao =
                          SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
-                fileSudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
+                fileSudokuBoardDao.write(fxSudokuBoard.getSudokuBoardPlaceholder());
             } catch (FileDaoWriteException e) {
                 LOGGER.error(ExceptionUtils.getStackTrace(e));
                 // MOZNA ZROBIC JEDEN BLOCK CATCH ALE JEST TAK ZEBY POKAZAC ZE LAPIEMY SWOJ WYJAEK
@@ -121,11 +121,11 @@ public class GameController implements Initializable {
                 Optional<ButtonType> choice = alert.showAndWait();
 
                 if (choice.get() == ButtonType.OK) {
-                    jdbcSudokuBoardDao.update(fXsudokuBoard.getSudokuBoardPlaceholder());
+                    jdbcSudokuBoardDao.update(fxSudokuBoard.getSudokuBoardPlaceholder());
                     showSuccessDialog(resourceBundle);
                 }
             } else {
-                jdbcSudokuBoardDao.write(fXsudokuBoard.getSudokuBoardPlaceholder());
+                jdbcSudokuBoardDao.write(fxSudokuBoard.getSudokuBoardPlaceholder());
                 showSuccessDialog(resourceBundle);
             }
 
@@ -140,7 +140,6 @@ public class GameController implements Initializable {
             alert.getDialogPane().setMinWidth(550.0);
             alert.showAndWait();
         }
-
     }
 
     private void showSuccessDialog(ResourceBundle resourceBundle) {
@@ -161,7 +160,7 @@ public class GameController implements Initializable {
     @FXML
     public GridPane sudokuGrid;
 
-    FXsudokuBoard fXsudokuBoard;
+    FXsudokuBoard fxSudokuBoard;
 
     int boardSize;
 
@@ -176,19 +175,19 @@ public class GameController implements Initializable {
      * @param boardSizeEnum      chosen board size
      */
     public GameController(GameDifficultyEnum gameDifficultyEnum, BoardSizeEnum boardSizeEnum) {
-        fXsudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
+        fxSudokuBoard = new FXsudokuBoard(new SudokuBoard(new BacktrackingSudokuSolver(),
                 boardSizeEnum));
-        fXsudokuBoard.getSudokuBoardPlaceholder().solveGame();
-        gameDifficultyEnum.clearSudokuFields(fXsudokuBoard.getSudokuBoardPlaceholder());
+        fxSudokuBoard.getSudokuBoardPlaceholder().solveGame();
+        gameDifficultyEnum.clearSudokuFields(fxSudokuBoard.getSudokuBoardPlaceholder());
     }
 
     /**
      * Game controller constructor used for resuming saved game.
      *
-     * @param fXsudokuBoard game to resume
+     * @param fxSudokuBoard game to resume
      */
-    public GameController(FXsudokuBoard fXsudokuBoard) {
-        this.fXsudokuBoard = fXsudokuBoard;
+    public GameController(FXsudokuBoard fxSudokuBoard) {
+        this.fxSudokuBoard = fxSudokuBoard;
     }
 
     @Override
@@ -197,9 +196,9 @@ public class GameController implements Initializable {
         cancelButton.setOnAction(this::handleCancelButtonAction);
         fileSaveButton.setOnAction(this::handleFileSaveButtonAction);
         dbSaveButton.setOnAction(this::handleDbFileSaveButtonAction);
-        boardSize = fXsudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
+        boardSize = fxSudokuBoard.getSudokuBoardPlaceholder().getBoardSize();
         generatePossibleValues();
-        fXsudokuBoard.addPropertyChangeListener(
+        fxSudokuBoard.addPropertyChangeListener(
                 FXsudokuBoard.FIELD_VALUE_PROPERTY, new SudokuFieldValueListener());
         fillSudokuGrid();
         setWarnings();
@@ -241,11 +240,11 @@ public class GameController implements Initializable {
                 int nodeColumn = GridPane.getColumnIndex(node);
 
                 boolean rowIsCorrect =
-                        fXsudokuBoard.getSudokuBoardPlaceholder().getRow(nodeRow).verify();
+                        fxSudokuBoard.getSudokuBoardPlaceholder().getRow(nodeRow).verify();
                 boolean columnIsCorrect =
-                        fXsudokuBoard.getSudokuBoardPlaceholder().getColumn(nodeColumn).verify();
+                        fxSudokuBoard.getSudokuBoardPlaceholder().getColumn(nodeColumn).verify();
                 boolean boxIsCorrect =
-                        fXsudokuBoard.getSudokuBoardPlaceholder().getBox(nodeRow, nodeColumn)
+                        fxSudokuBoard.getSudokuBoardPlaceholder().getBox(nodeRow, nodeColumn)
                                 .verify();
 
                 if (rowIsCorrect && columnIsCorrect && boxIsCorrect) {
@@ -281,7 +280,7 @@ public class GameController implements Initializable {
 
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
-                int fieldValue = fXsudokuBoard.get(row, column);
+                int fieldValue = fxSudokuBoard.get(row, column);
                 TextField textField = SudokuTextFieldFactory.getSudokuTextField(fieldValue,
                         maxDigitsEnum);
                 addFieldValueListener(textField, row, column);
@@ -327,12 +326,12 @@ public class GameController implements Initializable {
                                 String oldVal, String newVal) {
                 if (!validateValue(newVal)) {
                     if (newVal.equals("")) {
-                        fXsudokuBoard.set(row, column, 0);
+                        fxSudokuBoard.set(row, column, 0);
                     } else {
                         Platform.runLater(textField::clear);
                     }
                 } else {
-                    fXsudokuBoard.set(row, column, Integer.parseInt(newVal));
+                    fxSudokuBoard.set(row, column, Integer.parseInt(newVal));
                 }
             }
         });

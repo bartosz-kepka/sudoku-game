@@ -26,7 +26,7 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
     /**
      * Method connecting Dao to database.
      *
-     * @param saveName string representing SudokuBaord Save
+     * @param saveName string representing SudokuBoard Save
      * @throws JdbcDaoConnectException if unable to connect to database
      */
     public JdbcSudokuBoardDao(String saveName) throws JdbcDaoConnectException {
@@ -35,26 +35,37 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;"
                     + "databaseName=Sudoku;", "SA", "Password.2020");
+            connection.setAutoCommit(false);
         } catch (ClassNotFoundException | SQLException e) {
             throw new JdbcDaoConnectException(e);
         }
     }
 
+    /**
+     * Method reading SudokuBoard save from database.
+     *
+     * @throws JdbcDaoReadException if database is unavailable or n of rows read from database != 1
+     */
     @Override
     public SudokuBoard read() throws DaoReadException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT board FROM "
-                + "SudokuBoards WHERE savename = ?")) {
+                + "SudokuBoards WHERE savename = ?");
+        ) {
             preparedStatement.setString(1, saveName);
 
-            ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                connection.commit();
+                if (!resultSet.next()) {
+                    throw new JdbcDaoReadException(new SQLException());
+                }
 
-            byte[] input = resultSet.getBytes(1);
+                byte[] input = resultSet.getBytes(1);
 
-            try (ByteArrayInputStream bais = new ByteArrayInputStream(input);
-                 ObjectInputStream objectIn = new ObjectInputStream(bais)) {
+                try (ByteArrayInputStream bais = new ByteArrayInputStream(input);
+                     ObjectInputStream ois = new ObjectInputStream(bais)) {
 
-                return (SudokuBoard) objectIn.readObject();
+                    return (SudokuBoard) ois.readObject();
+                }
             }
 
         } catch (SQLException | IOException | ClassNotFoundException e) {
@@ -62,6 +73,12 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
         }
     }
 
+    /**
+     * Method writing SudokuBoard save to database.
+     *
+     * @param obj SudokuBoard object to save in database
+     * @throws JdbcDaoWriteException if database is unavailable or rows affected by write != 1
+     */
     @Override
     public void write(SudokuBoard obj) throws DaoWriteException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO "
@@ -73,7 +90,13 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
                 oos.writeObject(obj);
                 preparedStatement.setBytes(2, boos.toByteArray());
-                preparedStatement.executeUpdate();
+
+                int affectedRows = preparedStatement.executeUpdate();
+                connection.commit();
+
+                if (affectedRows != 1) {
+                    throw new JdbcDaoWriteException(new SQLException());
+                }
             }
 
         } catch (SQLException | IOException e) {
@@ -84,20 +107,29 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
     /**
      * Method deleting SudokuBoard save from database.
      *
-     * @throws JdbcDaoDeleteException if database is unavailable or rows affected by delete == 0
+     * @throws JdbcDaoDeleteException if database is unavailable or rows affected by delete != 1
      */
     public void delete() throws JdbcDaoDeleteException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM "
                 + "SudokuBoards WHERE savename = ?")) {
             preparedStatement.setString(1, saveName);
-            if (preparedStatement.executeUpdate() != 1) {
-                throw new JdbcDaoDeleteException(new IOException());
+
+            int affectedRows = preparedStatement.executeUpdate();
+            connection.commit();
+
+            if (affectedRows != 1) {
+                throw new JdbcDaoDeleteException(new SQLException());
             }
         } catch (SQLException e) {
             throw new JdbcDaoDeleteException(e);
         }
     }
 
+    /**
+     * Method updating SudokuBoard save in database.
+     *
+     * @throws JdbcDaoWriteException if database is unavailable or rows affected by update != 1
+     */
     public void update(SudokuBoard obj) throws DaoWriteException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE "
                 + "SudokuBoards SET board = ? WHERE savename = ?")) {
@@ -108,7 +140,13 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
                 oos.writeObject(obj);
                 preparedStatement.setBytes(1, boos.toByteArray());
-                preparedStatement.executeUpdate();
+
+                int affectedRows = preparedStatement.executeUpdate();
+                connection.commit();
+
+                if (affectedRows != 1) {
+                    throw new JdbcDaoWriteException(new SQLException());
+                }
             }
 
         } catch (SQLException | IOException e) {
@@ -124,9 +162,10 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
      */
     public ArrayList<String> readAvailable() throws JdbcDaoReadException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT savename FROM SudokuBoards")) {
-            ResultSet resultSet = preparedStatement.executeQuery();
+                "SELECT savename FROM SudokuBoards");
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
+            connection.commit();
             ArrayList<String> available = new ArrayList<String>();
 
             while (resultSet.next()) {
@@ -142,6 +181,12 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     @Override
     public void close() throws Exception {
+        connection.close();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
         connection.close();
     }
 

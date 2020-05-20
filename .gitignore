@@ -2,3 +2,5 @@
 target
 properFile
 *.iml
+*.logs
+*.lck

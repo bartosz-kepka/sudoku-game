@@ -166,8 +166,8 @@ public class MenuController implements Initializable {
             try {
                 try (Dao<SudokuBoard> fileSudokuBoardDao =
                              SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
-                    FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
-                    GameController gameController = new GameController(fXsudokuBoard);
+                    FXsudokuBoard fxSudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
+                    GameController gameController = new GameController(fxSudokuBoard);
                     openGameView(gameController);
                 } catch (Exception e) {
                     throw new GameLoadingException(e);
@@ -182,8 +182,8 @@ public class MenuController implements Initializable {
         String selectedSave = (String) dbLoadComboBox.getValue();
 
         try (Dao<SudokuBoard> sudokuBoardDao = SudokuBoardDaoFactory.getDatabaseDao(selectedSave)) {
-            FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(sudokuBoardDao.read());
-            GameController gameController = new GameController(fXsudokuBoard);
+            FXsudokuBoard fxSudokuBoard = new FXsudokuBoard(sudokuBoardDao.read());
+            GameController gameController = new GameController(fxSudokuBoard);
             openGameView(gameController);
         } catch (Exception e) {
             LOGGER.error(ExceptionUtils.getStackTrace(e));

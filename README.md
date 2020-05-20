@@ -8,5 +8,4 @@ mvn clean install
 mvn -pl View javafx:run
 
 Logs:
-cat /tmp/Sudoku.logs
-cat /tmp/Sudoku.logs | grep 'INFO\|SEVERE'
+cat View/Sudoku.logs

@@ -17,11 +17,10 @@ public class SudokuBoardDaoFactory {
         return new FileSudokuBoardDao(filename);
     }
 
-    public static Dao<SudokuBoard> getDatabaseDao(final String filename) throws JdbcDaoConnectException {
+    public static Dao<SudokuBoard> getDatabaseDao(final String filename) throws
+            JdbcDaoConnectException {
         return new JdbcSudokuBoardDao(filename);
     }
-
-
 
     private SudokuBoardDaoFactory() {}
 }

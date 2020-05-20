@@ -45,7 +45,7 @@
                 textAlignment="CENTER"/>
 
         <VBox alignment="CENTER">
-            <ChoiceBox fx:id="dbLoadChoiceBox" minWidth="120.0" maxWidth="120.0"/>
+            <ComboBox fx:id="dbLoadComboBox" minWidth="120.0" maxWidth="120.0" promptText="%DbLoadComboBoxPromptText"/>
             <Button disable="true" fx:id="dbLoadButton" minWidth="120.0" maxWidth="120.0" text="%DbLoadButton"
                     textAlignment="CENTER"/>
         </VBox>

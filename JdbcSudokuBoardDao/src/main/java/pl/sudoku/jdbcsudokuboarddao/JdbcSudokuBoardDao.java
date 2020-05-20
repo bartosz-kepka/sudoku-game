@@ -25,6 +25,7 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     /**
      * Method connecting Dao to database.
+     *
      * @param saveName string representing SudokuBaord Save
      * @throws JdbcDaoConnectException if unable to connect to database
      */
@@ -82,8 +83,8 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     /**
      * Method deleting SudokuBoard save from database.
-     * @throws JdbcDaoDeleteException if database is unavailable or rows affected by delete == 0
      *
+     * @throws JdbcDaoDeleteException if database is unavailable or rows affected by delete == 0
      */
     public void delete() throws JdbcDaoDeleteException {
         try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM "
@@ -117,6 +118,7 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     /**
      * Method returning ArrayList of saves.
+     *
      * @return ArrayList consisting of saveNames
      * @throws JdbcDaoReadException if unable to access data form database
      */
@@ -154,6 +156,7 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     /**
      * Setter for fileName field.
+     *
      * @param saveName new fileName
      */
     public void setSaveName(String saveName) {

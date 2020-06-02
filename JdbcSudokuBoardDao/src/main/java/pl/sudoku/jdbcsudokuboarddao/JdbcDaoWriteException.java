@@ -9,6 +9,10 @@ public class JdbcDaoWriteException extends DaoWriteException {
             = ResourceBundle.getBundle("jdbcDaoExceptions");
 
 
+    /**
+     * Constructor for JdbcDaoWriteException.
+     * @param cause of exception
+     */
     public JdbcDaoWriteException(Throwable cause) {
         super(cause);
     }

@@ -9,6 +9,10 @@ public class FileDaoReadException extends DaoReadException {
             = ResourceBundle.getBundle("pl.sudoku.filesudokuboarddao.fileDaoExceptions");
 
 
+    /**
+     * Constructor for FileDaoReadException.
+     * @param cause of exception
+     */
     public FileDaoReadException(Throwable cause) {
         super(cause);
     }

@@ -5,8 +5,15 @@ public enum BoardSizeEnum {
     CLASSIC(9),
     LARGE(16);
 
+    /**
+     * Number of fields in sudoku board row.
+     */
     private final int size;
 
+    /**
+     * Constructor for BoardSizeEnum enum.
+     * @param size desired board size
+     */
     BoardSizeEnum(int size) {
         this.size = size;
     }

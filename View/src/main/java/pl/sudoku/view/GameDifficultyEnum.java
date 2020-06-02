@@ -8,8 +8,16 @@ public enum GameDifficultyEnum {
     MEDIUM(5),
     HARD(7);
 
+    /**
+     * Multiplier value used when setting up new game.
+     * Describes multiplier for empty fields in board.
+     */
     private final int multiplier;
 
+    /**
+     * Constructor for GameDifficultyEnum.
+     * @param multiplier game difficulty multiplier
+     */
     GameDifficultyEnum(int multiplier) {
         this.multiplier = multiplier;
     }

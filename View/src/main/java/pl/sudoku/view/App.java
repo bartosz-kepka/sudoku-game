@@ -15,7 +15,13 @@ import org.slf4j.LoggerFactory;
  */
 public class App extends Application {
 
+    /**
+     * Primary stage of javaFX GUI.
+     */
     private static Stage primaryStage;
+    /**
+     * Logger for message logging.
+     */
     private static Logger LOGGER;
 
     @Override
@@ -35,11 +41,19 @@ public class App extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Method for setting new scene.
+     * @param root new scene bo be set
+     */
     static void setScene(Parent root) {
         primaryStage.setScene(new Scene(root));
         primaryStage.centerOnScreen();
     }
 
+    /**
+     * Main method required for GUI to launch when JAR file is created with JavaFX Packager tool.
+     * @param args extra arguments when launching GUI.
+     */
     public static void main(String[] args) {
         launch();
     }

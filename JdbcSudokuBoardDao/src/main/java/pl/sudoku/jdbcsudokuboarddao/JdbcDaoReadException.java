@@ -9,6 +9,10 @@ public class JdbcDaoReadException extends DaoReadException {
             = ResourceBundle.getBundle("jdbcDaoExceptions");
 
 
+    /**
+     * Constructor for JdbcDaoReadException.
+     * @param cause of exception
+     */
     public JdbcDaoReadException(Throwable cause) {
         super(cause);
     }

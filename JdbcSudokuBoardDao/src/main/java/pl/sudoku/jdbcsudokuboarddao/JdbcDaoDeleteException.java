@@ -6,6 +6,10 @@ public class JdbcDaoDeleteException extends Exception {
     ResourceBundle resourceBundle
             = ResourceBundle.getBundle("jdbcDaoExceptions");
 
+    /**
+     * Constructor for JdbcDaoDeleteException.
+     * @param cause of exception
+     */
     public JdbcDaoDeleteException(Throwable cause) {
         super(cause);
     }

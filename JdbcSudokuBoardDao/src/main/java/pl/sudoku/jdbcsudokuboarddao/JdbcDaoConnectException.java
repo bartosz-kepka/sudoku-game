@@ -7,6 +7,10 @@ public class JdbcDaoConnectException extends Exception {
             = ResourceBundle.getBundle("jdbcDaoExceptions");
 
 
+    /**
+     * Constructor for JdbcDaoConnectException.
+     * @param cause of exception
+     */
     public JdbcDaoConnectException(Throwable cause) {
         super(cause);
     }

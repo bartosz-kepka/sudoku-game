@@ -55,7 +55,6 @@ public class GameController implements Initializable {
 
     /**
      * Closes current game and returns to main menu when "Cancel" button clicked.
-     *
      * @param event onClick event
      */
     @FXML
@@ -76,8 +75,7 @@ public class GameController implements Initializable {
     public Button fileSaveButton;
 
     /**
-     * Saves game to file when "Save game" button clicked.
-     *
+     * Saves game to file when "Save to File" button clicked.
      * @param event onClick Event
      */
     @FXML
@@ -102,6 +100,11 @@ public class GameController implements Initializable {
 
     @FXML
     public Button dbSaveButton;
+
+    /**
+     * Saves game to database when "Save to Database" button clicked.
+     * @param event onClick Event
+     */
 
     @FXML
     private void handleDbFileSaveButtonAction(ActionEvent event) {
@@ -144,6 +147,10 @@ public class GameController implements Initializable {
 
     }
 
+    /**
+     * Method shows dialog window when correctly saved game state to database.
+     * @param resourceBundle language bundle for internationalized messages
+     */
     private void showSuccessDialog(ResourceBundle resourceBundle) {
         dbSaveButton.setStyle("-fx-text-fill: forestgreen");
 
@@ -364,6 +371,9 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * Generates database textfield for save name input.
+     */
     private void initializeDbSaveTextField() {
         dbSaveTextField.setTextFormatter(
                 new TextFormatter<String>((TextFormatter.Change change) -> {

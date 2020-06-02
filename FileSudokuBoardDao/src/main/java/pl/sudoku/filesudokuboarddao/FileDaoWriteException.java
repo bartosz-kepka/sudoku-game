@@ -8,6 +8,10 @@ public class FileDaoWriteException extends DaoWriteException {
     ResourceBundle resourceBundle
             = ResourceBundle.getBundle("pl.sudoku.filesudokuboarddao.fileDaoExceptions");
 
+    /**
+     * Constructor for FileDaoWriteException.
+     * @param cause of exception
+     */
     public FileDaoWriteException(Throwable cause) {
         super(cause);
     }

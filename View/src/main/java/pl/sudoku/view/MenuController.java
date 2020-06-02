@@ -49,6 +49,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button easyButton;
 
+    /**
+     * Starts new game on Easy difficulty.
+     * @param event onClick Event
+     */
     @FXML
     private void handleEasyButtonAction(ActionEvent event) {
         startNewGame(GameDifficultyEnum.EASY);
@@ -57,6 +61,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button mediumButton;
 
+    /**
+     * Starts new game on Medium difficulty.
+     * @param event onClick Event
+     */
     @FXML
     private void handleMediumButtonAction(ActionEvent event) {
         startNewGame(GameDifficultyEnum.MEDIUM);
@@ -65,6 +73,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button hardButton;
 
+    /**
+     * Starts new game on Hard difficulty.
+     * @param event onClick Event
+     */
     @FXML
     private void handleHardButtonAction(ActionEvent event) {
         startNewGame(GameDifficultyEnum.HARD);
@@ -73,6 +85,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button fileLoadButton;
 
+    /**
+     * Loads game state from file when "Load from file" button is clicked.
+     * @param event onClick Event
+     */
     @FXML
     private void handleFileLoadButtonAction(ActionEvent event) {
         loadGameFromFile();
@@ -84,6 +100,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button dbLoadButton;
 
+    /**
+     * Loads game state from database when "Load from database" button is clicked.
+     * @param event onClick Event
+     */
     @FXML
     private void handleDbLoadButtonAction(ActionEvent event) {
         loadGameFromDatabase();
@@ -93,6 +113,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button exitButton;
 
+    /**
+     * Quits application when "Exit" button is clicked.
+     * @param event onClick Event
+     */
     @FXML
     private void handleExitButtonAction(ActionEvent event) {
         Stage stage = (Stage) exitButton.getScene().getWindow();
@@ -102,6 +126,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button langEN;
 
+    /**
+     * Changes GUI language to ENG when "English" button is clicked.
+     * @param event onClick Event
+     */
     @FXML
     private void handleLangEnButtonAction(ActionEvent event) {
         changeUiLanguage(new Locale("en"));
@@ -110,6 +138,10 @@ public class MenuController implements Initializable {
     @FXML
     public Button langPL;
 
+    /**
+     * Changes GUI language to PL when "Polish" button is clicked.
+     * @param event onClick Event
+     */
     @FXML
     private void handleLangPlButtonAction(ActionEvent event) {
         changeUiLanguage(new Locale("pl"));
@@ -121,6 +153,10 @@ public class MenuController implements Initializable {
     @FXML
     public Label authorTwo;
 
+    /**
+     * Method changes resource bundle corresponding to new locale wanted by user.
+     * @param locale new locale
+     */
     private void changeUiLanguage(Locale locale) {
         Locale.setDefault(locale);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.menu");
@@ -152,12 +188,19 @@ public class MenuController implements Initializable {
         loadAvailableSavesFormDB();
     }
 
+    /**
+     * Method starts new game with difficulty desired by user.
+     * @param gameDifficulty game difficulty chosen by user
+     */
     private void startNewGame(GameDifficultyEnum gameDifficulty) {
         BoardSizeEnum boardSizeEnum = (BoardSizeEnum) size.getSelectedToggle().getUserData();
         GameController gameController = new GameController(gameDifficulty, boardSizeEnum);
         openGameView(gameController);
     }
 
+    /**
+     * Loads game from file using fileSudokuBoardDao.
+     */
     private void loadGameFromFile() {
         Stage stage = new Stage();
         stage.setAlwaysOnTop(true);
@@ -180,6 +223,9 @@ public class MenuController implements Initializable {
         }
     }
 
+    /**
+     * Loads game from file using JdbcSudokuBoardDao.
+     */
     private void loadGameFromDatabase() {
         String selectedSave = (String) dbLoadChoiceBox.getValue();
 
@@ -192,6 +238,10 @@ public class MenuController implements Initializable {
         }
     }
 
+    /**
+     * Method quits main menu and changes view to game view with sudoku board.
+     * @param gameController game controller
+     */
     private void openGameView(GameController gameController) {
         ResourceBundle bundle = ResourceBundle.getBundle("pl.sudoku.view.bundles.game");
         FXMLLoader loader = new FXMLLoader(App.class.getResource("game.fxml"), bundle);
@@ -205,6 +255,9 @@ public class MenuController implements Initializable {
         }
     }
 
+    /**
+     * Method responsible for internationalizing Authors when changing language.
+     */
     private void setAuthors() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle(
                 "pl.sudoku.view.bundles.Authors");
@@ -213,6 +266,9 @@ public class MenuController implements Initializable {
         authorTwo.setText(resourceBundle.getString("224248"));
     }
 
+    /**
+     * Method gets all saves stored in database and shows in choiceBox.
+     */
     private void loadAvailableSavesFormDB() {
         try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("")) {
             List<String> available = jdbcSudokuBoardDao.readAvailable();

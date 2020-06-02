@@ -19,8 +19,15 @@ import pl.sudoku.model.SudokuBoard;
 
 public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
+    /**
+     * Connection session with database.
+     * Established once per class lifetime.
+     */
     private final Connection connection;
 
+    /**
+     * String containing name of game save to be stored in database.
+     */
     private String saveName;
 
     /**

@@ -12,7 +12,7 @@
                 <Button fx:id="cancelButton" alignment="CENTER" mnemonicParsing="false" minWidth="120.0" text="%CancelButton" textAlignment="CENTER" />
                 <Button fx:id="fileSaveButton" alignment="CENTER" mnemonicParsing="false" minWidth="120.0" text="%FileSaveButton" textAlignment="CENTER" />
                 <VBox alignment="CENTER" prefWidth="160.0">
-                    <TextField fx:id="dbSaveTextField" prefWidth="Infinity" alignment="CENTER"/>
+                    <TextField fx:id="dbSaveTextField" promptText="%DbSaveTextFieldPromptText" prefWidth="Infinity" alignment="CENTER"/>
                     <Button disable="true" fx:id="dbSaveButton" alignment="CENTER" mnemonicParsing="false" prefWidth="Infinity" text="%DbSaveButton" textAlignment="CENTER" />
                 </VBox>
             </children>

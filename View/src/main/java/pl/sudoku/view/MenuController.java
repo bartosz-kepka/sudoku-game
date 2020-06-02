@@ -6,15 +6,13 @@ import java.net.URL;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -95,7 +93,7 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    public ChoiceBox dbLoadChoiceBox;
+    public ComboBox dbLoadComboBox;
 
     @FXML
     public Button dbLoadButton;
@@ -211,8 +209,8 @@ public class MenuController implements Initializable {
             try {
                 try (Dao<SudokuBoard> fileSudokuBoardDao =
                              SudokuBoardDaoFactory.getFileDao(saveFile.getAbsolutePath())) {
-                    FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
-                    GameController gameController = new GameController(fXsudokuBoard);
+                    FXsudokuBoard fxSudokuBoard = new FXsudokuBoard(fileSudokuBoardDao.read());
+                    GameController gameController = new GameController(fxSudokuBoard);
                     openGameView(gameController);
                 } catch (Exception e) {
                     throw new GameLoadingException(e);
@@ -227,11 +225,11 @@ public class MenuController implements Initializable {
      * Loads game from file using JdbcSudokuBoardDao.
      */
     private void loadGameFromDatabase() {
-        String selectedSave = (String) dbLoadChoiceBox.getValue();
+        String selectedSave = (String) dbLoadComboBox.getValue();
 
         try (Dao<SudokuBoard> sudokuBoardDao = SudokuBoardDaoFactory.getDatabaseDao(selectedSave)) {
-            FXsudokuBoard fXsudokuBoard = new FXsudokuBoard(sudokuBoardDao.read());
-            GameController gameController = new GameController(fXsudokuBoard);
+            FXsudokuBoard fxSudokuBoard = new FXsudokuBoard(sudokuBoardDao.read());
+            GameController gameController = new GameController(fxSudokuBoard);
             openGameView(gameController);
         } catch (Exception e) {
             LOGGER.error(ExceptionUtils.getStackTrace(e));
@@ -273,12 +271,12 @@ public class MenuController implements Initializable {
         try (JdbcSudokuBoardDao jdbcSudokuBoardDao = new JdbcSudokuBoardDao("")) {
             List<String> available = jdbcSudokuBoardDao.readAvailable();
 
-            dbLoadChoiceBox.getItems().addAll(available);
+            dbLoadComboBox.getItems().addAll(available);
         } catch (Exception e) {
             LOGGER.error(ExceptionUtils.getStackTrace(e));
         }
 
-        dbLoadChoiceBox.getSelectionModel().selectedIndexProperty()
+        dbLoadComboBox.getSelectionModel().selectedIndexProperty()
                 .addListener((observable, oldValue, newValue) -> dbLoadButton.setDisable(false));
     }
 

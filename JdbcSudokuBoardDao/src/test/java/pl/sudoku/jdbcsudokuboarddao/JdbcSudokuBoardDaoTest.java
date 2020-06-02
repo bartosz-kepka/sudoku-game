@@ -12,7 +12,7 @@ public class JdbcSudokuBoardDaoTest {
     @Test
     public void read_SaveBoard_ShouldLoadCorrectly() {
         try (JdbcSudokuBoardDao jdbcSudokuBoardDao =
-                     new JdbcSudokuBoardDao("Test2137")) {
+                     new JdbcSudokuBoardDao("Test21537")) {
             SudokuBoard sudokuBoard = new SudokuBoard(new BacktrackingSudokuSolver(),
                     BoardSizeEnum.CLASSIC);
             sudokuBoard.set(0, 0, 1);

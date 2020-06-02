@@ -1,11 +1,11 @@
-Do wygenerowania polaczonch za soba poprawnych raportow ze wszyskich projektow:
-mvn clean test site site:deploy
-Nadrzedny raport w target/deploy
+Sudoku game with local database connection
 
-Do odpalenia GUI:
+Generate site reports (Main report in target/deploy):
+mvn clean test site site:deploy
+
+Start GUI:
 mvn clean install
 mvn -pl View javafx:run
 
-Logi:
-cat /tmp/Sudoku.logs
-cat /tmp/Sudoku.logs | grep 'INFO\|SEVERE'
+Logs:
+View/Sudoku.logs

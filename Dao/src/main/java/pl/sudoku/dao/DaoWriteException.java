@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class DaoWriteException extends IOException {
     /**
-     * Constructor for DaoWriteException
+     * Constructor for DaoWriteException.
      *
      * @param cause of exception
      */
